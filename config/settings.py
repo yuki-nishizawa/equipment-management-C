@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-d(%r!&)uv7)t-9ml&4z9^1%ve54(b9-4zx1_1*t!ptd#nw$k1q
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'mysite-kt5j.onrender.com']
+ALLOWED_HOSTS = ['localhost','127.0.0.1', 'mysite-kt5j.onrender.com']
 
 
 # Application definition
@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'equipment',
+    'order',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -132,6 +134,9 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 # //本番環境//
 STATIC_ROOT = str(BASE_DIR / "staticfiles")
