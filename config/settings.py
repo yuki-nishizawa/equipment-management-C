@@ -20,6 +20,9 @@ from dj_database_url import parse as dburl # デプロイ用
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# //環境変数//
+env = environ.Env()
+env.read_env(os.path.join(BASE_DIR, ".env"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -147,3 +150,16 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+AUTH_USER_MODEL = 'users.CustomUser'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+SECRET_KEY = env('SECRET_KEY')
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'  #←equipment:listが作成され次第、/equipment/に変更！
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass
