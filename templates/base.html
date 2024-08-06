@@ -1,0 +1,31 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}{% endblock title %}</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+  <header>
+      <div class="header-content">
+          <div class="left">
+              <ul>
+                  <li><a href="news.html">備品一覧</a></li>
+                  <li><a href="contact.html">発注履歴</a></li>
+              </ul>
+          </div>
+
+          <div class="right">
+              <ul>
+                  <li><a href="service.html">ログアウト</a></li>
+              </ul>
+          </div>
+      </div>
+  </header>
+
+  {% block content %}{% endblock content %}
+</body>
+</html>
