@@ -87,7 +87,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'team_c',
         'USER': 'postgres',
-        'PASSWORD': 'Chi25da19', #ご自身の設定したパスワードにご変更ください！！
+        'PASSWORD': 'thl102295', #ご自身の設定したパスワードにご変更ください！！
         'HOST': 'localhost',
         'PORT': '5432',
     }
