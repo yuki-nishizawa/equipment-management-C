@@ -1,3 +1,31 @@
 <!--備品一覧ページ-->
-
 <h2>備品一覧</h2>
+<table>
+    <thead>
+        <tr>
+            <th>備品名</th>
+            <th>カテゴリ</th>
+            <th>状態</th>
+            <th>設置場所</th>
+            <th>説明</th>
+            <th>画像</th>
+            <th>在庫数</th>
+            <th>作成日</th>
+            <th>更新日</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for equipment in equipments %}
+        <tr>
+            <td>{{ equipment.name }}</td>
+            <td>{{ equipment.description }}</td>
+            <td>{{ equipment.quantity }}</td>
+            <td>{{ equipment.location }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">備品が見つかりませんでした。</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
