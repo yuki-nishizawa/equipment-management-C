@@ -157,5 +157,10 @@ LOGOUT_REDIRECT_URL = '/'
 SECRET_KEY = env('SECRET_KEY')
 
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/'  #←equipment:listが作成され次第、/equipment/に変更！
+LOGIN_REDIRECT_URL = '/equipment/'  
+
+try:
+	    from .local_settings import *
+except ImportError:
+    pass
 
