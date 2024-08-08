@@ -159,8 +159,5 @@ SECRET_KEY = env('SECRET_KEY')
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/equipment/'  
 
-try:
-	    from .local_settings import *
-except ImportError:
-    pass
+
 
