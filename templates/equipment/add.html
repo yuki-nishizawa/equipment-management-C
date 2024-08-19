@@ -1,0 +1,18 @@
+
+    <h2>備品登録</h2>
+
+    <form method="post" enctype="multipart/form-data"><!--フォームがここから始まります-->
+
+      {% csrf_token %}<!--おまじない的なやつです-->
+    {% if form.errors %}<!--もし入力内容にエラーがあったら-->
+
+        <p><font color=red>入力にエラーがあります。もう一度ご確認ください。</font></p><!--エラーメッセージを表示-->
+        {{ form.non_field_errors }}
+
+    {% endif %}
+
+    {{ form.as_p }}<!--forms.pyで定義したフォームの中身を一括表示(項目ごと個別表示にしたほうがいいかも？)-->
+
+      <input type="submit" value="登録" class="button"><!--送信のためのボタンです-->
+
+    </form><!--フォームはここまでです-->

@@ -160,4 +160,10 @@ LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/equipment/'  
 
 
+#マイグレーションがうまくいかないエラーが出たときは以下のコードのコメントアウトを解除してください
+#他に影響が出る可能性があるので、その後は再度コメントアウトしてください
 
+# try:
+#    from .local_settings import *
+# except ImportError:
+#    pass

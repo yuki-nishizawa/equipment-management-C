@@ -1,5 +1,8 @@
 <!--備品一覧ページ-->
 <h2>備品一覧</h2>
+
+<a href="{% url 'equipment:add' %}">備品を追加</a>
+
 <table>
     <thead>
         <tr>
@@ -15,16 +18,21 @@
         </tr>
     </thead>
     <tbody>
-        {% for equipment in equipments %}
+        {% for equipment in equipments %}<!--equipmentsという名前は、views.pyのequipment_listで定義されている-->
         <tr>
-            <td>{{ equipment.name }}</td>
-            <td>{{ equipment.description }}</td>
-            <td>{{ equipment.quantity }}</td>
-            <td>{{ equipment.location }}</td>
+            <td>{{ equipment.equip_name }}</td>
+            <td>{{ equipment.category }}</td>
+            <td>{{ equipment.condition }}</td>
+            <td>{{ equipment.place }}</td>
+            <td>{{ equipment.text }}</td>
+            <td>{{ equipment.image }}</td>
+            <td>{{ equipment.stock }}</td>
+            <td>{{ equipment.created_at }}</td>
+            <td>{{ equipment.updated_at }}</td>
         </tr>
         {% empty %}
         <tr>
-            <td colspan="4">備品が見つかりませんでした。</td>
+            <td colspan="9">備品が見つかりませんでした。</td>
         </tr>
         {% endfor %}
     </tbody>
