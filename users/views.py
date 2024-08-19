@@ -11,7 +11,7 @@ class IndexView(TemplateView):
 
 class SignUpView(generic.CreateView): #新規登録用
     form_class = CustomUserCreationForm #forms.pyで定義しているフォームを使用する
-    success_url = reverse_lazy('list')  # 登録完了後に、備品一覧(equipment/list.html)にリダイレクトする
+    success_url = reverse_lazy('equipment:list')  # 登録完了後に、備品一覧(equipment/list.html)にリダイレクトする
     template_name = 'users/sign_up.html' #テンプレートはusers/sign_up.htmlにする
 
 class CustomUserListView(LoginRequiredMixin,ListView): #ユーザー一覧用
