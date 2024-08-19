@@ -24,6 +24,7 @@ class Equipment(models.Model):
 class StockChange(models.Model):
     class Meta:
       db_table = 'stockchange'
+       #テーブルの名前を'stockchange'にする
 
     equip = models.ForeignKey(Equipment, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
