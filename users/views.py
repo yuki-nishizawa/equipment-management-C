@@ -1,6 +1,6 @@
 from django.urls import reverse_lazy
+from django.shortcuts import get_object_or_404
 from django.views import generic
-from django.shortcuts import render
 from django.views.generic import ListView,TemplateView,UpdateView #基本機能のビューをインポート
 from .forms import CustomUserCreationForm,CustomUserChangeForm      #forms.pyから輸入
 from .models import CustomUser #このビュー内でmodels.pyに定義しているCustomUserモデルを使用する
@@ -34,5 +34,7 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'users/edit.html' #テンプレートはedit.htmlにする
     success_url = reverse_lazy('users:users') #編集が成功したら、ユーザー一覧ページに戻る
 
-    def get_object(self):
-        return self.request.user
+    def get_object(self, queryset=None):
+        # URL から渡された pk を使って、特定のユーザーを取得
+        user_id = self.kwargs.get("pk")
+        return get_object_or_404(CustomUser, pk=user_id)
