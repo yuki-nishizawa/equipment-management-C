@@ -1,3 +1,9 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% block title %}トップページ{% endblock title %}
+{% block content %}
+
 <!--備品一覧ページ-->
 <h2>備品一覧</h2>
 
@@ -37,3 +43,5 @@
         {% endfor %}
     </tbody>
 </table>
+
+{% endblock content %}

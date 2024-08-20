@@ -1,22 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}ユーザー情報の編集{% endblock title %}
+{% block content %}
 
 
+<div class="main"><!--main：白のハコ-->
 
-    <div class="content">
-      <div class="content-title">
+      <div class="title">
         <h2>ユーザー情報の編集</h2>
       </div>
+
+      <div class="content"><!--content:ここから各ページの中身-->
 
 
         <form method="post" enctype="multipart/form-data"><!--フォームがここから始まるよ～！-->
           {% csrf_token %}
           {% if form.errors %}<!--もしフォームの入力内容のどこかにエラーがあったときは-->
 
+          <div class="error"><!--error:エラー内容の中身-->
                 <p><font color="red">入力にエラーがあります。もう一度ご確認ください。</font></p>
                 {{ form.non_field_errors }}
+          </div>
 
           {% endif %}<!--IFここまで-->
-
-
+          
+          <div class="field"><!--field:ユーザー名入力欄-->
               {{ form.username.label_tag }}<!--ユーザーネーム入力欄のラベルを出す！-->
               {{ form.username }}<!--ユーザーネーム入力欄を出す！-->
               {% if form.username.errors %}<!--もしユーザーネームにエラーがあったときは-->
@@ -26,8 +34,9 @@
                   {% endfor %}
                 </ul>
               {% endif %}<!--IFここまで-->
+          </div><!--field:ユーザー名入力欄ここまで-->
 
-
+          <div class="field"><!--field:e-mail入力欄-->
               {{ form.email.label_tag }}<!--e-mail入力欄のラベルを出す！-->
               {{ form.email }}<!--e-mail入力欄を出す！-->
               {% if form.email.errors %}<!--もしe-mailにエラーがあったときは-->
@@ -37,15 +46,26 @@
                   {% endfor %}
                 </ul>
               {% endif %}<!--IFここまで-->
+            </div><!--field:e-mail入力欄ここまで-->
 
-
+            <div class="field"><!--field:スタッフかどうかのチェック欄-->
               {{ form.is_staff.label_tag }}<!--スタッフかどうかのチェック欄のラベルを出す-->
               {{ form.is_staff }}<!--スタッフかどうかのチェック欄を出す-->
+            </div><!--field:スタッフかどうかのチェック欄ここまで-->
 
-
+            <div class="field"><!--field:管理者かどうかのチェック欄-->
               {{ form.is_admin.label_tag }}<!--管理者かどうかのチェック欄のラベルを出す-->
               {{ form.is_admin }}<!--管理者かどうかのチェック欄を出す-->
-
-              <input type="submit" value="保存"> <!--保存ボタン-->
+            </div><!--field:管理者かどうかのチェック欄ここまで-->
+            
+            <div class="field"><!--field:ボタン-->
+              <input type="submit" value="保存" class="button"> <!--保存ボタン-->
+            </div>
 
         </form>
+
+
+      </div><!--content：ここまで各ページの中身-->
+
+</div><!--main：ここまで白のハコ-->
+{% endblock content %}

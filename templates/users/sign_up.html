@@ -1,18 +1,19 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% block title %}トップページ{% endblock title %}
+{% block content %}
+
 <!--新規登録ページ-->
-
 <h2>新規登録</h2>
-
 
   <form method="post">
     {% csrf_token %}
   {% if form.errors %}
 
-
       <p><font color=red>入力にエラーがあります。もう一度ご確認ください。</font></p>
       {{ form.non_field_errors }}
-
   {% endif %}
-
 
 
       {{ form.username.label_tag }}
@@ -25,7 +26,6 @@
       </ul>
       {% endif %}
 
-
       {{ form.email.label_tag  }}
       {{ form.email }}
       {% if form.email.errors %}
@@ -35,7 +35,6 @@
           {% endfor %}
       </ul>
       {% endif %}
-
 
 
       {{ form.password1.label_tag  }}<a>(英数字含む8文字以上)</a>
@@ -49,7 +48,6 @@
       {% endif %}
 
 
-
       {{ form.password2.label_tag  }}
       {{ form.password2 }}
       {% if form.password2.errors %}
@@ -60,15 +58,14 @@
       </ul>
       {% endif %}
 
-
       {{ form.is_staff.label_tag  }}
       {{ form.is_staff }}
 
-
       {{ form.is_admin.label_tag  }}
       {{ form.is_admin }}
-
       
       <input type="submit" value="登録">
 
 </form>
+
+{% endblock content %}

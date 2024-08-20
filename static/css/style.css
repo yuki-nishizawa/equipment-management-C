@@ -8,7 +8,7 @@ body {
 }
 
 header {
-  background-color: #343a40; /* ヘッダーの背景色をダークグレーに設定 */
+  background-color: #6e06f7; /* ヘッダーの背景色をダークグレーに設定 */
   padding: 10px 0; /* ヘッダーの上下の内側余白を10pxに設定 */
 }
 
@@ -48,3 +48,33 @@ header {
   align-items: center; /* 子要素を水平方向に中央揃え */
   border-radius: 10px; /* 四つ角を10px丸く仕上げる */
 }
+
+/* 西澤追加：いろいろ編集しちゃってください！！*/
+.content {
+  margin-bottom: 25px;
+}
+
+.field {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.button {
+  width: 80px; /* ボタンの幅を調整 */
+  height: 40px; /* ボタンの高さを調整 */
+  border-radius: 5px; /* ボタンのまるみ */
+  background-color: #0075FF; /* ボタンの背景色 */
+  text-align: center; /* 文字を中心に */
+  border-width: 0px; /* ボタンのふち */
+  cursor: pointer; /* ボタンを押そうとすると指マークがでる */
+  color: #FFFFFF; /* 文字色 */
+}
+
+.button:hover {
+  background-color: #005CC8; /*カーソルを乗せた時の色*/
+}
+
+.form-design {
+  width:200px;
+}
+/*西澤追加ここまで*/

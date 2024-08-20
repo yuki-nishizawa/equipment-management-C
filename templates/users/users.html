@@ -1,3 +1,11 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% block title %}ユーザー一覧{% endblock title %}
+{% block content %}
+
+<h2>ユーザー一覧</h2>
+
 <table width="90%" cellspacing="10" cellpadding="10">
   <tr align="center">
   <th bgcolor="#d3d3d3">ユーザー名</th>
@@ -6,6 +14,7 @@
   <th bgcolor="#d3d3d3">管理者</th>
   <th bgcolor="#d3d3d3">操作</th>
   </tr>
+
   {% for user in users %}
   <tr align="center">
   <td>{{ user.username }} </td>
@@ -15,3 +24,5 @@
   <td><a href="{% url 'users:edit' user.id %}">編集</a></td>
   </tr>
   {% endfor %}
+
+  {% endblock content %}

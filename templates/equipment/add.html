@@ -1,9 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}トップページ{% endblock title %}
+{% block content %}
 
     <h2>備品登録</h2>
 
     <form method="post" enctype="multipart/form-data"><!--フォームがここから始まります-->
 
       {% csrf_token %}<!--おまじない的なやつです-->
+
     {% if form.errors %}<!--もし入力内容にエラーがあったら-->
 
         <p><font color=red>入力にエラーがあります。もう一度ご確認ください。</font></p><!--エラーメッセージを表示-->
@@ -16,3 +21,5 @@
       <input type="submit" value="登録" class="button"><!--送信のためのボタンです-->
 
     </form><!--フォームはここまでです-->
+
+{% endblock content %}
