@@ -18,6 +18,7 @@ header {
   align-items: center; /* 子要素を垂直方向に中央揃え */
   margin: 0 auto; /* 外側の余白を自動で設定し、中央揃えに */
   padding: 0 20px; /* 左右の内側余白を20pxに設定 */
+  color: #FFFFFF;
 }
 
 .header-content ul {
@@ -94,3 +95,23 @@ header {
 .form-design {
   width: 200px;
 }
+
+/*表示させる画像の調整・8/21西澤追加*/
+.image {
+  max-width: auto; /* 例えば300pxに制限する */
+  height: 300px;
+}
+/*画像がないときに表示させる部分・8/21西澤追加*/
+.no-image {
+  width: 300px;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ccc;
+  font-size: 20px;
+  color: #666;
+  background-color: #f8f8f8;
+}
+
+

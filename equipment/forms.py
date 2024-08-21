@@ -14,3 +14,11 @@ class EquipForm(forms.ModelForm):
          'image': '画像',
          'stock': '在庫数',
       }
+
+class StockUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Equipment
+        fields = ['stock']
+        labels = {
+         'stock': '在庫数',
+      }

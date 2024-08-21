@@ -26,7 +26,7 @@
     <tbody>
         {% for equipment in equipments %}<!--equipmentsという名前は、views.pyのequipment_listで定義されている-->
         <tr>
-            <td>{{ equipment.equip_name }}</td>
+            <td><a href="{% url 'equipment:detail' equipment.pk %}">{{ equipment.equip_name }}</a></td>
             <td>{{ equipment.category }}</td>
             <td>{{ equipment.condition }}</td>
             <td>{{ equipment.place }}</td>
