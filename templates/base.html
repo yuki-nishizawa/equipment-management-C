@@ -24,7 +24,14 @@
           <div class="right">
               <ul>
                 {% if user.is_authenticated %} <!--ログインしているときの表示-->
-                <li><a href="{% url 'users:users' %}">ユーザー一覧</a></li>
+                <li>ようこそ、 {{user.username}}さん
+                  {% if user.is_admin %}<!--ログインユーザーが管理者のときだけ、名前のうしろに(管理者)と表示-->
+                  (管理者)
+                  {% endif %}
+                  {% if user.is_admin %}<!--ログインユーザーが管理者のときだけ、ユーザー一覧を表示-->
+                  <li><a href="{% url 'users:users' %}">ユーザー一覧</a></li>
+                  {% endif %}
+
                 <li><a href="{% url 'logout' %}">ログアウト</a></li>
                 {% else %}<!--ログインしてないときの表示-->
                 <li><a href="{% url 'users:login' %}">ログイン</a></li>
