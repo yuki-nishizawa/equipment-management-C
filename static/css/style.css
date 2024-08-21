@@ -55,26 +55,42 @@ header {
 }
 
 .field {
-  text-align: center;
-  margin-bottom: 10px;
+  text-align: left; /* テキストを左揃えに変更 */
+  display: flex; /* フレックスボックスで横並びに */
+  align-items: center; /* ラベルと入力欄を上下中央に揃える */
+  margin-bottom: 15px;
+}
+
+.field label {
+  margin-right: 10px; /* ラベルと入力欄の間に余白を追加 */
+  min-width: 100px; /* ラベルの最小幅を設定 */
+  width: auto; /* ラベルの幅を自動調整 */
+}
+
+.field input {
+  flex-grow: 1;
+}
+
+.button-container {
+  display: flex; 
+  justify-content: center; 
 }
 
 .button {
-  width: 80px; /* ボタンの幅を調整 */
-  height: 40px; /* ボタンの高さを調整 */
-  border-radius: 5px; /* ボタンのまるみ */
-  background-color: #0075FF; /* ボタンの背景色 */
-  text-align: center; /* 文字を中心に */
-  border-width: 0px; /* ボタンのふち */
-  cursor: pointer; /* ボタンを押そうとすると指マークがでる */
-  color: #FFFFFF; /* 文字色 */
+  width: 33.33%; /* ボタンの幅 */
+  height: 40px; /* ボタンの高さ */
+  border-radius: 5px; /* ボタンの角丸 */
+  background-color: #3484b9; /* ボタンの背景色 */
+  text-align: center; /* テキストを中央揃え */
+  border-width: 0px; /* ボーダーなし */
+  cursor: pointer; /* マウスオーバー時に指アイコン */
+  color: #FFFFFF;
 }
 
 .button:hover {
-  background-color: #005CC8; /*カーソルを乗せた時の色*/
+  background-color: #005CC8; /* マウスオーバー時の背景色 */
 }
 
 .form-design {
-  width:200px;
+  width: 200px;
 }
-/*西澤追加ここまで*/

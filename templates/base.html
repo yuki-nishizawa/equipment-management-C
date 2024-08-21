@@ -1,10 +1,11 @@
 
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>{% block title %}{% endblock title %}</title>
+  <title>{% block title %}{% endblock title %}</title><!--ページのタイトルは、各ページで設定する-->
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
@@ -26,15 +27,15 @@
                 <li><a href="{% url 'users:users' %}">ユーザー一覧</a></li>
                 <li><a href="{% url 'logout' %}">ログアウト</a></li>
                 {% else %}<!--ログインしてないときの表示-->
-                <li><a href="{% url 'users:register' %}">新規登録</a></li>
                 <li><a href="{% url 'users:login' %}">ログイン</a></li>
+                <li><a href="{% url 'users:register' %}">登録</a></li>
                 {% endif %}
               </ul>
           </div>
       </div>
   </header>
     <div class="main">
-  {% block content %}{% endblock content %}
+  {% block content %}{% endblock content %}<!--各ページで設定したコンテンツを表示させる-->
     </div>
 </body>
 </html>
