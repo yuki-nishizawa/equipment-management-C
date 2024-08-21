@@ -5,6 +5,8 @@ from django.views.generic import ListView,TemplateView,UpdateView #基本機能�
 from .forms import CustomUserCreationForm,CustomUserChangeForm      #forms.pyから輸入
 from .models import CustomUser #このビュー内でmodels.pyに定義しているCustomUserモデルを使用する
 from django.contrib.auth.mixins import LoginRequiredMixin #ログインしていないと見れないようにするためのヤツ
+from django.http import HttpResponseForbidden#アクセスを禁止するためのヤツ
+
 
 class IndexView(TemplateView):
     template_name = 'users/index.html' #テンプレートはusers/index.htmlにする
@@ -24,6 +26,15 @@ class CustomUserListView(LoginRequiredMixin,ListView): #ユーザー一覧用
 
     def get_queryset(self):
         return CustomUser.objects.order_by('-registration_date') #データを取得する。そのときに、登録日(registration_date)で並び替える。
+    
+    #管理者以外にユーザー一覧へのアクセスを許可しない
+    def dispatch(self, request, *args, **kwargs):#管理者以外にユーザー一覧へのアクセスを許可しない
+    # ログインユーザーのis_adminがTrueかどうかをチェック
+        if not request.user.is_admin:
+            return HttpResponseForbidden("このページにアクセスする権限がありません。")
+        return super().dispatch(request, *args, **kwargs)
+    
+
 
 class UserUpdateView(LoginRequiredMixin, UpdateView):
     #ユーザー情報を編集(アップデート）するビューの名前をUserUpdateViewとする
