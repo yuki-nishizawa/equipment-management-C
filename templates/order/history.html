@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}発注履歴{% endblock title %}
+{% block content %}
+
+
+        <h2>発注履歴</h2>
+
+
+        <table cellspacing="10" cellpadding="10">
+          <tr align="center">
+          <th>発注日</th>
+          <th>備品名</th>
+          <th>数量</th>
+          <th>ステータス</th>
+          <th>承認者</th>
+          </tr>
+          {% for order in orders %}
+          <tr align="center">
+          <td>{{ order.order_date }}</a> </td>
+          <td><a href="{% url 'equipment:detail' order.equip.pk %}">{{ order.equip.equip_name }}</a> </td>
+          <td>{{ order.quantity }} </td>
+          <td>
+            {% if order.approval_status == "承認待ち" %}
+            <span style="color: red;"><b>{{ order.approval_status }}</b></span>
+            {% elif order.approval_status == "承認済み" %}
+            <span style="color: green;"><b>{{ order.approval_status }}</b></span>
+            {% else %}
+            {{ order.approval_status }}
+            {% endif %}
+          </td>
+          <td>
+            {% if order.approval_status == "承認待ち" %}
+            <span>－</span>
+            {% elif order.approval_status == "承認済み" %}
+            {{ order.approval_user.username }}
+            {% else %}
+            <span>－</span>
+            {% endif %}
+          </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="5">発注履歴はありません</td>
+          </tr>
+          {% endfor %}
+        </table>
+      
+{% endblock content %}

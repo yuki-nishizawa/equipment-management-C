@@ -58,7 +58,7 @@
           <h2>在庫数変更履歴 <small>※最新5件を表示</small></h2>
           <table>
             <thead>
-              <tr>
+              <tr align="center">
                 <th>変更日時</th>
                 <th>変更前の在庫数</th>
                 <th>変更後の在庫数</th>
@@ -67,7 +67,7 @@
             </thead>
             <tbody>
               {% for change in stock_changes %}
-              <tr>
+              <tr align="center">
                 <td>{{ change.changed_date }}</td>
                 <td>{{ change.previous_stock }}</td>
                 <td>{{ change.new_stock }}</td>

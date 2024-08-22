@@ -15,7 +15,7 @@
               <ul>
                 {% if user.is_authenticated %} <!--ログインしているときの表示-->
                 <li><a href="{% url 'equipment:list' %}">備品一覧</a></li>
-                <li>発注履歴</li>
+                <li><a href="{% url 'order:history' %}">発注履歴</a></li>
                 {% else %}<!--ログインしてないときの表示-->
                 <li><a href="{% url 'users:index' %}">ホーム</a></li>
                 {% endif %}
@@ -32,7 +32,7 @@
                   <li><a href="{% url 'users:users' %}">ユーザー一覧</a></li>
                   {% endif %}
 
-                <li><a href="{% url 'logout' %}">ログアウト</a></li>
+                <li><a href="{% url 'users:logout' %}">ログアウト</a></li>
                 {% else %}<!--ログインしてないときの表示-->
                 <li><a href="{% url 'users:login' %}">ログイン</a></li>
                 <li><a href="{% url 'users:register' %}">登録</a></li>
