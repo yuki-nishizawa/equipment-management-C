@@ -1,3 +1,23 @@
+
+/******************************************** 
+ リセット用
+*********************************************/
+* {
+  box-sizing: border-box;
+}
+html,
+body,
+ul,
+li,
+h1,
+h2,
+p,
+div {
+  margin: 0;
+  list-style: none;
+  padding: 0;
+}
+
 /* 全体レイアウト */
 body {
   font-family: Arial, sans-serif; /* フォントをArialに設定し、Arialがない場合は他のsans-serif系のフォントを使用 */
@@ -8,7 +28,7 @@ body {
 }
 
 header {
-  background-color: #6e06f7; /* ヘッダーの背景色をダークグレーに設定 */
+  background-color: #984ff9; /* ヘッダーの背景色をダークグレーに設定 */
   padding: 10px 0; /* ヘッダーの上下の内側余白を10pxに設定 */
 }
 
@@ -41,13 +61,17 @@ header {
 .main {  /* ここにはメインコンテンツのスタイルを追加します */
   background-color: white; /* 背景色を白に設定 */
   width: 75%; /* 幅を75%に設定 */
-  margin: 25px  auto; /* 外側の余白を自動で設定し、中央揃えに */
-  padding: 0; /* 内側の余白をゼロに設定 */
+  margin: 15px  auto; /* 外側の余白を自動で設定し、中央揃えに */
+  padding: 15px; /* 内側の余白をゼロに設定 */
   display: flex; /* フレックスボックスを使用して子要素を配置 */
   flex-direction: column; /* 子要素を縦方向に並べる */
   justify-content: center; /* 子要素を垂直方向に中央揃え */
   align-items: center; /* 子要素を水平方向に中央揃え */
   border-radius: 10px; /* 四つ角を10px丸く仕上げる */
+}
+
+.title {
+  margin-bottom: 15px;
 }
 
 /* 西澤追加：いろいろ編集しちゃってください！！*/
@@ -56,10 +80,21 @@ header {
 }
 
 .field {
-  text-align: left; /* テキストを左揃えに変更 */
-  display: flex; /* フレックスボックスで横並びに */
-  align-items: center; /* ラベルと入力欄を上下中央に揃える */
+  text-align: center;
+  display: auto;
   margin-bottom: 15px;
+}
+
+.field-error{
+  text-align: center;
+  display: auto;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  padding: 10px;
+  font-weight: 600;
+  color: whitesmoke;
+  background-color: red;
+  border-radius: 15px;
 }
 
 .field label {
@@ -74,13 +109,15 @@ header {
 
 .button-container {
   display: flex; 
-  justify-content: center; 
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 20px;
 }
 
 .button {
-  width: 70px; /* ボタンの幅 */
+  width: 100px; /* ボタンの幅 */
   height: 40px; /* ボタンの高さ */
-  border-radius: 5px; /* ボタンの角丸 */
+  border-radius: 50px; /* ボタンの角丸 */
   background-color: #3484b9; /* ボタンの背景色 */
   text-align: center; /* テキストを中央揃え */
   border-width: 0px; /* ボーダーなし */
@@ -92,15 +129,12 @@ header {
   background-color: #005CC8; /* マウスオーバー時の背景色 */
 }
 
-.form-design {
-  width: 200px;
-}
-
 /*表示させる画像の調整・8/21西澤追加*/
 .image {
   max-width: auto; /* 例えば300pxに制限する */
   height: 300px;
 }
+
 /*画像がないときに表示させる部分・8/21西澤追加*/
 .no-image {
   width: 300px;
@@ -114,4 +148,16 @@ header {
   background-color: #f8f8f8;
 }
 
+/* ［※この項目は必須です。］ */
+.field-info {
+  text-align: center;
+  margin-left: 10px;
+  font-size: 14px;
+  font-weight:1000;
+  color: rgb(139, 138, 138);
+  margin-bottom: 20px;
+}
 
+.field-info:first-of-type {
+  margin-bottom: 5px; /* 最初のフィールド説明の下に少し余白を追加 */
+}
