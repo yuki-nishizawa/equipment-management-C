@@ -2,16 +2,18 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.urls import reverse_lazy
 from .models import Equipment,StockChange
 from django.contrib.auth.mixins import LoginRequiredMixin #ログインしてないと見れないようにするやつ
-from django.views.generic import CreateView,DetailView
+from django.contrib.auth.decorators import login_required
+from django.views.generic import CreateView,DetailView,UpdateView,DeleteView
 from .forms import EquipForm,StockUpdateForm
 from order.forms import OrderForm
 from order.models import Order
+from django.http import HttpResponseForbidden #アクセスを禁止するためのヤツ
 
 #備品管理一覧
+@login_required#ログインしていないと見れないようにするデコレータを追加
 def equipment_list(request):
     equipments = Equipment.objects.all()
-    return render(request, 'equipment/list.html', {'equipments': equipments})#equipment_list.htmlをlist.htmlに修正
-
+    return render(request, 'equipment/list.html', {'equipments': equipments})#equipment_list.htmlをlist.htmlに修正 #テンプレート上で、データをequipmentsという名前で呼び出す
 
 
 #備品追加ページ
@@ -35,10 +37,10 @@ class EquipDetailView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         equip = context['equip']
         #context['image_url'] = equip.image.url if equip.image else '/static/images/no_image.jpg'# 画像URLが空の場合、デフォルト画像URLを設定：別方法で実装したため不要！一応残しておく
-        context['stock_update_form'] = StockUpdateForm(instance=equip) #在庫数更新のフォームが使えるようになる
-        context['stock_changes'] = StockChange.objects.filter(equip=equip).order_by('-changed_date')[:5]
-        context['order_form'] = OrderForm() #発注数更新
-        context['orders'] = Order.objects.filter(equip=equip).order_by('-order_date')[:5]
+        context['stock_update_form'] = StockUpdateForm(instance=equip) #在庫数更新のフォームが使えるようになる、instance=equipは、今ビューで処理しているequipのデータを初期設定として入れておく、の意味
+        context['stock_changes'] = StockChange.objects.filter(equip=equip).order_by('-changed_date')[:5]#StockChangeモデルのデータが使えるようになる
+        context['order_form'] = OrderForm() #発注数更新フォームが使えるようになる、
+        context['orders'] = Order.objects.filter(equip=equip).order_by('-order_date')[:5]#Orderモデルのデータが使えるようになる
         return context
 
     def post(self, request, *args, **kwargs):
@@ -84,3 +86,31 @@ class EquipDetailView(LoginRequiredMixin, DetailView):
 
     def get_success_url(self):
         return reverse_lazy('equipment:detail', kwargs={'pk': self.object.pk})
+
+
+#備品編集ページ
+class EquipUpdateView(LoginRequiredMixin, UpdateView):
+    model = Equipment
+    form_class = EquipForm
+    template_name = 'equipment/edit.html'
+    
+    def get_success_url(self):
+        return reverse_lazy('equipment:detail', kwargs={'pk': self.object.pk})
+    #管理者以外に備品編集ページへのアクセスを許可しない
+    def dispatch(self, request, *args, **kwargs):#管理者以外に備品編集ページへのアクセスを許可しない
+    # ログインユーザーのis_adminがTrueかどうかをチェック
+        if not request.user.is_admin:
+            return HttpResponseForbidden("編集権限がありません。")
+        return super().dispatch(request, *args, **kwargs)
+
+
+#備品削除
+class EquipDeleteView(LoginRequiredMixin, DeleteView): #アクセスがきたら削除するだけなのでテンプレートの設定はなし
+    model = Equipment
+    success_url = reverse_lazy('equipment:list')
+
+    def dispatch(self, request, *args, **kwargs):#管理者以外に削除機能へのアクセスを許可しない
+    # ログインユーザーのis_adminがTrueかどうかをチェック
+        if not request.user.is_admin:
+            return HttpResponseForbidden("削除権限がありません。")
+        return super().dispatch(request, *args, **kwargs)

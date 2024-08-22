@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}備品編集{% endblock title %}
+{% block content %}
+
+{% comment %} このページは、<add.html>とまったく同じ内容で大丈夫です！ {% endcomment %}
+
+
+    <h2>備品編集
+    </h2>
+
+    <form method="post" enctype="multipart/form-data"><!--フォームがここから始まります-->
+
+      {% csrf_token %}<!--おまじない的なやつです-->
+
+    {% if form.errors %}<!--もし入力内容にエラーがあったら-->
+
+        <p><font color=red>入力にエラーがあります。もう一度ご確認ください。</font></p><!--エラーメッセージを表示-->
+        {{ form.non_field_errors }}
+
+    {% endif %}
+
+    {{ form.as_p }}<!--forms.pyで定義したフォームの中身を一括表示(項目ごと個別表示にしたほうがいいかも？)-->
+
+      <input type="submit" value="編集" class="button"><!--送信のためのボタンです-->
+
+    </form><!--フォームはここまでです-->
+
+{% endblock content %}

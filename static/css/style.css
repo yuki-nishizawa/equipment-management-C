@@ -78,7 +78,7 @@ header {
 }
 
 .button {
-  width: 33.33%; /* ボタンの幅 */
+  width: 70px; /* ボタンの幅 */
   height: 40px; /* ボタンの高さ */
   border-radius: 5px; /* ボタンの角丸 */
   background-color: #3484b9; /* ボタンの背景色 */
