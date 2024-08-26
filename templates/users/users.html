@@ -1,28 +1,44 @@
-
 {% extends "base.html" %}
 {% load static %}
 {% block title %}ユーザー一覧{% endblock title %}
 {% block content %}
-
-<h2>ユーザー一覧</h2>
-
-<table cellspacing="10" cellpadding="10">
-  <tr align="center">
-  <th>ユーザー名</th>
-  <th>メールアドレス</th>
-  <th>スタッフ</th>
-  <th>管理者</th>
-  <th>操作</th>
-  </tr>
-
-  {% for user in users %}
-  <tr align="center">
-  <td>{{ user.username }} </td>
-  <td>{{ user.email }} </td>
-  <td>{{ user.is_staff }} </td>
-  <td>{{ user.is_admin }}</td>
-  <td><a href="{% url 'users:edit' user.id %}">編集</a></td>
-  </tr>
-  {% endfor %}
-
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ユーザー一覧</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main>
+      <li><a class="active">ユーザー一覧</a></li> <!-- ヘッダーから分離 -->
+        <table>
+            <thead><!-- 項目を表示 -->
+              <tr>
+                    <th>ユーザー名</th>
+                    <th>メールアドレス</th>
+                    <th>スタッフ</th>
+                    <th>管理者</th>
+                    <th>ユーザー情報の編集</th>
+                </tr>
+            </thead>
+            <tbody>
+              {% comment %} ユーザー一覧からユーザー情報を取得 {% endcomment %}
+              {% for user in users %}
+              <tr align="center">
+              <td>{{ user.username }} </td>
+              <td>{{ user.email }} </td>
+              <td>{{ user.is_staff }} </td>
+              <td>{{ user.is_admin }}</td>
+              <td><a class="edit-button" href="{% url 'users:edit' user.id %}">編集する</a></td>
+                </tr>
+                {% endfor %}
+                <!-- 必要に応じて行を追加 -->
+                 
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>
   {% endblock content %}
