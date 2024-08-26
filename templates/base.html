@@ -1,6 +1,5 @@
 
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -24,14 +23,14 @@
           <div class="right">
               <ul>
                 {% if user.is_authenticated %} <!--ログインしているときの表示-->
-                <li>ようこそ、 {{user.username}}さん
+                        <li>
+            ようこそ、<a class="user-username" href="{% url 'users:users' %}"> {{ user.username }}</a>さん<!--ユーザー名を押下すると名マイページに飛ぶ※URL部分にに作成した新URLを追加-->
                   {% if user.is_admin %}<!--ログインユーザーが管理者のときだけ、名前のうしろに(管理者)と表示-->
                   (管理者)
                   {% endif %}
                   {% if user.is_admin %}<!--ログインユーザーが管理者のときだけ、ユーザー一覧を表示-->
                   <li><a href="{% url 'users:users' %}">ユーザー一覧</a></li>
                   {% endif %}
-
                 <li><a href="{% url 'users:logout' %}">ログアウト</a></li>
                 {% else %}<!--ログインしてないときの表示-->
                 <li><a href="{% url 'users:login' %}">ログイン</a></li>
