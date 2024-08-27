@@ -184,7 +184,7 @@ nav ul li a {
   font-size: 18px;
 }
 /* ユーザー一覧タイトルのスタイル */
-main li a.active {
+.active {
   color: #000; 
   background-color: transparent;
   font-weight: bold;
@@ -201,7 +201,7 @@ main {
   display: flex;
   flex-direction: column; 
   align-items: center; /* 中央揃え */
-  padding: 20px; /* 内側の余白を設定 */
+  padding: 10px; /* 内側の余白を設定 */
 }
 h1 {
   font-size: 24px;
@@ -213,8 +213,8 @@ table {
   max-width: 1200px; /* 最大幅を設定 */
   margin: 20px auto; /* 上下の外側の余白を20px、左右の外側の余白を自動で設定して中央に配置 */
   border-collapse: collapse; /* ボーダーの重なりを解消 */
-  margin: 0 auto; /* 自動で中央配置 */
-  margin-top: 10px;
+  border: 1px solid #ddd; /* テーブルの境界線 */
+  table-layout: auto; /* 列幅を自動調整 */
 }
 /* ユーザー一覧:ヘッダーの設定 */
 thead th {
@@ -230,15 +230,15 @@ th {
   padding: 12px;
   border: 1px solid #ddd;
 }
-/* ユーザー一覧：ユーザー名、メールアドレスは左寄せにする */
-td:nth-child(1),
-td:nth-child(2) {
+/* ユーザー一覧：ユーザー名、メールアドレスは左寄せにする ※ユーザー一覧のみに適用*/
+.userlist td:nth-child(1),
+.userlist td:nth-child(2) {
     text-align: left;
 }
-/* ユーザー一覧：スタッフ、管理者、ユーザー情報の編集は中央寄せにする */
-td:nth-child(3),
-td:nth-child(4),
-td:nth-child(5) {
+/* ユーザー一覧：スタッフ、管理者、ユーザー情報の編集は中央寄せにする ※ユーザー一覧のみに適用*/
+.userlist td:nth-child(3),
+.userlist td:nth-child(4),
+.userlist td:nth-child(5) {
     text-align: center;
 }
 /* ユーザー一覧：テーブルセルの基本設定 */
@@ -247,15 +247,15 @@ td {
   border: 1px solid #ddd; /* 項目境に罫線 */
 }
 /* ユーザー一覧：ユーザー名の列幅を広げる */
-th:nth-child(1) {
+.userlist th:nth-child(1) {
   width: 300px;
 }
 /* ユーザー一覧：メールアドレスの列幅指定 */
-th:nth-child(2) {
+.userlist th:nth-child(2) {
   width: 500px;
 }
 /* ユーザー一覧：スタッフ列、管理者列、操作列の幅をそれぞれ指定 */
-th:nth-child(3), th:nth-child(4), th:nth-child(5) {
+.userlist th:nth-child(3),.userlist th:nth-child(4), .userlist th:nth-child(5) {
   width: 150px;
 }
 /* ユーザ情報のテーブル（内側） */
@@ -266,7 +266,6 @@ tbody td {
 }
 tbody tr:nth-child(even) {
   background-color: #f9f9f9;
-  
 }
 tbody td a {
   color: #007BFF;
@@ -291,3 +290,140 @@ tbody td a:hover {
 .edit-button:hover {
   background-color: #bbb;  /* ホバー時の背景色編集ボタンのスタイル） */
 }
+  /* 備品追加のリンクを左寄せにする */
+  .add-item-container {
+    display: flex; /* フレックスボックスを使用してレイアウトを制御 */
+    justify-content: flex-start; /* 左寄せにする */
+    margin-bottom: 10px; /* 下に少し余白を追加 */
+  }
+  /* 備品追加ボタンのスタイル */
+  .add-item-button {
+    background-color: #6a0dad; /* ボタンの背景色 */
+    color: white; /* ボタンの文字色 */
+    padding: 10px 20px; /* ボタン内の余白（上下、左右） */
+    border-radius: 25px; /* ボタンの角丸 */
+    text-decoration: none; /* 下線を消す */
+    font-weight: bold; /* ボタンの文字を太字に */
+    text-align: center; /* ボタン内のテキストを中央揃え */
+    font-size: 16px; /* 文字サイズ */
+    transition: background-color 0.3s ease; /* ホバー時の背景色の変化にアニメーションを追加 */
+  }
+  /* ホバー時の背景色変更 */
+  .add-item-button:hover {
+    background-color: #7b1fa2;
+  }
+  
+  /* 以下はユーザー管理画面の設定 */
+  .field-info {
+    text-align: center;
+    margin-left: 10px;
+    font-size: 14px;
+    font-weight: 1000;
+    color: rgb(139, 138, 138);
+    margin-bottom: 20px;
+  }
+  .field-info:first-of-type {
+    margin-bottom: 5px; /* 最初のフィールド説明の下に少し余白を追加 */
+  }
+  /* 備品一覧 */
+  .item-active {
+    color: #000; 
+    background-color: transparent;
+    font-weight: bold;
+    text-decoration: none;
+    letter-spacing: 6px;  /* 文字の間隔を空ける */
+    word-spacing: 6px;  /* 単語の間隔を空ける */
+    font-size: 30px;  /* 文字の大きさを変更（適宜調整） */
+    display: block;
+    text-align: center;  /* 中央揃え */
+    margin: 0 auto;
+    width: fit-content;  /* 要素の幅を内容に合わせる */
+  }
+  .table-container {
+    overflow-x: auto; /* 横方向のスクロールを有効にする */
+    width: 100%; /* 親要素の幅に合わせる */
+  }
+  .item-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .item-list img {
+    max-width: 100%; /* 画像の最大幅を100%に設定して画面に合わせる */
+    height: auto; /* 画像の高さを自動で設定 */
+    border: 1px solid #ddd; /* 画像に境界線を追加 */
+    border-radius: 10px; /* 画像の角を丸くする */
+  }
+  .item-list table {
+    width: 100%; /* テーブルの幅を100%に設定 */
+    max-width: 1200px; /* 最大幅を1200pxに設定 */
+    margin: 20px auto; /* 上下の外側の余白を20px、左右の外側の余白を自動で設定して中央に配置 */
+    border-collapse: collapse; /* ボーダーの重なりを解消 */
+  }
+  .item-list th, .item-list td {
+    padding: 10px;
+    border: 1px solid #ddd;
+  }
+  .item-list th {
+    background-color: #f2f2f2;
+    text-align: center;
+  }
+  .item-list td {
+    text-align: center;
+  }
+  .item-list th:nth-child(1),
+  .item-list td:nth-child(1) {
+    width: 150px; /* 備品名の幅 */
+  }
+  .item-list th:nth-child(2),
+  .item-list td:nth-child(2) {
+    width: 80px; /* 画像列の幅 */
+  }
+  .item-list th:nth-child(3),
+  .item-list td:nth-child(3) {
+    width: 80px; /* カテゴリ列の幅 */
+  }
+  .item-list th:nth-child(4),
+  .item-list td:nth-child(4) {
+    width: 100px; /* 状態列の幅 */
+  }
+  .item-list th:nth-child(5),
+  .item-list td:nth-child(5) {
+    width: 130px; /* 説明列の幅 */
+  }
+  .item-list th:nth-child(8),
+  .item-list td:nth-child(8),
+  .item-list th:nth-child(9),
+  .item-list td:nth-child(9) {
+    width: 150px; /* 作成日と更新日 */
+  }
+  .add-item-container {
+    display: block; /* コンテナが全幅を持つようにする */
+    width: 100%; /* 親要素の全幅を取る */
+    text-align: left; /* テキストを右寄せにする */
+    margin-bottom: 10px; /* 下にスペースを追加する */
+  }
+  .description {
+    text-align: left;/* 説明文を左寄せ */
+  }
+  /* 検索バー */
+  .search-bar {
+    margin-bottom: 20px;
+  }
+  /* 検索ボックスのスタイルを調整 */
+  #searchInput {
+    display: block;
+    margin: 0 auto 10px 0; /* 左寄せで、下に余白を追加 */
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    width: 100%; /* 必要に応じて調整 */
+    max-width: 400px; /* 検索ボックスの最大幅 */
+  }
+  .search-bar input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  

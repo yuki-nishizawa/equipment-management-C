@@ -1,40 +1,47 @@
-
 {% extends "base.html" %}
 {% load static %}
 {% block title %}トップページ{% endblock title %}
 {% block content %}
+<!-- 備品一覧ページ -->
+<a class="item-active">備品一覧</a></li> <!-- ヘッダーから分離 -->
 
-<!--備品一覧ページ-->
-<h2>備品一覧</h2>
+<main class="item-list">
+<div class="add-item-container">
+    <a href="{% url 'equipment:add' %}" class="add-item-button">備品を追加</a>
+</div>
+<!-- 検索ボックス -->
+<input type="text" id="searchInput" placeholder="キーワードで検索する..." onkeyup="searchTable()">
 
-<a href="{% url 'equipment:add' %}">備品を追加</a>
-
-<table>
+<table id="itemTable" class="equipment-table">
     <thead>
         <tr align="center">
             <th>備品名</th>
+            <th>画像</th>
             <th>カテゴリ</th>
             <th>状態</th>
             <th>設置場所</th>
             <th>説明</th>
-            <th>画像</th>
             <th>在庫数</th>
             <th>作成日</th>
             <th>更新日</th>
         </tr>
     </thead>
     <tbody>
-        {% for equipment in equipments %}<!--equipmentsという名前は、views.pyのequipment_listで定義されている-->
+        {% for equipment in equipments %}
         <tr align="center">
             <td><a href="{% url 'equipment:detail' equipment.pk %}">{{ equipment.equip_name }}</a></td>
+            <td>
+                <a href="{% url 'equipment:detail' equipment.pk %}">
+                    <img src="{{ equipment.image.url }}" alt="{{ equipment.equip_name }}" style="width: 100px; height: auto;">
+                </a>
+            </td>
             <td>{{ equipment.category }}</td>
             <td>{{ equipment.condition }}</td>
             <td>{{ equipment.place }}</td>
-            <td>{{ equipment.text }}</td>
-            <td>{{ equipment.image }}</td>
+            <td class="description">{{ equipment.text }}</td> <!-- クラスを追加 -->
             <td>{{ equipment.stock }}</td>
-            <td>{{ equipment.created_at }}</td>
-            <td>{{ equipment.updated_at }}</td>
+            <td>{{ equipment.created_at|date:"Y/m/d H:i" }}</td>
+            <td>{{ equipment.updated_at|date:"Y/m/d H:i" }}</td>
         </tr>
         {% empty %}
         <tr align="center">
@@ -43,5 +50,24 @@
         {% endfor %}
     </tbody>
 </table>
+</main>
 
+<script>
+    function searchTable() {
+        let input = document.getElementById("searchInput").value.toLowerCase();
+        let table = document.getElementById("itemTable");
+        let rows = table.getElementsByTagName("tr");
+        for (let i = 1; i < rows.length; i++) {
+            let cells = rows[i].getElementsByTagName("td");
+            let found = false;
+            for (let j = 0; j < cells.length; j++) {
+                if (cells[j].innerText.toLowerCase().indexOf(input) > -1) {
+                    found = true;
+                    break;
+                }
+            }
+            rows[i].style.display = found ? "" : "none";
+        }
+    }
+</script>
 {% endblock content %}

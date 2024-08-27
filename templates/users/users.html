@@ -2,17 +2,9 @@
 {% load static %}
 {% block title %}ユーザー一覧{% endblock title %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ユーザー一覧</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <main>
-      <li><a class="active">ユーザー一覧</a></li> <!-- ヘッダーから分離 -->
+    
+    <a class="active">ユーザー一覧</a> <!-- ヘッダーから分離 -->
+    <main class="userlist">
         <table>
             <thead><!-- 項目を表示 -->
               <tr>
@@ -39,6 +31,4 @@
             </tbody>
         </table>
     </main>
-</body>
-</html>
   {% endblock content %}
