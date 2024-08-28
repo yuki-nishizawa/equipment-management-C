@@ -8,7 +8,7 @@
         <h2>ユーザー情報の編集</h2>
       </div>
 
-      <div class="content"><!--content:ここから各ページの中身-->
+      {% comment %} <div class="content"><!--content:ここから各ページの中身--> {% endcomment %}
 
 
         <form method="post" enctype="multipart/form-data"><!--フォームがここから始まるよ～！-->
@@ -46,12 +46,12 @@
               {% endif %}<!--IFここまで-->
             </div><!--field:e-mail入力欄ここまで-->
 
-            <div class="field"><!--field:スタッフかどうかのチェック欄-->
+            <div class="fieldstaff"><!--field:スタッフかどうかのチェック欄-->
               {{ form.is_staff.label_tag }}<!--スタッフかどうかのチェック欄のラベルを出す-->
               {{ form.is_staff }}<!--スタッフかどうかのチェック欄を出す-->
             </div><!--field:スタッフかどうかのチェック欄ここまで-->
 
-            <div class="field"><!--field:管理者かどうかのチェック欄-->
+            <div class="fieldstaff"><!--field:管理者かどうかのチェック欄-->
               {{ form.is_admin.label_tag }}<!--管理者かどうかのチェック欄のラベルを出す-->
               {{ form.is_admin }}<!--管理者かどうかのチェック欄を出す-->
             </div><!--field:管理者かどうかのチェック欄ここまで-->
@@ -63,6 +63,6 @@
         </form>
 
 
-      </div><!--content：ここまで各ページの中身-->
+      {% comment %} </div><!--content：ここまで各ページの中身--> {% endcomment %}
 
 {% endblock content %}

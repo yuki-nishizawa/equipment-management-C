@@ -20,54 +20,54 @@ div {
 
 /* 全体レイアウト */
 body {
-  font-family: Arial, sans-serif; /* フォントをArialに設定し、Arialがない場合は他のsans-serif系のフォントを使用 */
-  background-color: #f5f5f5; /* 背景色を薄い灰色に設定 */
-  width: 100%; /* 幅を100%に設定 */
-  margin: 0; /* 外側の余白をゼロに設定 */
-  padding: 0; /* 内側の余白をゼロに設定 */
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  width: 100%; 
+  margin: 0; 
+  padding: 0;
 }
 
 header {
-  background-color: #984ff9; /* ヘッダーの背景色を変更 */
-  padding: 10px 0; /* ヘッダーの上下の内側余白を10pxに設定 */
+  background-color: #984ff9; 
+  padding: 10px 0; 
 }
 
 .header-content {
-  display: flex; /* フレックスボックスを使用して子要素を配置 */
-  justify-content: space-between; /* 子要素を左右に均等に配置 */
-  align-items: center; /* 子要素を垂直方向に中央揃え */
-  margin: 0 auto; /* 外側の余白を自動で設定し、中央揃えに */
-  padding: 0 20px; /* 左右の内側余白を20pxに設定 */
+  display: flex; 
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  padding: 0 20px;
   color: #FFFFFF;
 }
 
 .header-content ul {
-  list-style: none; /* リストマーカーを非表示に */
-  margin: 0; /* 外側の余白をゼロに設定 */
-  padding: 0; /* 内側の余白をゼロに設定 */
-  display: flex; /* フレックスボックスを使用してリストアイテムを横並びに */
+  list-style: none;
+  margin: 0; 
+  padding: 0;
+  display: flex;
 }
 
 .header-content ul li {
-  margin: 0 15px; /* 左右の外側余白を15pxに設定 */
+  margin: 0 15px;
 }
 
 .header-content ul li a {
-  color: white; /* リンクテキストの色を白に設定 */
-  text-decoration: none; /* テキストの下線を非表示に */
-  font-size: 16px; /* フォントサイズを16pxに設定 */
+  color: white;
+  text-decoration: none;
+  font-size: 16px; 
 }
 
 .main {  
   background-color: white;
-  width: 95%; /* 画面に対して */
-  margin: 15px  auto; /* 外側の余白を自動で設定し、中央揃えに */
-  padding: 15px; /* 内側の余白をゼロに設定 */
+  width: 95%;
+  margin: 15px auto; 
+  padding: 15px; 
   display: flex;
   flex-direction: column; 
   justify-content: center; 
   align-items: center; 
-  border-radius: 10px; /* 四つ角を10px丸く仕上げる */
+  border-radius: 10px;
 }
 
 .title {
@@ -81,17 +81,36 @@ header {
 /* 西澤追加：いろいろ編集しちゃってください！！*/
 .content {
   margin-bottom: 25px;
+  width: 100%; /* 必要に応じて調整 */
+  max-width: 1200px; /* 必要に応じて最大幅を設定 */
+  text-align: center;
 }
 
 .field {
-  text-align: center;
+  text-align: left; /* 左詰めに設定 */
   display: auto;
   margin-bottom: 15px;
+}
+.fieldstaff label,
+.field label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.field input, .field select, .field textarea {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.fieldstaff {
+    margin: 25px auto;
 }
 
 .field-error{
   text-align: center;
-  display: auto;
   margin-top: 20px;
   margin-bottom: 15px;
   padding: 10px;
@@ -119,23 +138,23 @@ header {
 }
 
 .button {
-  width: 100px; /* ボタンの幅 */
-  height: 40px; /* ボタンの高さ */
-  border-radius: 50px; /* ボタンの角丸 */
-  background-color: #3484b9; /* ボタンの背景色 */
-  text-align: center; /* テキストを中央揃え */
-  border-width: 0px; /* ボーダーなし */
-  cursor: pointer; /* マウスオーバー時に指アイコン */
+  width: 100px;
+  height: 40px;
+  border-radius: 50px;
+  background-color: #3484b9;
+  text-align: center;
+  border-width: 0px;
+  cursor: pointer;
   color: #FFFFFF;
 }
 
 .button:hover {
-  background-color: #005CC8; /* マウスオーバー時の背景色 */
+  background-color: #005CC8;
 }
 
 /*表示させる画像の調整・8/21西澤追加*/
 .image {
-  max-width: auto; /* 例えば300pxに制限する */
+  max-width: auto;
   height: 300px;
 }
 

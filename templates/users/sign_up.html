@@ -3,12 +3,10 @@
 {% load static %}
 {% block title %}トップページ{% endblock title %}
 {% block content %}
-
 <!--新規登録ページ-->
 <div class="title">
     <h2>ユーザー新規登録</h2>
 </div>
-
 <form method="post">
     {% csrf_token %}
     {% if form.errors %}
@@ -17,7 +15,6 @@
             {{ form.non_field_errors }}
         </div>
     {% endif %}
-
     <div class="field">
         {% if form.username.errors %}
         <ul class="errorlist">
@@ -26,14 +23,14 @@
             {% endfor %}
         </ul>
             {% endif %}
+    </div>
+    <div class="field">
         {{ form.username.label_tag }}
         {{ form.username }}
     </div>
-
     <div class="field-info">
         <p>※この項目は必須です。半角アルファベット、半角数字、@/./+/-/_ で150文字以下にしてください。</p>
     </div>
-
     <div class="field">
         {% if form.email.errors %}
         <ul class="errorlist">
@@ -45,7 +42,6 @@
         {{ form.email.label_tag }}
         {{ form.email }}
     </div>
-
     <div class="field">
         {% if form.password1.errors %}
         <ul class="errorlist">
@@ -57,7 +53,6 @@
         {{ form.password1.label_tag }}<a>(英数字含む8文字以上)</a>
         {{ form.password1 }}
     </div>
-
     <div class="field">
         {% if form.password2.errors %}
         <ul class="errorlist">
@@ -69,25 +64,25 @@
         {{ form.password2.label_tag }}
         {{ form.password2 }}
     </div>
-
     <div class="field-info">
         <p>あなたの他の個人情報と似ているパスワードにはできません。
             <br>パスワードは最低 8 文字以上必要です。
             <br>よく使われるパスワードにはできません。
             <br>数字だけのパスワードにはできません。
+            <br> 
+            <br> 
         </p>
     </div>
-
-    <div class="field">
+    <center>
+    <div class="fieldstaff">
         {{ form.is_staff.label_tag }}
         {{ form.is_staff }}
     </div>
-
-    <div class="field">
+    <div class="fieldstaff">
         {{ form.is_admin.label_tag }}
         {{ form.is_admin }}
     </div>
-
+    </center>
     <div class="button-container">
         <input type="submit" value="登録" class="button">
     </div>

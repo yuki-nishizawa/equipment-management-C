@@ -1,25 +1,55 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}トップページ{% endblock title %}
+{% block title %}備品登録{% endblock title %}
 {% block content %}
 
-    <h2>備品登録</h2>
+<div class="main">
+    <div class="title">
+        <h2>備品登録</h2>
+    </div>
 
-    <form method="post" enctype="multipart/form-data"><!--フォームがここから始まります-->
-
-      {% csrf_token %}<!--おまじない的なやつです-->
-
-    {% if form.errors %}<!--もし入力内容にエラーがあったら-->
-
-        <p><font color=red>入力にエラーがあります。もう一度ご確認ください。</font></p><!--エラーメッセージを表示-->
-        {{ form.non_field_errors }}
-
-    {% endif %}
-
-    {{ form.as_p }}<!--forms.pyで定義したフォームの中身を一括表示(項目ごと個別表示にしたほうがいいかも？)-->
-
-      <input type="submit" value="登録" class="button"><!--送信のためのボタンです-->
-
-    </form><!--フォームはここまでです-->
-
+    <div class="content">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% if form.errors %}
+            <div class="field-error">
+                <p>入力にエラーがあります。もう一度ご確認ください。</p>
+                {{ form.non_field_errors }}
+            </div>
+            {% endif %}
+            
+            <div class="field">
+                <label for="{{ form.equip_name.id_for_label }}">名前</label>
+                {{ form.equip_name }}
+            </div>
+            <div class="field">
+                <label for="{{ form.category.id_for_label }}">カテゴリ</label>
+                {{ form.category }}
+            </div>
+            <div class="field">
+                <label for="{{ form.condition.id_for_label }}">状態</label>
+                {{ form.condition }}
+            </div>
+            <div class="field">
+                <label for="{{ form.place.id_for_label }}">設置場所</label>
+                {{ form.place }}
+            </div>
+            <div class="field">
+                <label for="{{ form.text.id_for_label }}">説明</label>
+                {{ form.text }}
+            </div>
+            <div class="field">
+                <label for="{{ form.image.id_for_label }}">画像</label>
+                {{ form.image }}
+            </div>
+            <div class="field">
+                <label for="{{ form.stock.id_for_label }}">在庫数</label>
+                {{ form.stock }}
+            </div>
+            <div class="button-container">
+                <input type="submit" value="登録" class="button">
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock content %}

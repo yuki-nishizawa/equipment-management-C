@@ -1,7 +1,6 @@
-
 {% extends "base.html" %}
 {% load static %}
-{% block title %}トップページ{% endblock title %}
+{% block title %}ログイン{% endblock title %}
 {% block content %}
 
 <!--ログインページ-->
@@ -10,35 +9,34 @@
 </div>
 
 <form method="post">
-  {% csrf_token %}
-  <div class="field">
-      <label for="{{ form.username.id_for_label }}">ユーザー名：</label>
-      {{ form.username }}
-      {% if form.username.errors %}
-      <ul class="errorlist">
-          {% for error in form.username.errors %}
-          <li><font color="red">{{ error }}</font></li>
-          {% endfor %}
-      </ul>
-      {% endif %}
-  </div>
-  <div class="field">
-      <label for="{{ form.password.id_for_label }}">{{ form.password.label }}：</label>
-      {{ form.password }}
-      {% if form.password.errors %}
-      <ul class="errorlist">
-          {% for error in form.password.errors %}
-          <li><font color="red">{{ error }}</font></li>
-          {% endfor %}
-      </ul>
-      {% endif %}
-  </div>
-  <div class="button-container">
-      <input type="submit" value="ログイン" class="button">
-  </div>
+    {% csrf_token %}
+    <div class="field">
+        <label for="{{ form.username.id_for_label }}">ユーザー名：</label>
+        {{ form.username }}
+        {% if form.username.errors %}
+        <ul class="errorlist">
+            {% for error in form.username.errors %}
+            <li><font color="red">{{ error }}</font></li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+
+    <div class="field">
+        <label for="{{ form.password.id_for_label }}">{{ form.password.label }}：</label>
+        {{ form.password }}
+        {% if form.password.errors %}
+        <ul class="errorlist">
+            {% for error in form.password.errors %}
+            <li><font color="red">{{ error }}</font></li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+
+    <div class="button-container">
+        <input type="submit" value="ログイン" class="button">
+    </div>
 </form>
-
 <p>アカウントをお持ちでないですか？登録は<a href="{% url 'users:register' %}">こちら.</a></p>
-
 {% endblock content %}
-
