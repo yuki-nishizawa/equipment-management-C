@@ -374,6 +374,7 @@ tbody td a:hover {
   .item-list th:nth-child(1),
   .item-list td:nth-child(1) {
     width: 150px; /* 備品名の幅 */
+    text-align: left;
   }
   .item-list th:nth-child(2),
   .item-list td:nth-child(2) {
@@ -390,6 +391,10 @@ tbody td a:hover {
   .item-list th:nth-child(5),
   .item-list td:nth-child(5) {
     width: 130px; /* 説明列の幅 */
+  }
+  .item-list th:nth-child(6),
+  .item-list td:nth-child(6) {
+    text-align: left;
   }
   .item-list th:nth-child(8),
   .item-list td:nth-child(8),
