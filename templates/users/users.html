@@ -1,34 +1,88 @@
+
 {% extends "base.html" %}
 {% load static %}
 {% block title %}ユーザー一覧{% endblock title %}
 {% block content %}
-    
-    <a class="active">ユーザー一覧</a> <!-- ヘッダーから分離 -->
-    <main class="userlist">
-        <table>
-            <thead><!-- 項目を表示 -->
-              <tr>
-                    <th>ユーザー名</th>
-                    <th>メールアドレス</th>
-                    <th>スタッフ</th>
-                    <th>管理者</th>
-                    <th>ユーザー情報の編集</th>
-                </tr>
-            </thead>
-            <tbody>
-              {% comment %} ユーザー一覧からユーザー情報を取得 {% endcomment %}
-              {% for user in users %}
-              <tr align="center">
-              <td>{{ user.username }} </td>
-              <td>{{ user.email }} </td>
-              <td>{{ user.is_staff }} </td>
-              <td>{{ user.is_admin }}</td>
-              <td><a class="edit-button" href="{% url 'users:edit' user.id %}">編集する</a></td>
-                </tr>
-                {% endfor %}
-                <!-- 必要に応じて行を追加 -->
-                 
-            </tbody>
-        </table>
-    </main>
-  {% endblock content %}
+<a class="active">ユーザー一覧</a> <!-- ヘッダーから分離 -->
+<main class="userlist">
+  <!-- フォーム要素でラップ -->
+  <form id="searchForm" onsubmit="searchTable(); return false;">
+    <!-- 検索ボックス、ドロップダウンメニュー、検索ボタン -->
+    <div class="search-container">
+      <select id="searchCategory" class="search-category">
+        <option value="all">すべて</option>
+        <option value="username">ユーザー名</option>
+        <option value="email">メールアドレス</option>
+        <option value="staff">スタッフ</option>
+        <option value="admin">管理者</option>
+      </select>
+      <input type="text" id="searchInput" class="user-list-search-box" placeholder="キーワードで検索する...">
+      <button id="searchButton" class="search-button">検索</button>
+    </div>
+  </form>
+  <table id="userTable">
+    <thead><!-- 項目を表示 -->
+      <tr>
+        <th>ユーザー名</th>
+        <th>メールアドレス</th>
+        <th>スタッフ</th>
+        <th>管理者</th>
+        <th>ユーザー情報の編集</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% comment %} ユーザー一覧からユーザー情報を取得 {% endcomment %}
+      {% for user in users %}
+      <tr align="center">
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.is_staff }}</td>
+        <td>{{ user.is_admin }}</td>
+        <td><a class="edit-button" href="{% url 'users:edit' user.id %}">編集する</a></td>
+      </tr>
+      {% empty %}
+      <tr align="center">
+        <td colspan="5">ユーザーが見つかりませんでした。</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</main>
+<script>
+  document.getElementById('searchButton').addEventListener('click', function() {
+    searchTable();
+  });
+  document.getElementById('searchForm').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault(); // フォームの送信を防ぐ
+      searchTable();
+    }
+  });
+  function searchTable() {
+    let input = document.getElementById("searchInput").value.toLowerCase();
+    let category = document.getElementById("searchCategory").value;
+    let table = document.getElementById("userTable");
+    let rows = table.getElementsByTagName("tr");
+    for (let i = 1; i < rows.length; i++) {
+      let cells = rows[i].getElementsByTagName("td");
+      let found = false;
+      for (let j = 0; j < cells.length; j++) {
+        if (category === 'all' || 
+            (category === 'username' && j === 0) || 
+            (category === 'email' && j === 1) || 
+            (category === 'staff' && j === 2) || 
+            (category === 'admin' && j === 3)) {
+          if (cells[j]) {
+            let txtValue = cells[j].textContent || cells[j].innerText;
+            if (txtValue.toLowerCase().indexOf(input) > -1) {
+              found = true;
+              break;
+            }
+          }
+        }
+      }
+      rows[i].style.display = found ? "" : "none";
+    }
+  }
+</script>
+{% endblock content %}

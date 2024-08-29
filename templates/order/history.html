@@ -1,49 +1,125 @@
+
 {% extends "base.html" %}
 {% load static %}
 {% block title %}発注履歴{% endblock title %}
 {% block content %}
-
-
-        <h2>発注履歴</h2>
-
-
-        <table cellspacing="10" cellpadding="10">
-          <tr align="center">
-          <th>発注日</th>
-          <th>備品名</th>
-          <th>数量</th>
-          <th>ステータス</th>
-          <th>承認者</th>
-          </tr>
-          {% for order in orders %}
-          <tr align="center">
-          <td>{{ order.order_date }}</a> </td>
-          <td><a href="{% url 'equipment:detail' order.equip.pk %}">{{ order.equip.equip_name }}</a> </td>
-          <td>{{ order.quantity }} </td>
-          <td>
-            {% if order.approval_status == "承認待ち" %}
-            <span style="color: red;"><b>{{ order.approval_status }}</b></span>
-            {% elif order.approval_status == "承認済み" %}
-            <span style="color: green;"><b>{{ order.approval_status }}</b></span>
-            {% else %}
-            {{ order.approval_status }}
-            {% endif %}
-          </td>
-          <td>
-            {% if order.approval_status == "承認待ち" %}
-            <span>－</span>
-            {% elif order.approval_status == "承認済み" %}
-            {{ order.approval_user.username }}
-            {% else %}
-            <span>－</span>
-            {% endif %}
-          </td>
-          </tr>
-          {% empty %}
-          <tr align="center">
-            <td colspan="5">発注履歴はありません</td>
-          </tr>
-          {% endfor %}
-        </table>
-      
+<h2 class="order-history-title">発注履歴</h2><!-- ヘッダーから分離 -->
+<!-- フォーム要素でラップ -->
+<form id="searchForm" onsubmit="searchTable(); return false;">
+  <!-- 検索ボックス、ドロップダウンメニュー、検索ボタン -->
+  <div class="search-container">
+    <select id="searchCategory" class="search-category">
+      <option value="all">すべて</option>
+      <option value="equip_name">備品名</option>
+      <option value="quantity">数量</option>
+      <option value="status">ステータス</option>
+      <option value="order_date">承認依頼日</option>
+      <option value="approval_date">承認日</option>
+      <option value="approver">承認者</option>
+      <option value="comment">承認コメント</option>
+    </select>
+    <input type="text" id="searchInput" class="order-search-box" placeholder="キーワードで検索する...">
+    <button id="searchButton" class="search-button">検索</button>
+  </div>
+</form>
+<table class="order-history-table" cellspacing="10" cellpadding="10">
+  <thead>
+    <tr class="order-history-header" align="center">
+      <th class="order-history-th">備品名</th>
+      <th class="order-history-th">数量</th>
+      <th class="order-history-th">ステータス</th>
+      <th class="order-history-th">承認依頼日</th>
+      <th class="order-history-th">承認日</th>
+      <th class="order-history-th">承認者</th>
+      <th class="order-history-th">承認コメント</th> <!-- 新しい列 -->
+    </tr>
+  </thead>
+  <tbody>
+    {% for order in orders %}
+    <tr class="order-history-row" align="center">
+      <td class="order-history-equip">
+        <a href="{% url 'equipment:detail' order.equip.pk %}">{{ order.equip.equip_name }}</a>
+      </td>
+      <td class="order-history-quantity">{{ order.quantity }}</td>
+      <td class="order-history-status">
+        {% if order.approval_status == "承認待ち" %}
+        <span class="status-pending"><b>{{ order.approval_status }}</b></span>
+        {% elif order.approval_status == "承認済み" %}
+        <span class="status-approved"><b>{{ order.approval_status }}</b></span>
+        {% else %}
+        {{ order.approval_status }}
+        {% endif %}
+      </td>
+      <td class="order-history-date">{{ order.order_date }}</td>
+      <td class="order-history-approval-date">
+        {% if order.approval_status == "承認済み" %}
+        {{ order.approval_date }}
+        {% else %}
+        <span>－</span>
+        {% endif %}
+      </td>
+      <td class="order-history-approver">
+        {% if order.approval_status == "承認済み" %}
+        {{ order.approval_user.username }}
+        {% else %}
+        <span>－</span>
+        {% endif %}
+      </td>
+      <td class="order-history-comment">
+        {% if order.approval_status == "承認済み" %}
+        {{ order.approval_comment }}<!--承認者コメント機能未実装-->
+        <span>機能実装予定</span>        <!--コメントがなかった時の表示-->
+        {% else %}
+        <span>－</span>
+        {% endif %}
+      </td> <!-- 新しいセル -->
+    </tr>
+    {% empty %}
+    <tr class="order-history-empty" align="center">
+      <td colspan="7">発注履歴はありません</td> <!-- colspanを7に変更 -->
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<script>
+  document.getElementById('searchButton').addEventListener('click', function() {
+    searchTable();
+  });
+  document.getElementById('searchForm').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault(); // フォームの送信を防ぐ
+      searchTable();
+    }
+  });
+  function searchTable() {
+    var input, filter, table, tr, td, i, j, txtValue, category;
+    input = document.getElementById('searchInput');
+    filter = input.value.toUpperCase();
+    table = document.querySelector('.order-history-table');
+    tr = table.getElementsByTagName('tr');
+    category = document.getElementById('searchCategory').value;
+    for (i = 1; i < tr.length; i++) {
+      tr[i].style.display = 'none';
+      td = tr[i].getElementsByTagName('td');
+      for (j = 0; j < td.length; j++) {
+        if (category === 'all' || 
+            (category === 'equip_name' && j === 0) ||
+            (category === 'quantity' && j === 1) ||
+            (category === 'status' && j === 2) ||
+            (category === 'order_date' && j === 3) ||
+            (category === 'approval_date' && j === 4) ||
+            (category === 'approver' && j === 5) ||
+            (category === 'comment' && j === 6)) {
+          if (td[j]) {
+            txtValue = td[j].textContent || td[j].innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              tr[i].style.display = '';
+              break;
+            }
+          }
+        }
+      }
+    }
+  }
+</script>
 {% endblock content %}
