@@ -1,5 +1,5 @@
 from django.urls import reverse_lazy
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404,redirect
 from django.views import generic
 from django.views.generic import ListView,TemplateView,UpdateView #基本機能のビューをインポート
 from .forms import CustomUserCreationForm,CustomUserChangeForm      #forms.pyから輸入
@@ -10,6 +10,11 @@ from django.http import HttpResponseForbidden#アクセスを禁止するため�
 
 class IndexView(TemplateView):
     template_name = 'users/index.html' #テンプレートはusers/index.htmlにする
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('equipment:list')
+        return super().dispatch(request, *args, **kwargs)
 
 class SignUpView(generic.CreateView): #新規登録用
     form_class = CustomUserCreationForm #forms.pyで定義しているフォームを使用する
