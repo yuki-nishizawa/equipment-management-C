@@ -43,7 +43,9 @@
   <form method="post">
    {% csrf_token %}
    {{ stock_update_form.as_p }}
+   <center>
    <input type="submit" value="保存" class="save-button">
+   </center>
   </form>
 {% endif %}
 <h2>在庫数変更履歴 <small>※最新5件を表示</small></h2>
@@ -75,7 +77,9 @@
 <form method="post">
   {% csrf_token %}
   {{ order_form.as_p }}
+  <center>
 <input type="submit" value="発注依頼" class="order-button">
+  </center>
 </form>
 {% if user.is_admin %}
   <h2>発注依頼の承認 <small>※最新5件を表示</small></h2>
