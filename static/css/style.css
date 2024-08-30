@@ -188,16 +188,23 @@ header {
   font-size: 16px; /* フォントサイズを統一 */
   margin-bottom: 10px; /* 各アイテムの間に余白を追加 */
 }
+/* 画像のスタイル */
 .image {
-  max-width: auto;
-  height: 300px;
+  display: inline-block;
+  width: auto; /* アスペクト比を維持しながら高さを自動調整 */
+  max-height: 300px; /* 例えば300pxに制限する */
+  border: 1px solid #ccc;
 }
-/*画像がないときに表示させる部分・8/21西澤追加*/
+
+/* 画像がないときに表示させる部分 */
 .image-box {
   width: 300px; 
   height: 300px; 
-  position: relative; /* 必要に応じて追加 */
-
+  position: relative; 
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .no-image {
