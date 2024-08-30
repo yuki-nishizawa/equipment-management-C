@@ -49,7 +49,13 @@
             <td><a href="{% url 'equipment:detail' equipment.pk %}">{{ equipment.equip_name }}</a></td>
             <td>
                 <a href="{% url 'equipment:detail' equipment.pk %}">
-                    <img src="{{ equipment.image.url }}" alt="{{ equipment.equip_name }}" style="width: 100px; height: auto;">
+                    {% if equipment.image %}
+                        <img src="{{ equipment.image.url }}" alt="{{ equipment.equip_name }}" class="thumbnail-image" style="width: 100px; height: auto;">
+                    {% else %}
+                        <div class="no-image-list">
+                            <p>NO IMAGE</p>
+                        </div>
+                    {% endif %}
                 </a>
             </td>
             <td>{{ equipment.category }}</td>
@@ -96,5 +102,19 @@
             rows[i].style.display = found ? "" : "none";
         }
     }
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const thumbnailElements = document.querySelectorAll("img.thumbnail-image");
+    thumbnailElements.forEach(function(thumbnail) {
+        thumbnail.onerror = function() {
+            thumbnail.style.display = "none";
+            const noImageListDiv = document.createElement("div");
+            noImageListDiv.className = "no-image-list";
+            noImageListDiv.textContent = "NO IMAGE";
+            thumbnail.parentNode.appendChild(noImageListDiv);
+        }
+    });
+});
 </script>
 {% endblock content %}

@@ -212,6 +212,7 @@ header {
   background-color: #f8f8f8;
 }
 
+
 .table-container {
   width: 100%;
   overflow-x: auto;
@@ -527,6 +528,19 @@ tbody td a:hover {
     margin-bottom: 10px; /* 下にスペースを追加する */
   }
 
+.no-image-list {
+  width: 100px;
+  height: 50px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  color: #666;
+  background-color: #f8f8f8;
+  border-radius: 10px; /* 画像の角を丸くする */
+  display: inline-block;  /* インラインブロック要素にする */
+  text-align: center;
+  line-height: 50px;  /* ボックスの高さに合わせることで、縦方向の中央揃え */
+  vertical-align: middle;
+}
 
 /******************************************** 
  検索システム関連
