@@ -17,6 +17,11 @@ div {
   list-style: none;
   padding: 0;
 }
+h2 {
+  justify-content: center; /* 中央に配置 */
+  margin: 5px;
+  padding: 5px;
+}
 /* 全体レイアウト */
 body {
   font-family: Arial, sans-serif;
@@ -115,26 +120,51 @@ header {
 .field input {
   flex-grow: 1;
 }
-.button-container {
+.button-container { /*add.html［登録］*/
   display: flex; 
   justify-content: center;
   width: 100%;
-  margin-bottom: 20px;
+  margin-top: 50px; /* ボタンの上に50pxのスペースを追加 */
+  margin-bottom: 50px;
+  gap: 10px; /* ボタン間のスペース */
 }
+
 .button {
-  width: 100px;
-  height: 40px;
-  border-radius: 50px;
-  background-color: #3484b9;
-  text-align: center;
-  border-width: 0px;
-  cursor: pointer;
-  color: #FFFFFF;
+  width: 100px;         /* ボタンの幅を100ピクセルに設定 */
+  height: 40px;         /* ボタンの高さを40ピクセルに設定 */
+  border-radius: 50px;  /* ボタンの角を50ピクセルの半径で丸くする設定、これにより丸みのあるボタンが作られます */
+  background-color: #3484b9;  /* ボタンの背景色を青色（#3484b9）に設定 */
+  color: #FFFFFF;       /* ボタン上のテキストの色を白色に設定 */
+  text-align: center;   /* ボタン上のテキストを中央揃えに設定 */
+  border-width: 0px;    /* ボタンの境界線をなくす設定 */
+  justify-content: center; /* 中央に配置 */
+  cursor: pointer;      /* ボタンにマウスカーソルが乗ったとき、ポインター（手の形のカーソル）に変更 */
 }
 .button:hover {
   background-color: #005CC8;
 }
-/*表示させる画像の調整・8/21西澤追加*/
+/* 保存ボタンと発注依頼ボタンのスタイル設定 */
+.save-button, 
+.order-button { /* 保存ボタンと発注依頼ボタンの両方に適用 */
+  background-color: #3484b9; /* 背景色をブルーに設定 */
+  color: white; /* テキストの色を白に設定 */
+  padding: 10px 20px; /* 上下10px、左右20pxの内側余白を設定 */
+  border: none; /* 枠線をなしに設定 */
+  cursor: pointer; /* カーソルをポインタに変更 */
+  border-radius: 20px; /* ボタンの角を丸くする（半径20px） */
+  display: flex; /* フレックスボックスのレイアウトを使用 */
+  justify-content: center; /* 横方向で中央に配置 */
+  align-items: center; /* 縦方向でも中央に配置 */
+  margin-top: 20px;
+  margin-bottom: 20px; /* ボタンの下に20pxの余白を追加 */
+  width: 100%; /* 幅を100%に設定 */
+  flex-wrap: wrap; /* 必要に応じてコンテンツを折り返す */
+}
+/* アイテム詳細 */
+.item-details {
+  font-size: 16px; /* フォントサイズを統一 */
+  margin-bottom: 10px; /* 各アイテムの間に余白を追加 */
+}
 .image {
   max-width: auto;
   height: 300px;
@@ -150,6 +180,12 @@ header {
   font-size: 20px;
   color: #666;
   background-color: #f8f8f8;
+}
+/* テーブルのスタイル */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 20px;
 }
 /* ［※この項目は必須です。］ */
 .field-info {
@@ -200,8 +236,7 @@ main {
   padding: 10px; /* 内側の余白を設定 */
 }
 h1 {
-  font-size: 24px;
-  margin-bottom: 20px;
+  font-size: 2.0em;
 }
 /* ユーザー一覧 */
 table {
@@ -279,16 +314,32 @@ tbody td a:hover {
   display: inline-block;  /* インライン要素として表示 */
   padding: 6px 12px;  /* 内側の余白 */
   border-radius: 20px;  /* 楕円形にするための角の丸み */
-  background-color: #ccc;
-  color: #007BFF;
+  background-color: #999;
   text-decoration: none;  /* 下線を消す */
   font-size: 14px;
   text-align: center;
   border: 1px solid #999;  /* 薄いグレーの枠線*/
+  padding: auto;
+  gap: 110px; /* ボタン間のスペースを調整 */
+}
+.button-group {
+  display: flex;          /* フレックスボックスを使用して横並びにする */
+  gap: 10px;              /* ボタン間のスペースを調整 */
+  align-items: center;    /*ボタンを縦方向の中央に配置 */
 }
 /* 編集ボタンのスタイル */
 .edit-button:hover {
   background-color: #bbb;  /* ホバー時の背景色編集ボタンのスタイル） */
+}
+/* 備品詳細削除ボタン */
+.delete-button {
+  background-color: #FA8072; /* 削除ボタンの背景色 */
+  border-radius: 20px;  /* 角を丸くする */
+  gap: 110px;
+}
+/* 備品詳細削除ボタン */
+.delete-button:hover {
+  background-color: #ff0000; /* ホバー時の背景色（削除ボタン） */
 }
   /* 備品追加のリンクを左寄せにする */
   .add-item-container {
@@ -401,6 +452,11 @@ tbody td a:hover {
   .item-list td:nth-child(5) {
     width: 130px; /* 設置場所の幅 */
   }
+  .item-list th:nth-child(6),
+  .item-list td:nth-child(6) {
+    text-align: left;
+    width: 400px; /* 設置場所の幅 */
+  }
   .item-list th:nth-child(7),
   .item-list td:nth-child(7) {
     width: 80px; /* 在庫数の幅 */
@@ -420,7 +476,14 @@ tbody td a:hover {
   .description {
     text-align: left;/* 説明文を左寄せ */
   }
-/* 検索バーのコンテナ */
+
+  /* 検索バー */
+  .search-bar {
+    margin-bottom: 20px;
+  }
+  
+
+  /* 検索バーのコンテナ */
 .search-container {
   display: flex;
   align-items: center; /* ボックスとボタンの垂直位置を揃える */

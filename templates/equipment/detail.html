@@ -1,8 +1,8 @@
+
 {% extends "base.html" %}
 {% load static %}
 {% block title %}{{ equip.equip_name }}の詳細{% endblock title %}
 {% block content %}
-
 {% comment %} 削除ボタン用追加機能 {% endcomment %}
 <script>
   function confirmDelete() {
@@ -10,130 +10,139 @@
   }
 </script>
 {% comment %} 削除ボタン用追加機能ここまで {% endcomment %}
-
-
-  <h2>{{ equip.equip_name }}</h2><!--備品タイトル-->
-
-
-  {% if user.is_admin %}<!-- 管理者の場合にだけ表示される！ -->
-    <!--備品編集ページへのリンク-->
-    <form action="{% url 'equipment:edit' equip.id %}" method="get">
+<h2>{{ equip.equip_name }}</h2><!--備品タイトル-->
+{% if user.is_admin %}<!-- 管理者の場合にだけ表示される！ -->
+<div class="button-group">
+  <!--備品編集ページへのリンク-->
+  <form action="{% url 'equipment:edit' equip.id %}" method="get">
     {% csrf_token %}
-    <input type="submit" class="button" value="編集">
-    </form>
-    <!--備品削除リンク※ページは変異しない-->
-    <form action="{% url 'equipment:delete' equip.id %}" method="post" onsubmit="return confirmDelete();">
+    <input type="submit" class="button edit-button" value="編集">
+  </form>
+  <!--備品削除リンク※ページは変異しない-->
+  <form action="{% url 'equipment:delete' equip.id %}" method="post" onsubmit="return confirmDelete();">
     {% csrf_token %}
-    <input type="submit" class="button" value="削除">
-    </form>
-  {% endif %}
-
-
-    {% if equip.image %}<!--もし画像がないときは-->
-      <p><img src="{{ equip.image.url }}" alt="NO IMAGE" class="image"></p>
-    {% else %}
-      <div class="no-image">
-        <p>NO IMAGE</p>
-      </div>
-    {% endif %}
-          <p> {{ equip.text }}</p>
-          <p>カテゴリ: {{ equip.category }}</p>
-          <p>状態: {{ equip.condition }}</p>
-          <p>設置場所: {{ equip.place }}</p>
-          <p>在庫数: {{ equip.stock }}</p>
-
-
-          <!--在庫数を変更できるフォームを埋め込む-->
-          {% if user.is_admin %}<!-- 管理者の場合にだけ表示される！ -->
-          <h2>在庫数の変更</h2>
-            <!-- フォームの表示 -->
-            <form method="post">
-             {% csrf_token %}
-             {{ stock_update_form.as_p }}
-             <input type="submit" value="保存" class="button">
-            </form>
+    <input type="submit" class="button delete-button" value="削除">
+  </form>
+</div>
+{% endif %}
+{% if equip.image %}<!--もし画像がないときは-->
+  <p><img src="{{ equip.image.url }}" alt="NO IMAGE" class="image"></p>
+{% else %}
+  <div class="no-image">
+    <p>NO IMAGE</p>
+  </div>
+{% endif %}
+<p>{{ equip.text }}</p>
+<p>カテゴリ: {{ equip.category }}</p>
+<p>状態: {{ equip.condition }}</p>
+<p>設置場所: {{ equip.place }}</p>
+<p>在庫数: {{ equip.stock }}</p>
+{% if user.is_admin %}<!-- 管理者の場合にだけ表示される！ -->
+<h2>在庫数の変更</h2>
+  <!-- フォームの表示 -->
+  <form method="post">
+   {% csrf_token %}
+   {{ stock_update_form.as_p }}
+   <input type="submit" value="保存" class="save-button">
+  </form>
+{% endif %}
+<h2>在庫数変更履歴 <small>※最新5件を表示</small></h2>
+<table>
+  <thead>
+    <tr align="center">
+      <th>変更日時</th>
+      <th>変更前の在庫数</th>
+      <th>変更後の在庫数</th>
+      <th>変更したユーザー</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for change in stock_changes %}
+    <tr align="center">
+      <td>{{ change.changed_date }}</td>
+      <td>{{ change.previous_stock }}</td>
+      <td>{{ change.new_stock }}</td>
+      <td>{{ change.user.username }}</td>
+    </tr>
+    {% empty %}
+    <tr align="center">
+      <td colspan="4">変更履歴はありません</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<h2>発注依頼</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ order_form.as_p }}
+<input type="submit" value="発注依頼" class="order-button">
+</form>
+{% if user.is_admin %}
+  <h2>発注依頼の承認 <small>※最新5件を表示</small></h2>
+  <table>
+    <thead>
+      <tr align="center">
+        <th>発注日</th>
+        <th>発注者</th>
+        <th>発注数</th>
+        <th>承認ステータス</th>
+        <th>承認日時</th> <!-- 新しい列 -->
+        <th>承認者コメント</th> <!-- 新しい列 -->
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+      <tr align="center">
+        <td>{{ order.order_date }}</td>
+        <td>{{ order.user.username }}</td>
+        <td>{{ order.quantity }}</td>
+        <td>
+          {% if order.approval_status == "承認待ち" %}
+          <span class="status-pending"><b>{{ order.approval_status }}</b></span>
+          {% elif order.approval_status == "承認済み" %}
+          <span class="status-approved"><b>{{ order.approval_status }}</b></span>
+          {% else %}
+          {{ order.approval_status }}
           {% endif %}
-
-           <!--在庫の変更履歴を表示する-->
-          <h2>在庫数変更履歴 <small>※最新5件を表示</small></h2>
-          <table>
-            <thead>
-              <tr align="center">
-                <th>変更日時</th>
-                <th>変更前の在庫数</th>
-                <th>変更後の在庫数</th>
-                <th>変更したユーザー</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for change in stock_changes %}
-              <tr align="center">
-                <td>{{ change.changed_date }}</td>
-                <td>{{ change.previous_stock }}</td>
-                <td>{{ change.new_stock }}</td>
-                <td>{{ change.user.username }}</td>
-              </tr>
-              {% empty %}
-              <tr align="center">
-                <td colspan="4">変更履歴はありません</td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-
-          <!--発注を依頼できるフォームを埋め込む-->
-          <h2>発注依頼</h2>
-        <form method="post">
-          {% csrf_token %}
-          {{ order_form.as_p }}
-          <input type="submit" value="発注依頼" class="button">
-        </form>
-
-          <!--発注依頼の履歴を表示＆管理者のみ承認できるフォームを埋め込む-->
-        {% if user.is_admin %}
-          <h2>発注依頼の承認 <small>※最新5件を表示</small></h2>
-        <table>
-          <tr align="center">
-              <th>発注日</th>
-              <th>発注者</th>
-              <th>発注数</th>
-              <th>承認ステータス</th>
-              <th></th>
-          </tr>
-          {% for order in orders %}
-          <tr align="center">
-              <td>{{ order.order_date }}</td>
-              <td>{{ order.user.username }}</td>
-              <td>{{ order.quantity }}</td>
-              <td>
-                {% if order.approval_status == "承認待ち" %}
-                <span style="color: red;"><b>{{ order.approval_status }}</b></span>
-                {% elif order.approval_status == "承認済み" %}
-                <span style="color: green;"><b>{{ order.approval_status }}</b></span>
-                {% else %}
-                {{ order.approval_status }}
-                {% endif %}
-              </td>
-              <td>
-                  {% if order.approval_status != '承認済み' %}
-                  <form method="post">
-                      {% csrf_token %}
-                      <input type="hidden" name="approve_order" value="{{ order.pk }}">
-                      <input type="submit" value="承認する" class="button">
-                  </form>
-                  {% else %}
-                  
-                  {% endif %}
-              </td>
-          </tr>
-          {% empty %}
-          <tr align="center">
-            <td colspan="4">発注依頼はありません</td>
-          </tr>
-          {% endfor %}
+        </td>
+        <td>
+          {% if order.approval_date %}
+          {{ order.approval_date }}<!--承認日時-->
+          {% else %}
+          <span>-</span>
           {% endif %}
-          
-      </table>
-
-      
+        </td> <!-- 新しいセル -->
+        <td>
+          {% if order.approval_comment %}
+          {{ order.approval_comment }}<!--承認者コメント実装予定-->
+          {% else %}
+          <span>実装予定</span>
+          {% endif %}
+        </td> <!-- 新しいセル -->
+        <td>
+          {% if order.approval_status != '承認済み' %}
+          <form method="post" style="display:inline;">
+            {% csrf_token %}
+            <input type="hidden" name="approve_order" value="{{ order.pk }}">
+            <input type="submit" value="承認する" class="button">
+          </form>
+          <form method="post" style="display:inline;">
+            {% csrf_token %}
+            <input type="hidden" name="reject_order" value="{{ order.pk }}">
+            <input type="submit" value="否決する" class="button"><!--否決ボタン実装のみ（機能未実装）-->
+          </form>
+          {% else %}
+          <span>－</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% empty %}
+      <tr align="center">
+        <td colspan="7">発注依頼はありません</td> <!-- colspanを7に変更 -->
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endif %}
 {% endblock content %}
