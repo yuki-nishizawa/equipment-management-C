@@ -16,7 +16,7 @@
   <!--備品編集ページへのリンク-->
   <form action="{% url 'equipment:edit' equip.id %}" method="get">
     {% csrf_token %}
-    <input type="submit" class="button edit-button" value="編集">
+    <input type="submit" class="button" value="編集">
   </form>
   <!--備品削除リンク※ページは変異しない-->
   <form action="{% url 'equipment:delete' equip.id %}" method="post" onsubmit="return confirmDelete();">
@@ -49,7 +49,7 @@
   </form>
 {% endif %}
 <h2>在庫数変更履歴 <small>※最新5件を表示</small></h2>
-<table>
+<table class="detail-table">
   <thead>
     <tr align="center">
       <th>変更日時</th>
@@ -83,7 +83,7 @@
 </form>
 {% if user.is_admin %}
   <h2>発注依頼の承認 <small>※最新5件を表示</small></h2>
-  <table>
+  <table class="detail-table">
     <thead>
       <tr align="center">
         <th>発注日</th>

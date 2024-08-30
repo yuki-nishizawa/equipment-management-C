@@ -17,6 +17,10 @@ div {
   list-style: none;
   padding: 0;
 }
+
+/******************************************** 
+ 全体レイアウト
+*********************************************/
 h2 {
   justify-content: center; /* 中央に配置 */
   margin: 5px;
@@ -34,6 +38,24 @@ header {
   background-color: #984ff9; 
   padding: 10px 0; 
 }
+
+.main {  /*白いハコ*/
+  background-color: white;
+  width: 95%;
+  margin: 15px auto; 
+  padding: 15px; 
+  display: flex;
+  flex-direction: column; 
+  justify-content: center; 
+  align-items: center; 
+  border-radius: 10px;
+}
+.title {/*各ページのタイトル部分*/
+  margin-bottom: 15px;
+}
+/******************************************** 
+ ヘッダー(base.html)
+*********************************************/
 .header-content {
   display: flex; 
   justify-content: space-between;
@@ -56,26 +78,16 @@ header {
   text-decoration: none;
   font-size: 16px; 
 }
-.main {  
-  background-color: white;
-  width: 95%;
-  margin: 15px auto; 
-  padding: 15px; 
-  display: flex;
-  flex-direction: column; 
-  justify-content: center; 
-  align-items: center; 
-  border-radius: 10px;
-}
-.title {
-  margin-bottom: 15px;
-}
 /* baseスタイル、ユーザ名リンクのデザイン※重要なスタイルがある場合は!importantを使用 */
 .user-username {
   text-decoration: underline !important;
   color: #160161 !important;
 }
-/* 西澤追加：いろいろ編集しちゃってください！！*/
+
+/******************************************** 
+ 登録する画面系・フォーム系の設定
+*********************************************/
+
 .content {
   margin-bottom: 25px;
   width: 100%; /* 必要に応じて調整 */
@@ -120,6 +132,11 @@ header {
 .field input {
   flex-grow: 1;
 }
+
+/******************************************** 
+ 共通ボタンの設定・各ページ固有のものはそれぞれのページカテゴリに分類
+*********************************************/
+
 .button-container { /*add.html［登録］*/
   display: flex; 
   justify-content: center;
@@ -143,6 +160,11 @@ header {
 .button:hover {
   background-color: #005CC8;
 }
+
+/******************************************** 
+ 備品詳細画面
+*********************************************/
+
 /* 保存ボタンと発注依頼ボタンのスタイル設定 */
 .save-button, 
 .order-button { /* 保存ボタンと発注依頼ボタンの両方に適用 */
@@ -160,6 +182,7 @@ header {
   width: 100%; /* 幅を100%に設定 */
   flex-wrap: wrap; /* 必要に応じてコンテンツを折り返す */
 }
+
 /* アイテム詳細 */
 .item-details {
   font-size: 16px; /* フォントサイズを統一 */
@@ -181,12 +204,22 @@ header {
   color: #666;
   background-color: #f8f8f8;
 }
-/* テーブルのスタイル */
+
 .table-container {
   width: 100%;
   overflow-x: auto;
   margin-top: 20px;
 }
+
+.detail-table {
+  width: 100%; /* mainテーブルの幅の設定 */
+  max-width: 1200px; /* 最大幅を設定 */
+  margin: 20px auto; /* 上下の外側の余白を20px、左右の外側の余白を自動で設定して中央に配置 */
+  border-collapse: collapse; /* ボーダーの重なりを解消 */
+  border: 1px solid #ddd; /* テーブルの境界線 */
+  table-layout: auto; /* 列幅を自動調整 */
+}
+
 /* ［※この項目は必須です。］ */
 .field-info {
   text-align: center;
@@ -199,7 +232,11 @@ header {
 .field-info:first-of-type {
   margin-bottom: 5px; /* 最初のフィールド説明の下に少し余白を追加 */
 }
-/* 以下遠藤追加_ユーザー一覧画面の編集 */
+
+/******************************************** 
+ ユーザー一覧画面
+*********************************************/
+
 nav ul {
   display: flex;
   justify-content: flex-start;
@@ -314,7 +351,7 @@ tbody td a:hover {
   display: inline-block;  /* インライン要素として表示 */
   padding: 6px 12px;  /* 内側の余白 */
   border-radius: 20px;  /* 楕円形にするための角の丸み */
-  background-color: #999;
+  background-color: #ccc;
   text-decoration: none;  /* 下線を消す */
   font-size: 14px;
   text-align: center;
@@ -364,6 +401,9 @@ tbody td a:hover {
     background-color: #7b1fa2;
   }
   
+/******************************************** 
+ ユーザー管理画面
+*********************************************/
   /* 以下はユーザー管理画面の設定 */
   .field-info {
     text-align: center;
@@ -376,6 +416,11 @@ tbody td a:hover {
   .field-info:first-of-type {
     margin-bottom: 5px; /* 最初のフィールド説明の下に少し余白を追加 */
   }
+
+/******************************************** 
+ 備品一覧画面
+*********************************************/
+
   /* 備品一覧 */
   .item-active {
     color: #000; 
@@ -412,8 +457,8 @@ tbody td a:hover {
     border-collapse: collapse; /* ボーダーの重なりを解消 */
   }
   /* 備品一覧テーブルの横幅設定 */
-.item-list {
-  width: 100%;
+  .item-list {
+    width: 100%;
 }
   .item-list th, .item-list td {
     padding: 10px;
@@ -473,16 +518,17 @@ tbody td a:hover {
     text-align: left; /* テキストを右寄せにする */
     margin-bottom: 10px; /* 下にスペースを追加する */
   }
-  .description {
-    text-align: left;/* 説明文を左寄せ */
-  }
+
+
+/******************************************** 
+ 検索システム関連
+*********************************************/
 
   /* 検索バー */
   .search-bar {
     margin-bottom: 20px;
   }
   
-
   /* 検索バーのコンテナ */
 .search-container {
   display: flex;
@@ -497,6 +543,7 @@ tbody td a:hover {
   font-size: 16px;
   width: 120px;
 }
+
 /* 検索ボタン（共通） */
 .search-button {
   padding: 5px 15px;
@@ -505,13 +552,13 @@ tbody td a:hover {
   width: 80px;
 }
   /* 備品一覧の検索ボックスのスタイルを調整 */
-  .list-search-box{
-    margin-right: 10px; /* 検索ボックスと検索ボタンの間に余白を追加 */
-    padding: 5px;
-    font-size: 16px;
-    box-sizing: border-box; /* パディングとボーダーを含むサイズ計算 */
-    height: 30px; /* ボックスの高さを指定 */
-    margin-top: 35px; /* 検索ボックスの上にスペースを追加 */
+.list-search-box{
+  margin-right: 10px; /* 検索ボックスと検索ボタンの間に余白を追加 */
+  padding: 5px;
+  font-size: 16px;
+  box-sizing: border-box; /* パディングとボーダーを含むサイズ計算 */
+  height: 30px; /* ボックスの高さを指定 */
+  margin-top: 35px; /* 検索ボックスの上にスペースを追加 */
   }
   /* ユーザー一覧の検索ボックスのスタイルを調整 */
 .user-list-search-box {
@@ -532,12 +579,15 @@ tbody td a:hover {
   margin-top: 45px; /* 検索ボックスの上にスペースを追加 */
 }
   .search-bar input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
   }
 
+/******************************************** 
+発注履歴一覧
+*********************************************/
 /* 発注履歴一覧の設定 */
 .order-history-title {
   color: #000; 
@@ -639,35 +689,4 @@ tbody td a:hover {
 .order-history-th:nth-child(6)/* 承認者 */
 {
   width: 150px;
-}
-/* 保存ボタン */
-.save-button {
-  width: 100px;
-  height: 40px;
-  border-radius: 50px;
-  background-color: #28a745; /* 緑色の背景 */
-  text-align: center;
-  border-width: 0px;
-  cursor: pointer;
-  color: #FFFFFF;
-  font-weight: bold;
-  margin-right: 15px; /* ボタン間の余白 */
-}
-.save-button:hover {
-  background-color: #218838; /* ホバー時の色 */
-}
-/* 発注ボタン */
-.order-button {
-  width: 100px;
-  height: 40px;
-  border-radius: 50px;
-  background-color: #ffc107; /* 黄色の背景 */
-  text-align: center;
-  border-width: 0px;
-  cursor: pointer;
-  color: #FFFFFF;
-  font-weight: bold;
-}
-.order-button:hover {
-  background-color: #e0a800; /* ホバー時の色 */
 }
