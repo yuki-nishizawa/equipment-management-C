@@ -193,6 +193,13 @@ header {
   height: 300px;
 }
 /*画像がないときに表示させる部分・8/21西澤追加*/
+.image-box {
+  width: 300px; 
+  height: 300px; 
+  position: relative; /* 必要に応じて追加 */
+
+}
+
 .no-image {
   width: 300px;
   height: 300px;
@@ -363,6 +370,7 @@ tbody td a:hover {
   display: flex;          /* フレックスボックスを使用して横並びにする */
   gap: 10px;              /* ボタン間のスペースを調整 */
   align-items: center;    /*ボタンを縦方向の中央に配置 */
+  margin-bottom: 15px;
 }
 /* 編集ボタンのスタイル */
 .edit-button:hover {

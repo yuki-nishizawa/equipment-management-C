@@ -3,13 +3,30 @@
 {% load static %}
 {% block title %}{{ equip.equip_name }}の詳細{% endblock title %}
 {% block content %}
-{% comment %} 削除ボタン用追加機能 {% endcomment %}
+{% comment %} JavaScriptここから {% endcomment %}
 <script>
   function confirmDelete() {
     return confirm("本当に削除しますか？この操作は元に戻せません。");
   }
 </script>
-{% comment %} 削除ボタン用追加機能ここまで {% endcomment %}
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const imgElement = document.querySelector("img.image");
+    if (imgElement) {
+      imgElement.onerror = function() {
+        // 画像が破損している場合、画像を非表示にし、no-imageクラスを表示
+        imgElement.style.display = "none";
+        const noImageDiv = document.createElement("div");
+        noImageDiv.className = "no-image";
+        noImageDiv.textContent = "NO IMAGE";
+        imgElement.parentNode.appendChild(noImageDiv);
+      }
+    }
+  });
+</script>
+{% comment %} JavaScriptここまで {% endcomment %}
+
+
 <h2>{{ equip.equip_name }}</h2><!--備品タイトル-->
 {% if user.is_admin %}<!-- 管理者の場合にだけ表示される！ -->
 <div class="button-group">
@@ -25,13 +42,21 @@
   </form>
 </div>
 {% endif %}
-{% if equip.image %}<!--もし画像がないときは-->
-  <p><img src="{{ equip.image.url }}" alt="NO IMAGE" class="image"></p>
-{% else %}
-  <div class="no-image">
-    <p>NO IMAGE</p>
-  </div>
+
+
+
+{% if equip.image %}<!--もし画像があるときは-->
+<div class="image-box">
+  <img src="{{ equip.image.url }}" alt="NO IMAGE" class="image">
+</div>
+{% else %}<!--もし画像がないときは-->
+<div class="no-image">
+  <p>NO IMAGE</p>
+</div>
 {% endif %}
+
+
+
 <p>{{ equip.text }}</p>
 <p>カテゴリ: {{ equip.category }}</p>
 <p>状態: {{ equip.condition }}</p>
@@ -134,7 +159,7 @@
           <form method="post" style="display:inline;">
             {% csrf_token %}
             <input type="hidden" name="reject_order" value="{{ order.pk }}">
-            <input type="submit" value="否決する" class="button"><!--否決ボタン実装のみ（機能未実装）-->
+            <input type="submit" value="否決する" class="button delete-button"><!--否決ボタン実装のみ（機能未実装）-->
           </form>
           {% else %}
           <span>－</span>
