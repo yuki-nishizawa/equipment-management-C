@@ -56,5 +56,19 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
         user_id = self.kwargs.get("pk")
         return get_object_or_404(CustomUser, pk=user_id)
     
+    def dispatch(self, request, *args, **kwargs):
+        user_id = self.kwargs.get("pk")
+        user = get_object_or_404(CustomUser, pk=user_id)
+
+        # 管理者の場合は全てのユーザーの編集ページにアクセスできる
+        if request.user.is_admin:
+            return super().dispatch(request, *args, **kwargs)
+        
+        # 管理者でないユーザーは自分のユーザー情報だけ編集できる
+        if request.user != user:
+            return HttpResponseForbidden("このページにアクセスする権限がありません。")
+        
+        return super().dispatch(request, *args, **kwargs)
+    
 class MenuView(LoginRequiredMixin, TemplateView):
     template_name = 'users/menu.html' #テンプレートはusers/menu.htmlにする

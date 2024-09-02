@@ -3,6 +3,11 @@
 {% load static %}
 {% block title %}ユーザー一覧{% endblock title %}
 {% block content %}
+
+<!--Googleからアイコンを取得-->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+
 <a class="active">ユーザー一覧</a> <!-- ヘッダーから分離 -->
 <main class="userlist">
   <!-- フォーム要素でラップ -->
@@ -36,8 +41,32 @@
       <tr align="center">
         <td>{{ user.username }}</td>
         <td>{{ user.email }}</td>
-        <td>{{ user.is_staff }}</td>
-        <td>{{ user.is_admin }}</td>
+        <td>
+          {% if user.is_staff %}
+          <span class="material-symbols-outlined">
+            check_circle
+          </span>
+          {% else %}
+          <span class="material-symbols-outlined">
+            <font color="#CCCCCC">
+            check_indeterminate_small
+            </font>
+          </span>
+          {% endif %}
+        </td>
+        <td>
+          {% if user.is_admin %}
+          <span class="material-symbols-outlined">
+            check_circle
+          </span>
+          {% else %}
+          <span class="material-symbols-outlined">
+            <font color="#CCCCCC">
+            check_indeterminate_small
+            </font>
+          </span>
+          {% endif %}
+        </td>
         <td><a class="edit-button" href="{% url 'users:edit' user.id %}">編集する</a></td>
       </tr>
       {% empty %}
