@@ -147,3 +147,6 @@ SECRET_KEY = env('SECRET_KEY')
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/equipment/'  #←equipment:listが作成され次第、/equipment/に変更！
 
+# 自動ログアウト機能(最終アクセス後1h後にログアウト)
+SESSION_COOKIE_AGE = 60 * 60 #60秒×60分＝1h後に自動ログアウト
+SESSION_SAVE_EVERY_REQUEST = True #ログアウトまでの時間計測の起点を、最終アクセス後にする

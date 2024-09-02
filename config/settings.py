@@ -159,9 +159,13 @@ SECRET_KEY = env('SECRET_KEY')
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/equipment/'  
 
+# 自動ログアウト機能(最終アクセス後1h後にログアウト)
+SESSION_COOKIE_AGE = 60 * 60 #60秒×60分＝1h後に自動ログアウト
+SESSION_SAVE_EVERY_REQUEST = True #ログアウトまでの時間計測の起点を、最終アクセス後にする
+
 
 #マイグレーションがうまくいかないエラーが出たときは以下のコードのコメントアウトを解除してください
-#他に影響が出る可能性があるので、その後は再度コメントアウトしてください
+#他に影響が出る可能性があるので、マイグレ後は再度コメントアウトしてください
 
 # try:
 #    from .local_settings import *
