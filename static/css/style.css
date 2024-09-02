@@ -32,11 +32,7 @@ body {
   background-color: #f5f5f5;
   width: 100%; 
   margin: 0; 
-  padding: 0;
-}
-header {
-  background-color: #984ff9; 
-  padding: 10px 0; 
+  padding-top: 100px;
 }
 
 .main {  /*白いハコ*/
@@ -56,6 +52,21 @@ header {
 /******************************************** 
  ヘッダー(base.html)
 *********************************************/
+header {
+  padding: 15px;
+  background-color: #69c44b; 
+  width: 100%; /* 全幅に広げる */
+  position: fixed; /* スクロールしても固定する */
+  top: 0; /* 上部に固定 */
+  left: 0; /* 左端に固定 */
+  z-index: 1000; /* 画像よりも前に表示させる設定 */
+}
+
+header a {
+  color:#FFFFFF;
+  text-decoration: none;
+}
+
 .header-content {
   display: flex; 
   justify-content: space-between;
@@ -73,17 +84,32 @@ header {
 .header-content ul li {
   margin: 0 15px;
 }
-.header-content ul li a {
-  color: white;
-  text-decoration: none;
-  font-size: 16px; 
+
+.header-content .center { /*備品貸出簿という文字が中心に配置されるように修正*/
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
+
 /* baseスタイル、ユーザ名リンクのデザイン※重要なスタイルがある場合は!importantを使用 */
 .user-username {
   text-decoration: underline !important;
   color: #160161 !important;
 }
 
+/******************************************** 
+ フッター(base.html)
+*********************************************/
+footer {
+  position: fixed; /* フッターを画面下部に固定し、スクロールしても常に表示 */
+  bottom: 0; /* フッターを画面の一番下に配置 */
+  width: 100%; /* フッターの幅を画面いっぱいに設定 */
+  background-color: #69c44b; /* フッターの背景色 */
+  padding: 15px; /* フッターの内側の余白 */
+  text-align: center; /* フッターのテキストを中央揃え */
+  color: white; /* フッターのテキストカラー */
+  font-size: 16px; /* フッターのフォントサイズ */
+}
 /******************************************** 
  登録する画面系・フォーム系の設定
 *********************************************/
@@ -182,6 +208,11 @@ header {
   width: 100%; /* 幅を100%に設定 */
   flex-wrap: wrap; /* 必要に応じてコンテンツを折り返す */
 }
+.save-button:hover,
+.order-button:hover {
+  background-color: #005CC8;
+}
+
 
 /* アイテム詳細 */
 .item-details {
@@ -718,4 +749,22 @@ tbody td a:hover {
 .order-history-th:nth-child(6)/* 承認者 */
 {
   width: 150px;
+}
+
+/******************************************** 
+メニューページ
+*********************************************/
+
+.menu-table {
+  width: auto;
+  table-layout: auto;
+  border-collapse: collapse;
+}
+
+.menu-table td{
+  border-collapse: collapse; /* テーブルセルの間に隙間を作らない */
+  border: none; /* セルの境界線を削除 */
+  padding: 10px;
+  vertical-align: top;
+  text-align: left;
 }

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}メニュー{% endblock title %}
+{% block content %}
+
+  <div class="title">
+    <h2>メニュー</h1>
+  </div>
+  
+  <div class="content">
+    <!--ここからメニュー-->
+    <table class="menu-table">
+      <tr>
+          <td><a href="{% url 'equipment:list' %}">備品一覧</a></td>
+          <td>備品の一覧、詳細を閲覧します。</td>
+      </tr>
+      <tr>
+          <td><a href="{% url 'order:history' %}">発注履歴</a></td>
+          <td>発注履歴の確認、承認を行います。</td>
+      </tr>
+      <tr>
+          <td><a href="{% url 'users:users' %}">ユーザー一覧</a></td>
+          <td>(管理者限定)ユーザーデータの確認、編集を行います。</td>
+      </tr>
+  </table>
+
+  </div>
+
+{% endblock content %}

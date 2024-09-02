@@ -11,9 +11,10 @@ from django.http import HttpResponseForbidden#アクセスを禁止するため�
 class IndexView(TemplateView):
     template_name = 'users/index.html' #テンプレートはusers/index.htmlにする
 
+    #ログインしているときは、TOPページを表示させずにメニューへ飛ぶ
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return redirect('equipment:list')
+            return redirect('users:menu')
         return super().dispatch(request, *args, **kwargs)
 
 class SignUpView(generic.CreateView): #新規登録用
@@ -54,3 +55,6 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
         # URL から渡された pk を使って、特定のユーザーを取得
         user_id = self.kwargs.get("pk")
         return get_object_or_404(CustomUser, pk=user_id)
+    
+class MenuView(LoginRequiredMixin, TemplateView):
+    template_name = 'users/menu.html' #テンプレートはusers/menu.htmlにする
