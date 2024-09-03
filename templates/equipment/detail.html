@@ -3,6 +3,7 @@
 {% load static %}
 {% block title %}{{ equip.equip_name }}の詳細{% endblock title %}
 {% block content %}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 {% comment %} JavaScriptここから {% endcomment %}
 <script>
   function confirmDelete() {
@@ -18,7 +19,13 @@
         imgElement.style.display = "none";
         const noImageDiv = document.createElement("div");
         noImageDiv.className = "no-image";
-        noImageDiv.textContent = "NO IMAGE";
+        noImageDiv.innerHTML = `
+          <span class="material-symbols-outlined">
+            <font color="#CCCCCC" size="20">
+              no_photography
+            </font>
+          </span>
+        `;
         imgElement.parentNode.appendChild(noImageDiv);
       }
     }
@@ -51,7 +58,11 @@
 </div>
 {% else %}<!--もし画像がないときは-->
 <div class="no-image">
-  <p>NO IMAGE</p>
+  <span class="material-symbols-outlined">
+    <font color="#FFFFFF">
+    no_photography
+    </font>
+  </span>
 </div>
 {% endif %}
 

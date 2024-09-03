@@ -3,6 +3,10 @@
 {% load static %}
 {% block title %}発注履歴{% endblock title %}
 {% block content %}
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+
 <h2 class="order-history-title">発注履歴</h2><!-- ヘッダーから分離 -->
 <!-- フォーム要素でラップ -->
 <form id="searchForm" onsubmit="searchTable(); return false;">
@@ -38,7 +42,22 @@
     {% for order in orders %}
     <tr class="order-history-row" align="center">
       <td class="order-history-equip">
-        <a href="{% url 'equipment:detail' order.equip.pk %}">{{ order.equip.equip_name }}</a>
+        <div class="tooltip">
+          <!--備品名を表示＆リンクを貼る-->
+          <a href="{% url 'equipment:detail' order.equip.pk %}">{{ order.equip.equip_name }}</a>
+          <!--ポップアップすると出るやつ-->
+          
+          <span class="tooltiptext">
+          <center>
+            <img src="{{ order.equip.image.url }}" alt="{{ order.equip.equip_name }}" class="tooltip-image">
+          </center>
+          説明　　: {{ order.equip.text }}<br>
+          カテゴリ: {{ order.equip.category }}<br>
+          状態　　: {{ order.equip.condition }}<br>
+          設置場所: {{ order.equip.place }}<br>
+          発注者　: {{ order.user.username}}<br>
+          </span>
+        </div>
       </td>
       <td class="order-history-quantity">{{ order.quantity }}</td>
       <td class="order-history-status">
@@ -122,4 +141,26 @@
     }
   }
 </script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const images = document.querySelectorAll("img.tooltip-image");
+    images.forEach(imgElement => {
+      imgElement.onerror = function() {
+        // 画像が破損している場合、画像を非表示にし、no-imageクラスを表示
+        imgElement.style.display = "none";
+        const noImageDiv = document.createElement("div");
+        noImageDiv.className = "tooltip-noimage";
+        noImageDiv.innerHTML = `
+          <span class="material-symbols-outlined">
+            <font color="#FFFFFF" size="20">
+              no_photography
+            </font>
+          </span>
+        `;
+        imgElement.parentNode.appendChild(noImageDiv);
+      }
+    });
+  });
+</script>
+
 {% endblock content %}

@@ -32,7 +32,7 @@ body {
   background-color: #f5f5f5;
   width: 100%; 
   margin: 0; 
-  padding-top: 100px;
+  padding-top: 70px;
 }
 
 .main {  /*白いハコ*/
@@ -578,16 +578,17 @@ tbody td a:hover {
 
 .no-image-list {
   width: 100px;
-  height: 50px;
+  height: 40px;
   border: 1px solid #ccc;
   font-size: 14px;
   color: #666;
   background-color: #f8f8f8;
-  border-radius: 10px; /* 画像の角を丸くする */
-  display: inline-block;  /* インラインブロック要素にする */
-  text-align: center;
-  line-height: 50px;  /* ボックスの高さに合わせることで、縦方向の中央揃え */
-  vertical-align: middle;
+  border-radius: 10px;
+  display: inline-flex; /* インラインでフレックスボックス */
+  align-items: center; /* 縦方向に中央揃え */
+  justify-content: center; /* 横方向に中央揃え */
+  text-align: center; /* テキストを中央揃え */
+  vertical-align: middle; /* テーブル内での縦方向中央揃え */
 }
 
 /******************************************** 
@@ -760,6 +761,50 @@ tbody td a:hover {
 {
   width: 150px;
 }
+
+/*備品名にカーソルを当てると出るポップアップ*/
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 350px;
+  background-color: #555;
+  color: #fff;
+  text-align: left;
+  border-radius: 6px;
+  padding: 10px;
+  position: absolute;
+  z-index: 1200;
+  bottom: 100%; /* ツールチップを上に表示 */
+  left: 100%;  /* ツールチップを右に表示 */
+  margin-left: -20px; /* 調整して斜めに */
+  margin-bottom: 20px; /* 調整して斜めに */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 0.9;
+}
+
+.tooltip .tooltip-image {
+  width: 80px; /* 画像の幅を調整 */
+  height: auto; /* アスペクト比を保つ */
+  margin-bottom: 5px; /* 画像とテキストの間に余白を追加 */
+  border-radius: 4px; /* 画像の角を丸める（任意） */
+}
+
+.tooltip .tooltip-noimage {
+  width: 80px; /* 画像の幅を調整 */
+  height: auto; /* アスペクト比を保つ */
+  margin-bottom: 5px; /* 画像とテキストの間に余白を追加 */
+  border-radius: 4px; /* 画像の角を丸める（任意） */
+}
+
 
 /******************************************** 
 メニューページ
