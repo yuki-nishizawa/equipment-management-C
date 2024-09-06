@@ -7,41 +7,50 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
 
-<h2 class="order-history-title">発注履歴</h2><!-- ヘッダーから分離 -->
-<!-- フォーム要素でラップ -->
+<h2 class="order-history-title">発注履歴</h2>
 <form id="searchForm" onsubmit="searchTable(); return false;">
-  <!-- 検索ボックス、ドロップダウンメニュー、検索ボタン -->
   <div class="search-container">
     <select id="searchCategory" class="search-category">
       <option value="all">すべて</option>
       <option value="equip_name">備品名</option>
       <option value="quantity">数量</option>
-      <option value="status">ステータス</option>
+      <option value="requester">担当者</option>
       <option value="order_date">承認依頼日</option>
-      <option value="approval_date">承認日</option>
+      <option value="status">ステータス</option>
       <option value="approver">承認者</option>
+      <option value="approval_date">処理日時</option>
       <option value="comment">承認コメント</option>
     </select>
     <input type="text" id="searchInput" class="order-search-box" placeholder="キーワードで検索する...">
     <button id="searchButton" class="search-button">検索</button>
   </div>
 </form>
+<!-- 管理者のみ承認待ちフィルターを表示 -->
+{% if user.is_admin %}
+<div class="filter-container">
+  <button id="toggleFilterButton" class="filter-button">承認待ちのみ表示</button>
+</div>
+{% endif %}
 <table class="order-history-table" cellspacing="10" cellpadding="10">
   <thead>
     <tr class="order-history-header" align="center">
       <th class="order-history-th">備品名</th>
       <th class="order-history-th">数量</th>
-      <th class="order-history-th">ステータス</th>
+      <th class="order-history-th">担当者</th>
       <th class="order-history-th">承認依頼日</th>
-      <th class="order-history-th">承認日</th>
+      <th class="order-history-th">ステータス</th>
       <th class="order-history-th">承認者</th>
-      <th class="order-history-th">承認コメント</th> <!-- 新しい列 -->
+      <th class="order-history-th">処理日時</th>
+      <th class="order-history-th">承認コメント</th>
+      {% if user.is_admin %} <!-- 管理者のみ操作列を表示 -->
+      <th class="order-history-th">操作</th>
+      {% endif %}
     </tr>
   </thead>
   <tbody>
     {% for order in orders %}
     <tr class="order-history-row" align="center">
-      <td class="order-history-equip">
+      <td>
         <div class="tooltip">
           <!--備品名を表示＆リンクを貼る-->
           <a href="{% url 'equipment:detail' order.equip.pk %}">{{ order.equip.equip_name }}</a>
@@ -59,43 +68,65 @@
           </span>
         </div>
       </td>
-      <td class="order-history-quantity">{{ order.quantity }}</td>
-      <td class="order-history-status">
+      <td>{{ order.quantity }}</td>
+      <td>{{ order.user.username }}</td>
+      <td>{{ order.order_date|date:"Y/m/d H:i" }}</td>
+      <td>
         {% if order.approval_status == "承認待ち" %}
         <span class="status-pending"><b>{{ order.approval_status }}</b></span>
         {% elif order.approval_status == "承認済み" %}
         <span class="status-approved"><b>{{ order.approval_status }}</b></span>
+        {% elif order.approval_status == "否決" %}
+        <span class="status-rejected"><b>{{ order.approval_status }}</b></span>
         {% else %}
         {{ order.approval_status }}
         {% endif %}
       </td>
-      <td class="order-history-date">{{ order.order_date }}</td>
-      <td class="order-history-approval-date">
-        {% if order.approval_status == "承認済み" %}
-        {{ order.approval_date }}
-        {% else %}
-        <span>－</span>
-        {% endif %}
-      </td>
-      <td class="order-history-approver">
-        {% if order.approval_status == "承認済み" %}
+      <td>
+        {% if order.approval_status == "承認済み" or order.approval_status == "否決" %}
         {{ order.approval_user.username }}
         {% else %}
         <span>－</span>
         {% endif %}
       </td>
-      <td class="order-history-comment">
-        {% if order.approval_status == "承認済み" %}
-        {{ order.approval_comment }}<!--承認者コメント機能未実装-->
-        <span>機能実装予定</span>        <!--コメントがなかった時の表示-->
+      <td>
+        {% if order.approval_status == "承認済み" or order.approval_status == "否決" %}
+        {{ order.approval_date|date:"Y/m/d H:i"  }}
         {% else %}
         <span>－</span>
         {% endif %}
-      </td> <!-- 新しいセル -->
+      </td>
+      <td>
+        {% if order.approval_comment %}
+        {{ order.approval_comment }}
+        {% else %}
+        <span>－</span>
+        {% endif %}
+      </td>
+      {% if user.is_admin %} <!-- 管理者のみ操作ボタンを表示 -->
+      <td>
+        {% if order.approval_status == '承認待ち' %}
+        <div class="action-buttons">
+          <form method="post" style="display:inline-block;">
+            {% csrf_token %}
+            <input type="hidden" name="approve_order" value="{{ order.pk }}">
+            <input type="submit" value="承認" class="button approve-button">
+          </form>
+          <form method="post" style="display:inline-block;">
+            {% csrf_token %}
+            <input type="hidden" name="reject_order" value="{{ order.pk }}">
+            <input type="submit" value="否決" class="button delete-button">
+          </form>
+        </div>
+        {% else %}
+        <span>－</span>
+        {% endif %}
+      </td>
+      {% endif %}
     </tr>
     {% empty %}
     <tr class="order-history-empty" align="center">
-      <td colspan="7">発注履歴はありません</td> <!-- colspanを7に変更 -->
+      <td colspan="8">発注履歴はありません</td>
     </tr>
     {% endfor %}
   </tbody>
@@ -117,29 +148,34 @@
     table = document.querySelector('.order-history-table');
     tr = table.getElementsByTagName('tr');
     category = document.getElementById('searchCategory').value;
-    for (i = 1; i < tr.length; i++) {
-      tr[i].style.display = 'none';
-      td = tr[i].getElementsByTagName('td');
-      for (j = 0; j < td.length; j++) {
-        if (category === 'all' || 
-            (category === 'equip_name' && j === 0) ||
-            (category === 'quantity' && j === 1) ||
-            (category === 'status' && j === 2) ||
-            (category === 'order_date' && j === 3) ||
-            (category === 'approval_date' && j === 4) ||
-            (category === 'approver' && j === 5) ||
-            (category === 'comment' && j === 6)) {
-          if (td[j]) {
-            txtValue = td[j].textContent || td[j].innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-              tr[i].style.display = '';
-              break;
-            }
+  // テーブルの各行を繰り返し処理
+  for (var i = 1; i < tr.length; i++) {
+    tr[i].style.display = 'none'; // 一旦全ての行を非表示にする
+    var td = tr[i].getElementsByTagName('td'); // 各行のセルを取得
+    // カテゴリに応じた列をチェック
+    for (var j = 0; j < td.length; j++) {
+      if (
+        (category === 'all') || // すべてのカテゴリで検索
+        (category === 'equip_name' && j === 0) || // 備品名
+        (category === 'quantity' && j === 1) || // 数量
+        (category === 'requester' && j === 2) || // 担当者
+        (category === 'order_date' && j === 3) || // 承認依頼日
+        (category === 'status' && j === 4) || // ステータス
+        (category === 'approver' && j === 5) || // 承認者
+        (category === 'approval_date' && j === 6) || // 処理日時
+        (category === 'comment' && j === 7) // 承認コメント
+      ) {
+        if (td[j]) {
+          var txtValue = td[j].textContent || td[j].innerText; // テキストを取得
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = ''; // 一致する行を表示
+            break;
           }
         }
       }
     }
   }
+}
 </script>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
@@ -150,17 +186,55 @@
         imgElement.style.display = "none";
         const noImageDiv = document.createElement("div");
         noImageDiv.className = "tooltip-noimage";
-        noImageDiv.innerHTML = `
+        noImageDiv.innerHTML = 
           <span class="material-symbols-outlined">
             <font color="#FFFFFF" size="20">
               no_photography
             </font>
           </span>
-        `;
+        ;
         imgElement.parentNode.appendChild(noImageDiv);
       }
     });
   });
 </script>
-
+<script>
+  {% if user.is_admin %}
+  var isFiltered = false; // フィルターが適用されているかどうかを保持する変数
+  // ボタンのクリックでフィルターを切り替える
+  document.getElementById('toggleFilterButton').addEventListener('click', function() {
+    if (isFiltered) {
+      clearFilter();
+      this.textContent = '承認待ちのみ表示'; // ボタンのテキストを変更
+    } else {
+      filterPendingOnly();
+      this.textContent = 'フィルター解除'; // ボタンのテキストを変更
+    }
+    isFiltered = !isFiltered; // フィルター状態を切り替える
+  });
+  function filterPendingOnly() {
+    var table, tr, td, i;
+    table = document.querySelector('.order-history-table');
+    tr = table.getElementsByTagName('tr');
+    for (i = 1; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName('td')[4]; // ステータスの列は5番目
+      if (td) {
+        if (td.textContent.trim() === '承認待ち') {
+          tr[i].style.display = ''; // 承認待ちの行を表示
+        } else {
+          tr[i].style.display = 'none'; // 承認待ち以外の行を非表示
+        }
+      }
+    }
+  }
+  function clearFilter() {
+    var table, tr, i;
+    table = document.querySelector('.order-history-table');
+    tr = table.getElementsByTagName('tr');
+    for (i = 1; i < tr.length; i++) {
+      tr[i].style.display = ''; // 全ての行を表示
+    }
+  }
+  {% endif %}
+</script>
 {% endblock content %}

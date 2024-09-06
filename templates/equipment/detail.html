@@ -97,7 +97,7 @@
   <tbody>
     {% for change in stock_changes %}
     <tr align="center">
-      <td>{{ change.changed_date }}</td>
+      <td>{{ change.changed_date|date:"Y/m/d H:i"  }}</td>
       <td>{{ change.previous_stock }}</td>
       <td>{{ change.new_stock }}</td>
       <td>{{ change.user.username }}</td>
@@ -118,71 +118,83 @@
   </center>
 </form>
 {% if user.is_admin %}
-  <h2>発注依頼の承認 <small>※最新5件を表示</small></h2>
-  <table class="detail-table">
-    <thead>
-      <tr align="center">
-        <th>発注日</th>
-        <th>発注者</th>
-        <th>発注数</th>
-        <th>承認ステータス</th>
-        <th>承認日時</th> <!-- 新しい列 -->
-        <th>承認者コメント</th> <!-- 新しい列 -->
-        <th>操作</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for order in orders %}
-      <tr align="center">
-        <td>{{ order.order_date }}</td>
-        <td>{{ order.user.username }}</td>
-        <td>{{ order.quantity }}</td>
-        <td>
-          {% if order.approval_status == "承認待ち" %}
-          <span class="status-pending"><b>{{ order.approval_status }}</b></span>
-          {% elif order.approval_status == "承認済み" %}
-          <span class="status-approved"><b>{{ order.approval_status }}</b></span>
-          {% else %}
-          {{ order.approval_status }}
-          {% endif %}
-        </td>
-        <td>
-          {% if order.approval_date %}
-          {{ order.approval_date }}<!--承認日時-->
-          {% else %}
-          <span>-</span>
-          {% endif %}
-        </td> <!-- 新しいセル -->
-        <td>
-          {% if order.approval_comment %}
-          {{ order.approval_comment }}<!--承認者コメント実装予定-->
-          {% else %}
-          <span>実装予定</span>
-          {% endif %}
-        </td> <!-- 新しいセル -->
-        <td>
-          {% if order.approval_status != '承認済み' %}
-          <form method="post" style="display:inline;">
-            {% csrf_token %}
-            <input type="hidden" name="approve_order" value="{{ order.pk }}">
-            <input type="submit" value="承認する" class="button">
-          </form>
+<h2>発注依頼の承認 <small>※最新5件を表示</small></h2>
+<table class="detail-table">
+  <thead>
+    <tr align="center">
+      <th>発注日</th>
+      <th>担当者</th>
+      <th>発注数</th>
+      <th>承認ステータス</th>
+      <th>承認日時</th> <!-- 新しい列 -->
+      <th>承認者コメント</th> <!-- 新しい列 -->
+      {% comment %} <th>操作</th> {% endcomment %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for order in orders %}
+    <tr align="center">
+      <td>{{ order.order_date|date:"Y/m/d H:i"  }}</td>
+      <td>{{ order.user.username }}</td>
+      <td>{{ order.quantity }}</td>
+      <td>
+        {% if order.approval_status == "承認待ち" %}
+        <span class="status-pending"><b>{{ order.approval_status }}</b></span>
+        {% elif order.approval_status == "承認済み" %}
+        <span class="status-approved"><b>{{ order.approval_status }}</b></span>
+        {% elif order.approval_status == "否決" %}
+        <span class="status-rejected"><b>{{ order.approval_status }}</b></span>
+        {% else %}
+        {{ order.approval_status }}
+        {% endif %}
+      </td>
+      <td>
+        {% if order.approval_date %}
+        {{ order.approval_date|date:"Y/m/d H:i"  }}<!--承認日時-->
+        {% else %}
+        <span>-</span>
+        {% endif %}
+      </td>
+      <td>
+        {% if order.approval_comment %}
+        {{ order.approval_comment }}<!--承認者コメント-->
+        {% else %}
+        <span>実装予定</span>
+        {% endif %}
+      </td>
+      {% comment %}
+      <td>
+        {% if order.approval_status == '承認待ち' %}
+        <!-- 承認ボタン -->
+        <form method="post" style="display:inline;">
+          {% csrf_token %}
+          <input type="hidden" name="approve_order" value="{{ order.pk }}">
+          <input type="submit" value="承認する" class="button">
+        </form>
+        {% if order.approval_status != '否決' %}
+          <!-- 否決ボタン -->
           <form method="post" style="display:inline;">
             {% csrf_token %}
             <input type="hidden" name="reject_order" value="{{ order.pk }}">
-            <input type="submit" value="否決する" class="button delete-button"><!--否決ボタン実装のみ（機能未実装）-->
+            <input type="submit" value="否決する" class="button delete-button">
           </form>
-          {% else %}
-          <span>－</span>
-          {% endif %}
-        </td>
-      </tr>
-      {% empty %}
-      <tr align="center">
-        <td colspan="7">発注依頼はありません</td> <!-- colspanを7に変更 -->
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+        {% else %}
+          <!-- 否決ステータス表示 -->
+          <span>否決</span>
+        {% endif %}
+      {% else %}
+        <!-- 否決ステータスが承認済みなら何も表示しない -->
+        <span>－</span>
+      {% endif %}
+      </td>
+      {% endcomment %}
+    </tr>
+    {% empty %}
+    <tr align="center">
+      <td colspan="7">発注依頼はありません</td> <!-- colspanを7に変更 -->
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% endif %}
 {% endblock content %}

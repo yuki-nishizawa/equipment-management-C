@@ -7,7 +7,7 @@ from django.views.generic import CreateView,DetailView,UpdateView,DeleteView
 from .forms import EquipForm,StockUpdateForm
 from order.forms import OrderForm
 from order.models import Order
-from django.http import HttpResponseForbidden #アクセスを禁止するためのヤツ
+from django.http import HttpResponseForbidden,HttpResponseRedirect #アクセスを禁止するためのヤツ
 
 #備品管理一覧
 @login_required#ログインしていないと見れないようにするデコレータを追加
@@ -61,8 +61,6 @@ class EquipDetailView(LoginRequiredMixin, DetailView):
             new_stock=updated_equip.stock,
         )
 
-            return redirect(self.get_success_url())
-
         # 発注フォームの処理
         order_form = OrderForm(request.POST)
         if order_form.is_valid():
@@ -72,18 +70,23 @@ class EquipDetailView(LoginRequiredMixin, DetailView):
             order.save()
             return redirect(self.get_success_url())
 
-        # 発注承認処理
+    # 承認ボタンが押されたかを確認
         order_id = request.POST.get('approve_order')
         if order_id:
             order = get_object_or_404(Order, pk=order_id)
-            order.approve(request.user)
-
-
+            order.approve(request.user)  # Orderモデルにある'approve'メソッドを使って承認処理を実行
+            return HttpResponseRedirect(request.path_info)  # リダイレクトして、ページ更新時の再送信を防ぐ
+ 
+    # 否決ボタンが押されたかを確認
+        reject_order_id = request.POST.get('reject_order')
+        if reject_order_id:
+            order = get_object_or_404(Order, pk=reject_order_id)
+            order.reject(request.user)  # Orderモデルに'reject'メソッドを定義し、否決処理を実行
+            return HttpResponseRedirect(request.path_info)  # リダイレクトして、ページ更新時の再送信を防ぐ
         return self.render_to_response(self.get_context_data(
             stock_update_form=stock_update_form,
             order_form=order_form
         ))
-
     def get_success_url(self):
         return reverse_lazy('equipment:detail', kwargs={'pk': self.object.pk})
 

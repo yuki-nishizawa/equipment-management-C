@@ -15,8 +15,15 @@ class Order(models.Model):
   approval_date = models.DateTimeField(null=True, blank=True)
   approval_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='approved_orders', null=True, blank=True)
 
-  def approve(self,approver):
+  def approve(self, approver):
+      """承認処理"""
       self.approval_status = '承認済み'
       self.approval_date = timezone.now()
       self.approval_user = approver
       self.save()
+  def reject(self, approver):
+      """否決処理"""
+      self.approval_status = '否決'
+      self.approval_date = timezone.now()
+      self.approval_user = approver
+      self.save()   
