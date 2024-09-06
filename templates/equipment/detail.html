@@ -35,6 +35,40 @@
 
 
 <h2>{{ equip.equip_name }}</h2><!--備品タイトル-->
+<!--貸出中ステータス表示-->
+<div class="loan-status">
+    <p>貸出状況：
+    {% if equip.loan_status == '貸出可' %}
+    <span class="material-symbols-outlined">
+      <font color="#69c44b"><b>circle</span>
+    </span>
+    貸出可
+      </font></b>
+    {% elif equip.loan_status == '貸出不可' %}
+      <span class="material-symbols-outlined">
+        <font color="#EB6161"><b>close
+      </span>
+      貸出不可
+        </font></b>
+    {% elif equip.loan_status == '貸出中' %}
+    <span class="material-symbols-outlined">
+      <font color="#EB6161"><b>do_not_disturb_on
+    </span>
+    貸出中
+      </font></b>
+    {% else %}
+    <span class="material-symbols-outlined">
+      <font color="#00A0A8"><b>question_mark
+    </span>
+    その他（詳細は説明欄を参照）
+  </font></b>
+    {% endif %}
+    </p>
+</div>
+<!--貸出中ステータスここまで-->
+
+
+
 {% if user.is_admin %}<!-- 管理者の場合にだけ表示される！ -->
 <div class="button-group">
   <!--備品編集ページへのリンク-->

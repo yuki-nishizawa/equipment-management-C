@@ -18,6 +18,13 @@ class Equipment(models.Model):
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
   user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,null=True)
+      # 貸出状況を選択制にして追加
+  LOAN_STATUS_CHOICES = [
+        ('貸出可', '貸出可'),
+        ('貸出中', '貸出中'),
+        ('貸出不可', '貸出不可'),
+        ('その他', 'その他（説明欄に詳細）'),    ]
+  loan_status = models.CharField(choices=LOAN_STATUS_CHOICES,null=True,blank=True)
 
 
 #在庫数変更履歴に関係するデータベースを定義

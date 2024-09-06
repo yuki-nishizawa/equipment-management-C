@@ -31,6 +31,10 @@
                 {{ form.condition }}
             </div>
             <div class="field">
+                <label for="{{ form.loan_status.id_for_label }}">貸出状況</label>
+                {{ form.loan_status }}
+            </div>
+            <div class="field">
                 <label for="{{ form.place.id_for_label }}">設置場所</label>
                 {{ form.place }}
             </div>
