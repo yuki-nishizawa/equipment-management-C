@@ -51,11 +51,11 @@
     {% for order in orders %}
     <tr class="order-history-row" align="center">
       <td>
+
         <div class="tooltip">
           <!--備品名を表示＆リンクを貼る-->
           <a href="{% url 'equipment:detail' order.equip.pk %}">{{ order.equip.equip_name }}</a>
           <!--ポップアップすると出るやつ-->
-          
           <span class="tooltiptext">
           <center>
             <img src="{{ order.equip.image.url }}" alt="{{ order.equip.equip_name }}" class="tooltip-image">
@@ -66,7 +66,9 @@
           設置場所: {{ order.equip.place }}<br>
           発注者　: {{ order.user.username}}<br>
           </span>
+          <!--ポップアップすると出るやつここまで-->
         </div>
+
       </td>
       <td>{{ order.quantity }}</td>
       <td>{{ order.user.username }}</td>
@@ -186,13 +188,13 @@
         imgElement.style.display = "none";
         const noImageDiv = document.createElement("div");
         noImageDiv.className = "tooltip-noimage";
-        noImageDiv.innerHTML = 
+        noImageDiv.innerHTML = `
           <span class="material-symbols-outlined">
             <font color="#FFFFFF" size="20">
               no_photography
             </font>
           </span>
-        ;
+        `;
         imgElement.parentNode.appendChild(noImageDiv);
       }
     });
