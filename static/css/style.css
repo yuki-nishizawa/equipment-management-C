@@ -566,35 +566,39 @@ tbody td a:hover {
   }
   .item-list th:nth-child(3),
   .item-list td:nth-child(3) {
-    width: 80px; /* カテゴリ列の幅 */
-  }  .item-list th:nth-child(6),
-  .item-list td:nth-child(6) {
-    text-align: left;
-    width: 400px; /* 設置場所の幅 */
+    width: 100px; /* 画像列の幅 */
   }
+
   .item-list th:nth-child(4),
   .item-list td:nth-child(4) {
-    width: 100px; /* 状態列の幅 */
+    width: 80px; /* カテゴリ列の幅 */
   }
   .item-list th:nth-child(5),
   .item-list td:nth-child(5) {
-    width: 130px; /* 設置場所の幅 */
+    width: 100px; /* 状態列の幅 */
   }
   .item-list th:nth-child(6),
   .item-list td:nth-child(6) {
-    text-align: left;
-    width: 400px; /* 設置場所の幅 */
+    width: 130px; /* 設置場所の幅 */
   }
+
   .item-list th:nth-child(7),
   .item-list td:nth-child(7) {
-    width: 80px; /* 在庫数の幅 */
+    text-align: left;
+    width: 400px; /* 説明の幅 */
   }
+
   .item-list th:nth-child(8),
-  .item-list td:nth-child(8),
+  .item-list td:nth-child(8) {
+    width: 80px; /* 在庫数の幅 */ 
+  }
   .item-list th:nth-child(9),
-  .item-list td:nth-child(9) {
+  .item-list td:nth-child(9),
+  .item-list th:nth-child(10),
+  .item-list td:nth-child(10) {
     width: 150px; /* 作成日と更新日 */
   }
+  
   .add-item-container {
     display: block; /* コンテナが全幅を持つようにする */
     width: 100%; /* 親要素の全幅を取る */

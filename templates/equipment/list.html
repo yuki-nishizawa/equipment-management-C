@@ -15,6 +15,7 @@
             <option value="all">すべて</option>
             <option value="equip_name">備品名</option>
             <option value="image">画像</option>
+            <option value="loan_status">貸出状況</option>
             <option value="category">カテゴリ</option>
             <option value="condition">状態</option>
             <option value="place">設置場所</option>
@@ -35,6 +36,7 @@
         <tr align="center">
             <th>備品名</th>
             <th>画像</th>
+            <th>貸出状況</th>
             <th>カテゴリ</th>
             <th>状態</th>
             <th>設置場所</th>
@@ -63,6 +65,32 @@
                     {% endif %}
                 </a>
             </td>
+            <td>
+            {% if equipment.loan_status == '貸出可' %}
+            <span class="material-symbols-outlined">
+                <font color="#69c44b"><b>circle</span>
+            </span>
+              貸出可
+            {% elif equipment.loan_status == '貸出不可' %}
+              <span class="material-symbols-outlined">
+                <font color="#EB6161"><b>close
+              </span>
+              貸出不可
+                </font></b>
+            {% elif equipment.loan_status == '貸出中' %}
+            <span class="material-symbols-outlined">
+              <font color="#EB6161"><b>do_not_disturb_on
+            </span>
+            貸出中
+              </font></b>
+            {% else %}
+            <span class="material-symbols-outlined">
+              <font color="#00A0A8"><b>question_mark
+            </span>
+            その他（詳細は説明欄を参照）
+            </font></b>
+            {% endif %}
+            </td>
             <td>{{ equipment.category }}</td>
             <td>{{ equipment.condition }}</td>
             <td>{{ equipment.place }}</td>
@@ -80,7 +108,7 @@
 </table>
 </main>
 <script>
-    function searchTable() {
+    function searchTable() { 
         let input = document.getElementById("searchInput").value.toLowerCase();
         let category = document.getElementById("searchCategory").value;
         let table = document.getElementById("itemTable");
@@ -89,12 +117,20 @@
         for (let i = 1; i < rows.length; i++) {
             let cells = rows[i].getElementsByTagName("td");
             let found = false;
+    
             for (let j = 0; j < cells.length; j++) {
-                if (category === 'all' || (category === 'equip_name' && j === 0) ||
-                    (category === 'image' && j === 1) || (category === 'category' && j === 2) ||
-                    (category === 'condition' && j === 3) || (category === 'place' && j === 4) ||
-                    (category === 'description' && j === 5) || (category === 'stock' && j === 6) ||
-                    (category === 'created_at' && j === 7) || (category === 'updated_at' && j === 8)) {
+                if ((category === 'all') || 
+                    (category === 'equip_name' && j === 0) || 
+                    (category === 'image' && j === 1) || 
+                    (category === 'loan_status' && j === 2) ||  // 貸出状況
+                    (category === 'category' && j === 3) || 
+                    (category === 'condition' && j === 4) || 
+                    (category === 'place' && j === 5) || 
+                    (category === 'description' && j === 6) || 
+                    (category === 'stock' && j === 7) || 
+                    (category === 'created_at' && j === 8) || 
+                    (category === 'updated_at' && j === 9)) {
+                        
                     if (cells[j]) {
                         let txtValue = cells[j].textContent || cells[j].innerText;
                         if (txtValue.toLowerCase().indexOf(input) > -1) {
