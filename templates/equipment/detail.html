@@ -68,7 +68,6 @@
 <!--貸出中ステータスここまで-->
 
 
-
 {% if user.is_admin %}<!-- 管理者の場合にだけ表示される！ -->
 <div class="button-group">
   <!--備品編集ページへのリンク-->
@@ -83,7 +82,6 @@
   </form>
 </div>
 {% endif %}
-
 
 
 {% if equip.image %}<!--もし画像があるときは-->
@@ -101,12 +99,24 @@
 {% endif %}
 
 
-
-<p>{{ equip.text }}</p>
-<p>カテゴリ: {{ equip.category }}</p>
-<p>状態: {{ equip.condition }}</p>
-<p>設置場所: {{ equip.place }}</p>
-<p>在庫数: {{ equip.stock }}</p>
+<table class="info-table">
+  <tr>
+    <td>カテゴリ</td>
+    <td>{{ equip.category }}</td>
+  </tr>
+  <tr>
+    <td>状態</td>
+    <td>{{ equip.condition }}</td>
+  </tr>
+  <tr>
+    <td>設置場所</td>
+    <td>{{ equip.place }}</td>
+  </tr>
+  <tr>
+    <td>在庫数</td>
+    <td>{{ equip.stock }}</td>
+  </tr>
+</table>
 {% if user.is_admin %}<!-- 管理者の場合にだけ表示される！ -->
 <h2>在庫数の変更</h2>
   <!-- フォームの表示 -->
@@ -118,6 +128,7 @@
    </center>
   </form>
 {% endif %}
+{% if user.is_admin %} <!-- 管理者の場合にだけ表示される！ -->
 <h2>在庫数変更履歴 <small>※最新5件を表示</small></h2>
 <table class="detail-table">
   <thead>
@@ -143,34 +154,81 @@
     {% endfor %}
   </tbody>
 </table>
-<h2>発注依頼</h2>
-<form method="post">
+{% endif %}
+<!-- 貸出希望依頼ボタン -->
+<button id="openModalButton" class="order-button custom-size">貸出希望依頼</button>
+<!-- モーダルウィンドウ -->
+<div id="orderModal" class="modal">
+  <div class="modal-content">
+    <span class="close-button" id="closeModalButton">&times;</span>
+    <h2>貸出希望依頼</h2>
+    <form method="post">
+      {% csrf_token %}
+      
+      <div class="form-group">
+        <label for="quantity">数　量</label>
+        <input type="number" id="quantity" name="quantity" min="1" required class="narrow-input">
+      </div>
+      
+      <div class="form-group">
+        <label for="loan_date">貸出希望日</label>
+        <input type="date" id="loan_date" name="loan_date" required>
+      </div>
+      <div class="form-group">
+        <label for="return_date">返却予定日</label>
+        <input type="date" id="return_date" name="return_date" required>
+      </div>
+      <center>
+        <input type="submit" value="送信" class="submit-button">
+      </center>
+    </form>
+  </div>
+</div>
+
+{% comment %} <form method="post">
   {% csrf_token %}
   {{ order_form.as_p }}
   <center>
-<input type="submit" value="発注依頼" class="order-button">
+<input type="submit" value="貸出希望依頼" class="order-button">
   </center>
-</form>
-{% if user.is_admin %}
-<h2>発注依頼の承認 <small>※最新5件を表示</small></h2>
+</form> {% endcomment %}
+<h2>貸出の承認履歴 <small>※最新5件を表示</small></h2>
 <table class="detail-table">
   <thead>
     <tr align="center">
-      <th>発注日</th>
-      <th>担当者</th>
-      <th>発注数</th>
+      <th>承認依頼日</th>
+      <th>貸出希望者</th>
+      <th>数量</th>
+      <th>貸出希望日</th>
+      <th>返却予定日</th>
       <th>承認ステータス</th>
-      <th>承認日時</th> <!-- 新しい列 -->
-      <th>承認者コメント</th> <!-- 新しい列 -->
-      {% comment %} <th>操作</th> {% endcomment %}
+      <th>承認日時</th>
+      <th>承認者コメント</th>
     </tr>
   </thead>
   <tbody>
     {% for order in orders %}
     <tr align="center">
-      <td>{{ order.order_date|date:"Y/m/d H:i"  }}</td>
-      <td>{{ order.user.username }}</td>
-      <td>{{ order.quantity }}</td>
+      <td>{{ order.order_date|date:"Y/m/d H:i" }}</td> <!-- 承認依頼日 -->
+      <td>{{ order.user.username }}</td> <!-- 貸出希望者 -->
+      <td>{{ order.quantity }}</td> <!-- 数量 -->
+      <!-- 貸出希望日 -->
+      <td>
+        {% if order.loan_date %}
+        {{ order.loan_date|date:"Y/m/d" }} <!-- 貸出希望日 -->
+        {% else %}
+        <span>-</span>
+        {% endif %}
+      </td>
+      <!-- 返却予定日 -->
+      <td>
+        {% if order.return_date %}
+        {{ order.return_date|date:"Y/m/d" }} <!-- 返却予定日 -->
+        {% else %}
+        <span>-</span>
+        {% endif %}
+      </td>
+      <!-- 承認ステータス -->
       <td>
         {% if order.approval_status == "承認待ち" %}
         <span class="status-pending"><b>{{ order.approval_status }}</b></span>
@@ -182,16 +240,18 @@
         {{ order.approval_status }}
         {% endif %}
       </td>
+      <!-- 承認日時 -->
       <td>
         {% if order.approval_date %}
-        {{ order.approval_date|date:"Y/m/d H:i"  }}<!--承認日時-->
+        {{ order.approval_date|date:"Y/m/d H:i" }} <!-- 承認日時 -->
         {% else %}
         <span>-</span>
         {% endif %}
       </td>
+      <!-- 承認者コメント -->
       <td>
         {% if order.approval_comment %}
-        {{ order.approval_comment }}<!--承認者コメント-->
+        {{ order.approval_comment }} <!-- 承認者コメント -->
         {% else %}
         <span>実装予定</span>
         {% endif %}
@@ -225,10 +285,31 @@
     </tr>
     {% empty %}
     <tr align="center">
-      <td colspan="7">発注依頼はありません</td> <!-- colspanを7に変更 -->
+      <td colspan="7">貸出希望はありません</td> <!-- colspanを7に変更 -->
     </tr>
     {% endfor %}
   </tbody>
 </table>
-{% endif %}
+<!-- JavaScriptでモーダルの表示・非表示を追加 -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const modal = document.getElementById("orderModal");
+    const openModalButton = document.getElementById("openModalButton");
+    const closeModalButton = document.getElementById("closeModalButton");
+    // モーダルを開く
+    openModalButton.addEventListener("click", function() {
+      modal.style.display = "block";
+    });
+    // モーダルを閉じる
+    closeModalButton.addEventListener("click", function() {
+      modal.style.display = "none";
+    });
+    // モーダルの外側をクリックしたら閉じる
+    window.addEventListener("click", function(event) {
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    });
+  });
+</script>
 {% endblock content %}

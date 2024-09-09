@@ -19,7 +19,7 @@ div {
 }
 
 /******************************************** 
- 全体レイアウト
+ 全体・共通レイアウト
 *********************************************/
 h2 {
   justify-content: center; /* 中央に配置 */
@@ -63,6 +63,13 @@ body {
   background-repeat: no-repeat; /* 背景画像の繰り返しを防ぐ */
   opacity: 0.3; /* 透明度を調整（0.0～1.0） */
   z-index: -1; /* 背景画像をコンテンツの背面に配置 */
+}
+
+/* 入力フィールド全体の高さを指定 */
+form input {
+  margin-bottom: 10px; /* フィールド間の余白 */
+  padding: 5px; /* 入力フィールド内の余白 */
+  font-size: 16px; /* 文字サイズも適切に変更 */
 }
 
 /******************************************** 
@@ -137,9 +144,9 @@ footer {
   text-align: center;
 }
 .field {
+  margin-bottom: 5px;
   text-align: left; /* 左詰めに設定 */
   display: auto;
-  margin-bottom: 15px;
 }
 .fieldstaff label,
 .field label {
@@ -192,7 +199,7 @@ footer {
   width: 100px;         /* ボタンの幅を100ピクセルに設定 */
   height: 40px;         /* ボタンの高さを40ピクセルに設定 */
   border-radius: 50px;  /* ボタンの角を50ピクセルの半径で丸くする設定、これにより丸みのあるボタンが作られます */
-  background-color: #3484b9;  /* ボタンの背景色を青色（#3484b9）に設定 */
+  background-color: #005CC8;  /* ボタンの背景色を青色（#3484b9）に設定 */
   color: #FFFFFF;       /* ボタン上のテキストの色を白色に設定 */
   text-align: center;   /* ボタン上のテキストを中央揃えに設定 */
   border-width: 0px;    /* ボタンの境界線をなくす設定 */
@@ -200,7 +207,7 @@ footer {
   cursor: pointer;      /* ボタンにマウスカーソルが乗ったとき、ポインター（手の形のカーソル）に変更 */
 }
 .button:hover {
-  background-color: #005CC8;
+  background-color: #3484b9;
 }
 
 /******************************************** 
@@ -208,8 +215,78 @@ footer {
 *********************************************/
 
 /* 保存ボタンと発注依頼ボタンのスタイル設定 */
-.save-button, 
-.order-button { /* 保存ボタンと発注依頼ボタンの両方に適用 */
+/* 貸出希望依頼のモーダルウィンドウの設定 */
+.custom-size {
+  width: 200px; /* ボタンの幅 */
+  height: 50px; /* ボタンの高さ */
+  font-size: 16px; /* ボタンの文字サイズ */
+  padding: 10px; /* ボタン内の余白 */
+}
+
+.modal {
+  display: none; /* デフォルトでは非表示 */
+  position: fixed; /* 常に画面に表示されるように */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4); /* 背景を少し暗く */
+  z-index: 1; /* 最前面に */
+}
+.modal-content {
+  position: absolute; /* モーダルコンテンツを画面中央に配置 */
+  top: 50%; /* 縦方向で50%位置 */
+  left: 50%; /* 横方向で50%位置 */
+  transform: translate(-50%, -50%); /* モーダルの中心位置に移動 */
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px; /* モーダルの最大幅 */
+  max-height: 80%; /* モーダルの最大高さ */
+  overflow-y: auto; /* 高さが超えた場合にスクロール */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* 影を付ける */
+  text-align: center; /* ここでテキストを中央揃え */
+}
+.close-button {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+.close-button:hover,
+.close-button:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+.custom-size:hover {
+  background-color:gray; /* ホバー時の背景色 (例: 暗い青) */
+  color: #fff; /* ホバー時のテキスト色 */
+}
+gray
+.form-group {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* フォーム内のラベルと入力フィールドを中央寄せ */
+  margin-bottom: 10px; /* 各フィールド間のスペースを確保 */
+}
+
+.narrow-input {
+  width: 80px; /* 数量フィールドの幅を狭くする */
+  height: 30px; /* 数量フィールドの高さも同じように変更 */
+}
+.form-group label {
+  width: 120px; /* ラベルの幅を固定して揃える */
+  text-align: right; /* ラベルを右揃えにする */
+  margin-right: 10px; /* ラベルと入力フィールドの間に余白を設定 */
+}
+.narrow-input {
+  width: 80px; /* 数量フィールドの幅を狭める */
+}
+
+.save-button
+ { /* 保存ボタンと発注依頼ボタンの両方に適用 */
   background-color: #3484b9; /* 背景色をブルーに設定 */
   color: white; /* テキストの色を白に設定 */
   padding: 10px 20px; /* 上下10px、左右20pxの内側余白を設定 */
@@ -300,6 +377,21 @@ footer {
 }
 .field-info:first-of-type {
   margin-bottom: 5px; /* 最初のフィールド説明の下に少し余白を追加 */
+}
+/* アイテム詳細のテーブル */
+.info-table {
+  width: 20%; /* テーブルの幅を全体の50%に設定 */
+  margin: 20px auto; /* テーブルを中央に配置 */
+  border-collapse: collapse; /* ボーダーを結合 */
+  font-size: 16px; /* テキストのサイズを調整 */
+}
+.info-table td {
+  padding: 8px 12px; /* セル内に余白を追加 */
+  border: 1px solid #ddd; /* セルの枠線を追加 */
+  text-align: center; /* テキストを中央揃え */
+}
+.info-table tr:nth-child(even) {
+  background-color: #f9f9f9; /* 偶数行に背景色を設定 */
 }
 
 /******************************************** 
@@ -440,13 +532,13 @@ tbody td a:hover {
 }
 /* 備品詳細削除ボタン */
 .delete-button {
-  background-color: #FA8072; /* 削除ボタンの背景色 */
+  background-color: #E6371E  ; /* 削除ボタンの背景色 */
   border-radius: 20px;  /* 角を丸くする */
  /* gap: 110px; 削除 */
 }
 /* 備品詳細削除ボタン */
 .delete-button:hover {
-  background-color: #ff0000; /* ホバー時の背景色（削除ボタン） */
+  background-color: #FACDB9  ; /* ホバー時の背景色（削除ボタン） */
 }
   /* 備品追加のリンクを左寄せにする */
   .add-item-container {
@@ -633,7 +725,6 @@ tbody td a:hover {
   /* 検索バーのコンテナ */
 .search-container {
   display: flex;
-  align-items: center; /* ボックスとボタンの垂直位置を揃える */
   margin-bottom: 20px; /* ボックスとテーブルの間に余白を追加 */
   align-items: flex-end;/* 要素を下揃えにする  */
 } 
@@ -658,7 +749,7 @@ tbody td a:hover {
   padding: 5px;
   font-size: 16px;
   box-sizing: border-box; /* パディングとボーダーを含むサイズ計算 */
-  height: 30px; /* ボックスの高さを指定 */
+  height: 40px; /* ボックスの高さを指定 */
   margin-top: 35px; /* 検索ボックスの上にスペースを追加 */
   }
   /* ユーザー一覧の検索ボックスのスタイルを調整 */
@@ -670,7 +761,7 @@ tbody td a:hover {
   height: 30px; /* ボックスの高さを指定 */
   margin-top: 35px; /* 検索ボックスの上にスペースを追加 */
 }
- /* 発注履歴の検索ボックスのスタイルを調整 */
+ /* 申請一覧の検索ボックスのスタイルを調整 */
  .order-search-box {
   margin-right: 10px; /* 検索ボックスと検索ボタンの間に余白を追加 */
   padding: 5px;
@@ -687,9 +778,94 @@ tbody td a:hover {
   }
 
 /******************************************** 
-発注履歴一覧
+申請一覧
 *********************************************/
-/* 発注履歴一覧の設定 */
+/* 承認者コメント */
+/* モーダルウィンドウのスタイル */
+.modal {
+  display: none; /* 初期状態は非表示 */
+  position: fixed;
+  z-index: 1000; /* モーダルを他の要素の上に表示 */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 背景を半透明に */
+}
+/* モーダルコンテンツのスタイル */
+.modal-content {
+  position: fixed;
+  top: 50%;  /* モーダルを画面の垂直中央に配置 */
+  left: 50%; /* モーダルを画面の水平中央に配置 */
+  transform: translate(-50%, -50%); /* モーダルの中心を正しく表示 */
+  background-color: #fefefe;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%; /* モーダルの幅を広げる */
+  max-width: 600px; /* 最大幅を設定 */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  text-align: center; /* 中央揃え */
+}
+/* 閉じるボタンのスタイル */
+.close {
+  position: absolute; /* 絶対位置 */
+  top: 10px;
+  right: 10px;
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+/* 閉じるボタンのホバー時 */
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+/* コメント入力欄のスタイル */
+#modalComment {
+  width: 90%; /* コメント入力欄の幅を90%に設定 */
+  height: 150px; /* 高さを設定 */
+  margin: 10px auto; /* 上下のマージンを設定し中央に配置 */
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  resize: none; /* 手動でサイズ変更できないようにする */
+}
+/* 送信ボタンとキャンセルボタンのスタイル */
+.modal-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* ホバー時のアニメーション */
+}
+.modal-button.cancel-button {
+  background-color: #C8C8C8;
+  color: #414141;
+}
+.modal-button.approve-button,
+.modal-button.delete-button {
+  background-color: #4CAF50;
+  color: white;
+}
+/* ホバー時の効果: 送信ボタン */
+.modal-button.approve-button:hover {
+  background-color: #D7E6C3; /* 少し明るくする */
+  transform: scale(1.05); /* ホバー時にボタンを少し大きくする */
+}
+/* ホバー時の効果: キャンセルボタン */
+.modal-button.cancel-button:hover {
+  background-color: #FACDB9; /* 少し明るくする */
+  transform: scale(1.05); /* ホバー時にボタンを少し大きくする */
+}
+
+
+/* 申請一覧の設定 */
 .order-history-title {
   color: #000; 
   background-color: transparent;
@@ -729,7 +905,7 @@ tbody td a:hover {
   width: 100%; /* コンテナを親要素の幅に合わせる */
 }
 .filter-button {
-  background-color: #4CAF50;
+  background-color: #48A63F  ;
   color: white;
   padding: 10px 25px;
   border: none;
@@ -737,7 +913,7 @@ tbody td a:hover {
   border-radius: 5px;
 }
 .filter-button:hover {
-  background-color: #45a049;
+  background-color: #D7E6C3  ;
 }
 .action-buttons {
   display: flex;
@@ -749,22 +925,23 @@ tbody td a:hover {
   padding: 5px 20px; /* 必要に応じて調整 */
   border-radius: 50px; /* 他のボタンに合わせた丸み */
   cursor: pointer;
+  text-align: center; 
 }
   /* テーブルコンテナ */
 .table-container {
   overflow-x: auto;
   width: 100%;
 }
-/* 発注履歴テーブル */
+/* 申請一覧テーブル */
 .order-history-table {
   width: 100%; 
   /* max-width: 1200px; */
   margin: 20px auto;
   border-collapse: collapse;
   border: 1px solid #ddd;
-  table-layout: auto;
+  table-layout: fixed; /* ここを auto から fixed に変更 */
 }
-/* 発注履歴 */
+/* 申請一覧 */
 .order-history-table {
   width: 100%;
 }
@@ -793,11 +970,11 @@ tbody td a:hover {
   font-weight: bold;
 }
 .status-approved {/* 承認済み */
-  color: #3CB371;
+  color: #48A63F;
   font-weight: bold;
 }
 .status-rejected {/* 否決 */
-  color: #FA8072!important;
+  color: #E6371E  !important;
   font-weight: bold;
 }
 /* 発注なしの行 */
@@ -811,38 +988,53 @@ tbody td a:hover {
   border-bottom: 1px solid #ddd;
   text-align: center;
 }
- /* 発注履歴テーブルの列幅設定 */
- .order-history-th:nth-child(1)/* 備品名 */
- {
-   width: 300px;
- }
- .order-history-th:nth-child(2)/* 数量 */
- {
+ /* 申請一覧テーブルの列幅設定 */
+/* 列幅の指定 */
+.order-history-th:nth-child(1) /* 備品名 */
+{
+   width: 200px;
+}
+.order-history-th:nth-child(2) /* 数量 */
+{
    width: 60px;
- }
- .order-history-th:nth-child(3)/* ステータス */
- .order-history-th:nth-child(6)/* 承認者 */
- {
-   width: 60px;
- }
- .order-history-th:nth-child(4),/* 承認依頼日 */
- .order-history-th:nth-child(7)/* 承認日 */
- {
+}
+.order-history-th:nth-child(3) /* 担当者 */
+{
    width: 150px;
- }
- .order-history-th:nth-child(5)/* ステータス */
- {
-   width: 80px;
- }    
- .order-history-th:nth-child(8)/* 承認コメント(ヘッダー) */
- {
-   width: 400px;
+}
+.order-history-th:nth-child(4) /* 貸出希望日 */
+{
+   width: 90px;
+}
+.order-history-th:nth-child(5) /* 返却予定日 */
+{
+   width: 90px;
+}
+.order-history-th:nth-child(6) /* 承認依頼日 */
+{
+   width: 90px;
+}
+.order-history-th:nth-child(7) /* ステータス */
+{
+   width: 100px;
+}
+.order-history-th:nth-child(8) /* 承認者 */
+{
+   width: 150px;
+}
+.order-history-th:nth-child(9) /* 承認日 */
+{
+   width: 90px;
    text-align: left;
- }
- .order-history-row td:nth-child(8) {
-   text-align: left; /* 承認コメントの内容を左寄せに設定 */
- }
-
+}
+.order-history-th:nth-child(10) /* 承認コメント */
+{
+   width: 200px;
+}
+.order-history-th:nth-child(11) /* 操作 */
+{
+   width: 150px;
+}
 /*備品名にカーソルを当てると出るポップアップ*/
 .tooltip {
   position: relative;

@@ -12,7 +12,7 @@ from django.http import HttpResponseForbidden,HttpResponseRedirect #アクセス
 #備品管理一覧
 @login_required#ログインしていないと見れないようにするデコレータを追加
 def equipment_list(request):
-    equipments = Equipment.objects.all()
+    equipments = Equipment.objects.all().order_by('-updated_at')
     return render(request, 'equipment/list.html', {'equipments': equipments})#equipment_list.htmlをlist.htmlに修正 #テンプレート上で、データをequipmentsという名前で呼び出す
 
 
