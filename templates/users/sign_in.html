@@ -10,13 +10,19 @@
 
 <form method="post">
     {% csrf_token %}
+    {% if form.errors %}
+    <div class="field-error">
+        <p>ユーザIDまたは、パスワードが違います。</p>
+    </div>
+{% endif %}
+
     <div class="field">
         <label for="{{ form.username.id_for_label }}">ユーザー名：</label>
         {{ form.username }}
         {% if form.username.errors %}
         <ul class="errorlist">
             {% for error in form.username.errors %}
-            <li><font color="red">{{ error }}</font></li>
+            <li><font color="#E6371E">{{ error }}</font></li>
             {% endfor %}
         </ul>
         {% endif %}
@@ -28,7 +34,7 @@
         {% if form.password.errors %}
         <ul class="errorlist">
             {% for error in form.password.errors %}
-            <li><font color="red">{{ error }}</font></li>
+            <li><font color="#E6371E">{{ error }}</font></li>
             {% endfor %}
         </ul>
         {% endif %}

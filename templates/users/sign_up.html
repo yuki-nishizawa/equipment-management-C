@@ -12,14 +12,13 @@
     {% if form.errors %}
         <div class="field-error">
             <p>入力にエラーがあります。もう一度ご確認ください。</p>
-            {{ form.non_field_errors }}
         </div>
     {% endif %}
     <div class="field">
         {% if form.username.errors %}
         <ul class="errorlist">
             {% for error in form.username.errors %}
-            <li><font color=red>{{ error }}</font></li>
+            <li><font color="#E6371E">{{ error }}</font></li>
             {% endfor %}
         </ul>
             {% endif %}
@@ -35,7 +34,7 @@
         {% if form.email.errors %}
         <ul class="errorlist">
         {% for error in form.email.errors %}
-            <li><font color=red>{{ error }}</font></li>
+            <li><font color="#E6371E">{{ error }}</font></li>
             {% endfor %}
         </ul>
         {% endif %}
@@ -46,7 +45,7 @@
         {% if form.password1.errors %}
         <ul class="errorlist">
             {% for error in form.password1.errors %}
-            <li><font color=red>{{ error }}</font></li>
+            <li><font color="#E6371E">{{ error }}</font></li>
             {% endfor %}
         </ul>
         {% endif %}
@@ -57,7 +56,7 @@
         {% if form.password2.errors %}
         <ul class="errorlist">
             {% for error in form.password2.errors %}
-            <li><font color=red>{{ error }}</font></li>
+            <li><font color="#E6371E">{{ error }}</font></li>
             {% endfor %}
         </ul>
         {% endif %}
@@ -65,12 +64,11 @@
         {{ form.password2 }}
     </div>
     <div class="field-info">
-        <p>あなたの他の個人情報と似ているパスワードにはできません。
-            <br>パスワードは最低 8 文字以上必要です。
-            <br>よく使われるパスワードにはできません。
-            <br>数字だけのパスワードにはできません。
-            <br> 
-            <br> 
+        <p>
+            あなたの他の個人情報と似ているパスワードにはできません。<br>
+            パスワードは最低 8 文字以上必要です。<br>
+            よく使われるパスワードにはできません。<br>
+            数字だけのパスワードにはできません。
         </p>
     </div>
     <center>

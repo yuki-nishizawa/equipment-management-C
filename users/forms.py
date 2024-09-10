@@ -8,7 +8,7 @@ class CustomUserCreationForm(UserCreationForm):#ユーザーを新規登録す�
         fields = ('email', 'username','is_staff','is_admin') #フォームを呼び出したときに表示されてほしい項目(modelsで定義している名前を指定)
         labels = {  #フォームを表示したときに、ラベルとして表示されてほしい文字列
          'username':'ユーザー名',
-         'email': 'email',
+         'email': 'メールアドレス',
          'is_staff': 'スタッフとして登録する',
          'is_admin': '管理者として登録する',
       }
@@ -19,7 +19,7 @@ class CustomUserChangeForm(UserChangeForm): #ユーザーの情報を変更す�
         fields = ('email', 'username', 'is_staff', 'is_admin')
         labels = {
             'username': 'ユーザー名',
-            'email': 'email',
+            'email': 'メールアドレス',
             'is_staff': 'スタッフとして登録する',
             'is_admin': '管理者として登録する',
         }
