@@ -222,6 +222,37 @@ footer {
 /******************************************** 
  備品詳細画面
 *********************************************/
+/*お気に入りボタン*/
+.favorite {
+  display: inline-flex;
+  align-items: center;
+  background-color: #fafafa;
+  border: solid 3px #F76F6E;
+  padding: 10px;
+  cursor: pointer;
+  margin-top:20px;
+}
+
+.favorite:hover {
+  background-color: #FEE8E8;
+}
+
+.favorite .material-symbols-outlined {
+  font-size: 24px;
+  margin-right: 5px;
+}
+
+.favorite-active {
+  color: #F76F6E;
+}
+
+.favorite-inactive {
+  color: #7e7e7e;
+}
+
+.favorite-text {
+  font-weight: 700;
+}
 
 /* 保存ボタンと発注依頼ボタンのスタイル設定 */
 /* 貸出希望依頼のモーダルウィンドウの設定 */

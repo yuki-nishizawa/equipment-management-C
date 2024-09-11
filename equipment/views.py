@@ -8,6 +8,8 @@ from .forms import EquipForm,StockUpdateForm
 from order.forms import OrderForm
 from order.models import Order
 from django.http import HttpResponseForbidden,HttpResponseRedirect #アクセスを禁止するためのヤツ
+from django.http import JsonResponse
+from users.models import FavoriteEquip
 
 #備品管理一覧
 @login_required#ログインしていないと見れないようにするデコレータを追加
@@ -36,11 +38,13 @@ class EquipDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):#画像がエラーになった時用の回避策
         context = super().get_context_data(**kwargs)
         equip = context['equip']
+        user = self.request.user
         #context['image_url'] = equip.image.url if equip.image else '/static/images/no_image.jpg'# 画像URLが空の場合、デフォルト画像URLを設定：別方法で実装したため不要！一応残しておく
         context['stock_update_form'] = StockUpdateForm(instance=equip) #在庫数更新のフォームが使えるようになる、instance=equipは、今ビューで処理しているequipのデータを初期設定として入れておく、の意味
         context['stock_changes'] = StockChange.objects.filter(equip=equip).order_by('-changed_date')[:5]#StockChangeモデルのデータが使えるようになる
         context['order_form'] = OrderForm() #発注数更新フォームが使えるようになる、
         context['orders'] = Order.objects.filter(equip=equip).order_by('-order_date')[:5]#Orderモデルのデータが使えるようになる
+        context['is_favorite'] = FavoriteEquip.objects.filter(user=user, equip=equip).exists()# お気に入り情報を追加
         return context
 
     def post(self, request, *args, **kwargs):
@@ -83,6 +87,21 @@ class EquipDetailView(LoginRequiredMixin, DetailView):
             order = get_object_or_404(Order, pk=reject_order_id)
             order.reject(request.user)  # Orderモデルに'reject'メソッドを定義し、否決処理を実行
             return HttpResponseRedirect(request.path_info)  # リダイレクトして、ページ更新時の再送信を防ぐ
+
+        # お気に入り登録・解除の処理
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+    # お気に入り登録・解除の処理
+            equip_id = request.POST.get('equip_id')
+            equipment = get_object_or_404(Equipment, id=equip_id)
+            user = request.user
+
+            favorite, created = FavoriteEquip.objects.get_or_create(user=user, equip=equipment)
+            if not created:
+                favorite.delete()
+                return JsonResponse({'status': 'removed'})
+            else:
+                return JsonResponse({'status': 'added'})
+
         return self.render_to_response(self.get_context_data(
             stock_update_form=stock_update_form,
             order_form=order_form

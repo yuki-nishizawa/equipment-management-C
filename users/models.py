@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from equipment.models import Equipment
+from django.conf import settings
 
 # カスタム ユーザーマネージャー
 class CustomUserManager(BaseUserManager):
@@ -32,3 +34,17 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+
+#お気に入り機能
+class FavoriteEquip(models.Model):
+    class Meta:
+        unique_together = ('user', 'equip')
+        db_table = 'favorite'  # ここでテーブル名を指定
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    equip = models.ForeignKey(Equipment, on_delete=models.CASCADE)
+    added_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.equip.name}"

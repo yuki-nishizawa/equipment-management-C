@@ -98,6 +98,19 @@
 </div>
 {% endif %}
 
+<!--お気に入り登録ボタン-->
+<button class="favorite {% if is_favorite %}favorite-active{% else %}favorite-inactive{% endif %}" id="favorite-button" data-equip-id="{{ equip.id }}">
+  <span class="material-symbols-outlined">
+    <font color="{% if is_favorite %}#F76F6E{% else %}#CCCCCC{% endif %}"><b>
+      {% if is_favorite %}favorite{% else %}heart_plus{% endif %}
+    </b></font>
+  </span>
+  <span class="favorite-text">
+    {% if is_favorite %}お気に入り登録中{% else %}お気に入りに追加{% endif %}
+  </span>
+</button>
+<!--お気に入り登録ボタンここまで-->
+
 
 <table class="info-table">
   <tr>
@@ -311,5 +324,34 @@
       }
     });
   });
+</script>
+
+<!--お気に入り機能-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('#favorite-button').click(function() {
+        var equipId = $(this).data('equip-id');
+        $.ajax({
+            type: 'POST',
+            url: window.location.href,  // 現在の詳細ページのURLを使用
+            data: {
+                'equip_id': equipId,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function(response) {
+                if (response.status == 'added') {
+                    $('#favorite-button').removeClass('favorite-inactive').addClass('favorite-active');
+                    $('#favorite-button .material-symbols-outlined').html('<font color="#F76F6E"><b>favorite</b></font>');
+                    $('#favorite-button .favorite-text').text('お気に入り登録中');
+                } else if (response.status == 'removed') {
+                    $('#favorite-button').removeClass('favorite-active').addClass('favorite-inactive');
+                    $('#favorite-button .material-symbols-outlined').html('<font color="#CCCCCC"><b>heart_plus</b></font>');
+                    $('#favorite-button .favorite-text').text('お気に入りに追加');
+                }
+            }
+        });
+    });
+});
 </script>
 {% endblock content %}
