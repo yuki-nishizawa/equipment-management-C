@@ -14,8 +14,21 @@
               <ul>
                 {% if user.is_authenticated %} <!--ログインしているときの表示-->
                 <li><a href="{% url 'equipment:list' %}">備品一覧</a></li>
-                <li><a href="{% url 'order:history' %}">発注履歴</a></li>
-                {% else %}<!--ログインしてないときの表示-->
+                <li><a href="{% url 'order:history' %}">
+                  発注履歴
+                    {% if user.is_admin %}
+                      {% if pending_orders_count > 0 %}
+                        <span class="badge">
+                        {% if pending_orders_count > 10 %}
+                          10+
+                        {% else %}
+                          {{ pending_orders_count }}
+                        {% endif %}
+                        </span>
+                      {% endif %}
+                      </a></li>
+                    {% endif %}
+                  {% else %}<!--ログインしてないときの表示-->
                 <li><a href="{% url 'users:index' %}">ホーム</a></li>
                 {% endif %}
               </ul>

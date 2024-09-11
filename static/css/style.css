@@ -119,6 +119,16 @@ header a {
   color: #160161 !important;
 }
 
+.badge {
+  background-color: #E6371E;
+  color: #FFFFFF;
+  padding: 5px 10px;
+  border-radius: 50%;
+  font-size: 12px;
+  margin-left: 5px;
+  font-weight: bold;
+}
+
 /******************************************** 
  フッター(base.html)
 *********************************************/
