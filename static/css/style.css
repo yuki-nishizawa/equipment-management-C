@@ -779,6 +779,41 @@ tbody td a:hover {
 /******************************************** 
 申請一覧
 *********************************************/
+/* 承認ボタンのスタイル */
+.confirm-button {
+  background-color: #005CC8;
+  color: white;
+  padding: 10px;              /* ボタンの内側余白 */
+  font-size: 14px;            /* 文字サイズ */
+  border: none;               /* ボーダーを無くす */
+  border-radius: 50px;        /* 角を丸める */
+  cursor: pointer;            /* カーソルをポインターに変更 */
+  text-align: center;         /* テキストを中央揃え */
+  width: 70px;               /* ボタンの横幅を指定 */
+}
+
+.confirm-button:hover {
+  background-color: #3484b9;   /* ホバー時の色 */
+}
+
+/* 否決ボタンのスタイル */
+.reject-button {
+  background-color: #E6371E;   /* 赤色 */
+  color: white;                /* 文字色を白 */
+  padding: 10px;               /* ボタンの内側余白 */
+  font-size: 14px;             /* 文字サイズ */
+  border: none;                /* ボーダーを無くす */
+  border-radius: 50px;         /* 角を丸める */
+  cursor: pointer;             /* カーソルをポインターに変更 */
+  text-align: center;          /* テキストを中央揃え */
+  width: 70px;                /* ボタンの横幅を指定 */
+}
+
+.reject-button:hover {
+  background-color: #FACDB9;   /* ホバー時の色 */
+}
+
+
 /* 承認者コメント */
 /* モーダルウィンドウのスタイル */
 .modal {

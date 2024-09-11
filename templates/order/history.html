@@ -1,13 +1,11 @@
-
 {% extends "base.html" %}
 {% load static %}
-{% block title %}発注履歴{% endblock title %}
+{% block title %}【貸出希望】申請一覧{% endblock title %}
 {% block content %}
-
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
 
-<h2 class="order-history-title">発注履歴</h2>
+<h2 class="order-history-title">【貸出希望】申請一覧</h2>
 <form id="searchForm" onsubmit="searchTable(); return false;">
   <div class="search-container">
     <select id="searchCategory" class="search-category">
@@ -15,10 +13,12 @@
       <option value="equip_name">備品名</option>
       <option value="quantity">数量</option>
       <option value="requester">担当者</option>
+      <option value="loan_date">貸出希望日</option> <!-- 貸出希望日を追加 -->
+      <option value="return_date">返却予定日</option> <!-- 返却予定日を追加 -->
       <option value="order_date">承認依頼日</option>
       <option value="status">ステータス</option>
       <option value="approver">承認者</option>
-      <option value="approval_date">処理日時</option>
+      <option value="approval_date">承認日</option>
       <option value="comment">承認コメント</option>
     </select>
     <input type="text" id="searchInput" class="order-search-box" placeholder="キーワードで検索する...">
@@ -37,10 +37,12 @@
       <th class="order-history-th">備品名</th>
       <th class="order-history-th">数量</th>
       <th class="order-history-th">担当者</th>
+      <th class="order-history-th">貸出希望日</th> <!-- 貸出希望日を追加 -->
+      <th class="order-history-th">返却予定日</th> <!-- 返却予定日を追加 -->
       <th class="order-history-th">承認依頼日</th>
       <th class="order-history-th">ステータス</th>
       <th class="order-history-th">承認者</th>
-      <th class="order-history-th">処理日時</th>
+      <th class="order-history-th">承認日</th>
       <th class="order-history-th">承認コメント</th>
       {% if user.is_admin %} <!-- 管理者のみ操作列を表示 -->
       <th class="order-history-th">操作</th>
@@ -51,27 +53,36 @@
     {% for order in orders %}
     <tr class="order-history-row" align="center">
       <td>
-
         <div class="tooltip">
-          <!--備品名を表示＆リンクを貼る-->
           <a href="{% url 'equipment:detail' order.equip.pk %}">{{ order.equip.equip_name }}</a>
-          <!--ポップアップすると出るやつ-->
           <span class="tooltiptext">
-          <center>
-            <img src="{{ order.equip.image.url }}" alt="{{ order.equip.equip_name }}" class="tooltip-image">
-          </center>
-          説明　　: {{ order.equip.text }}<br>
-          カテゴリ: {{ order.equip.category }}<br>
-          状態　　: {{ order.equip.condition }}<br>
-          設置場所: {{ order.equip.place }}<br>
-          発注者　: {{ order.user.username}}<br>
+            <center>
+              <img src="{{ order.equip.image.url }}" alt="{{ order.equip.equip_name }}" class="tooltip-image">
+            </center>
+            説明　　: {{ order.equip.text }}<br>
+            カテゴリ: {{ order.equip.category }}<br>
+            状態　　: {{ order.equip.condition }}<br>
+            設置場所: {{ order.equip.place }}<br>
+            発注者　: {{ order.user.username}}<br>
           </span>
-          <!--ポップアップすると出るやつここまで-->
         </div>
-
       </td>
       <td>{{ order.quantity }}</td>
       <td>{{ order.user.username }}</td>
+      <td>
+        {% if order.loan_date %}
+        {{ order.loan_date|date:"Y/m/d" }} <!-- 貸出希望日表示 -->
+        {% else %}
+        <span>-</span> <!-- 貸出希望日がない場合 -->
+        {% endif %}
+      </td>
+      <td>
+        {% if order.return_date %}
+        {{ order.return_date|date:"Y/m/d" }} <!-- 返却予定日表示 -->
+        {% else %}
+        <span>-</span> <!-- 返却予定日がない場合 -->
+        {% endif %}
+      </td>
       <td>{{ order.order_date|date:"Y/m/d H:i" }}</td>
       <td>
         {% if order.approval_status == "承認待ち" %}
@@ -112,73 +123,40 @@
           <form method="post" style="display:inline-block;">
             {% csrf_token %}
             <input type="hidden" name="approve_order" value="{{ order.pk }}">
-            <input type="submit" value="承認" class="button approve-button">
+            <input type="submit" value="承認" class="button confirm-button" data-order-id="{{ order.pk }}" data-action="approve">
           </form>
           <form method="post" style="display:inline-block;">
             {% csrf_token %}
             <input type="hidden" name="reject_order" value="{{ order.pk }}">
-            <input type="submit" value="否決" class="button delete-button">
+            <input type="submit" value="否決" class="button reject-button" data-order-id="{{ order.pk }}" data-action="reject">
           </form>
         </div>
         {% else %}
         <span>－</span>
         {% endif %}
       </td>
+      
       {% endif %}
     </tr>
     {% empty %}
     <tr class="order-history-empty" align="center">
-      <td colspan="8">発注履歴はありません</td>
+      <td colspan="8">【貸出希望】申請一覧はありません</td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
-<script>
-  document.getElementById('searchButton').addEventListener('click', function() {
-    searchTable();
-  });
-  document.getElementById('searchForm').addEventListener('keydown', function(event) {
-    if (event.key === 'Enter') {
-      event.preventDefault(); // フォームの送信を防ぐ
-      searchTable();
-    }
-  });
-  function searchTable() {
-    var input, filter, table, tr, td, i, j, txtValue, category;
-    input = document.getElementById('searchInput');
-    filter = input.value.toUpperCase();
-    table = document.querySelector('.order-history-table');
-    tr = table.getElementsByTagName('tr');
-    category = document.getElementById('searchCategory').value;
-  // テーブルの各行を繰り返し処理
-  for (var i = 1; i < tr.length; i++) {
-    tr[i].style.display = 'none'; // 一旦全ての行を非表示にする
-    var td = tr[i].getElementsByTagName('td'); // 各行のセルを取得
-    // カテゴリに応じた列をチェック
-    for (var j = 0; j < td.length; j++) {
-      if (
-        (category === 'all') || // すべてのカテゴリで検索
-        (category === 'equip_name' && j === 0) || // 備品名
-        (category === 'quantity' && j === 1) || // 数量
-        (category === 'requester' && j === 2) || // 担当者
-        (category === 'order_date' && j === 3) || // 承認依頼日
-        (category === 'status' && j === 4) || // ステータス
-        (category === 'approver' && j === 5) || // 承認者
-        (category === 'approval_date' && j === 6) || // 処理日時
-        (category === 'comment' && j === 7) // 承認コメント
-      ) {
-        if (td[j]) {
-          var txtValue = td[j].textContent || td[j].innerText; // テキストを取得
-          if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            tr[i].style.display = ''; // 一致する行を表示
-            break;
-          }
-        }
-      }
-    }
-  }
-}
-</script>
+<!-- 承認・否決用のモーダルウィンドウ -->
+<div id="commentModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>コメントを入力してください</h2> <!-- モーダルのタイトル -->
+    <textarea id="modalComment" placeholder="コメントを入力..." rows="5"></textarea>
+    <div class="modal-buttons">
+      <button id="submitWithComment" class="modal-button approve-button">送信</button>
+      <button id="cancelModal" class="modal-button cancel-button">キャンセル</button>
+    </div>
+  </div>
+</div>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     const images = document.querySelectorAll("img.tooltip-image");
@@ -219,7 +197,7 @@
     table = document.querySelector('.order-history-table');
     tr = table.getElementsByTagName('tr');
     for (i = 1; i < tr.length; i++) {
-      td = tr[i].getElementsByTagName('td')[4]; // ステータスの列は5番目
+      td = tr[i].getElementsByTagName('td')[6]; // ステータスの列は5番目
       if (td) {
         if (td.textContent.trim() === '承認待ち') {
           tr[i].style.display = ''; // 承認待ちの行を表示
@@ -238,5 +216,139 @@
     }
   }
   {% endif %}
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var modal = document.getElementById('commentModal');
+    var closeModal = document.getElementsByClassName('close')[0];
+    var modalTitle = document.querySelector('#commentModal h2'); // モーダル内のタイトル要素を取得
+    var selectedOrder = '';
+    var selectedAction = '';
+  
+    // 承認・否決ボタンをクリックしたときにモーダルを表示
+    document.querySelectorAll('.confirm-button, .reject-button').forEach(button => {
+      button.addEventListener('click', function(event) {
+        event.preventDefault();
+        selectedOrder = this.getAttribute('data-order-id');
+        selectedAction = this.getAttribute('data-action');
+        
+        // 承認なら「承認しますか？」、否決なら「否決しますか？」を表示
+        var actionMessage = selectedAction === 'approve' ? '承認しますか？' : '否決しますか？';
+        modalTitle.textContent = actionMessage;  // モーダルのタイトルを変更
+  
+        modal.style.display = 'block'; // モーダルを表示
+      });
+    });
+  
+    // モーダルを閉じる処理（×ボタン）
+    closeModal.onclick = function() {
+      modal.style.display = 'none';
+    };
+  
+    // モーダル外のクリックでモーダルを閉じる処理
+    window.onclick = function(event) {
+      if (event.target === modal) {
+        modal.style.display = 'none';
+      }
+    };
+  
+    // コメントを送信する処理
+    document.getElementById('submitWithComment').addEventListener('click', function() {
+      var comment = document.getElementById('modalComment').value || '－'; // コメントがない場合は「－」
+      submitAction(selectedAction, selectedOrder, comment); // コメントと共にアクションを送信
+      modal.style.display = 'none'; // モーダルを閉じる
+    });
+  
+    // キャンセルボタンが押されたとき
+    document.getElementById('cancelModal').addEventListener('click', function() {
+      modal.style.display = 'none'; // モーダルを閉じる
+    });
+  
+    // アクションをサーバーに送信する関数
+    function submitAction(action, orderId, comment) {
+      var form = document.createElement('form');  // 新しいフォームを作成
+      form.method = 'post';
+      form.style.display = 'none';
+      form.innerHTML = `
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+        <input type="hidden" name="${action}_order" value="${orderId}">
+        <input type="hidden" name="comment" value="${comment}">
+      `;
+      document.body.appendChild(form);
+      form.submit(); // フォームを送信
+    }
+  });
+  
+</script>
+<!--検索機能に関するscript-->
+<script>
+  // ページ読み込み時にイベントリスナーを追加
+  document.addEventListener('DOMContentLoaded', function() {
+    // 検索ボタンのクリックイベントを設定
+    document.getElementById('searchButton').addEventListener('click', function() {
+      searchTable();
+    });
+    // Enterキーでの検索も可能にする
+    document.getElementById('searchForm').addEventListener('keydown', function(event) {
+      if (event.key === 'Enter') {
+        event.preventDefault(); // フォームの送信を防ぐ
+        searchTable();
+      }
+    });
+  });
+  function searchTable() {
+    // 検索キーワードを取得
+    var input = document.getElementById('searchInput').value.toUpperCase();
+    var category = document.getElementById('searchCategory').value; // カテゴリを取得
+    var table = document.querySelector('.order-history-table');
+    var tr = table.getElementsByTagName('tr');
+    // テーブルの行を1つずつチェック
+    for (var i = 1; i < tr.length; i++) {
+      tr[i].style.display = 'none'; // 一旦全ての行を非表示に
+      var td;
+      // カテゴリに応じて適切な列を取得
+      if (category === "equip_name") {
+        td = tr[i].getElementsByTagName("td")[0]; // 備品名
+      } else if (category === "quantity") {
+        td = tr[i].getElementsByTagName("td")[1]; // 数量
+      } else if (category === "requester") {
+        td = tr[i].getElementsByTagName("td")[2]; // 担当者
+      } else if (category === "loan_date") {
+        td = tr[i].getElementsByTagName("td")[3]; // 貸出希望日
+      } else if (category === "return_date") {
+        td = tr[i].getElementsByTagName("td")[4]; // 返却予定日
+      } else if (category === "order_date") {
+        td = tr[i].getElementsByTagName("td")[5]; // 承認依頼日
+      } else if (category === "status") {
+        td = tr[i].getElementsByTagName("td")[6]; // ステータス
+      } else if (category === "approver") {
+        td = tr[i].getElementsByTagName("td")[7]; // 承認者
+      } else if (category === "approval_date") {
+        td = tr[i].getElementsByTagName("td")[8]; // 承認日
+      } else if (category === "comment") {
+        td = tr[i].getElementsByTagName("td")[9]; // 承認コメント
+      } else if (category === "all") {
+        // "すべて"が選択されている場合、全列をチェックする
+        var tds = tr[i].getElementsByTagName("td");
+        for (var j = 0; j < tds.length; j++) {
+          if (tds[j]) {
+            var txtValue = tds[j].textContent || tds[j].innerText;
+            if (txtValue.toUpperCase().indexOf(input) > -1) {
+              tr[i].style.display = ''; // 該当する行を表示
+              break; // 該当が見つかった場合、次の行へ
+            }
+          }
+        }
+        continue; // "すべて"の場合はこれで終了
+      }
+      // 選択されたカテゴリに応じた列で検索キーワードをチェック
+      if (td) {
+        var txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(input) > -1) {
+          tr[i].style.display = ''; // 該当する場合は行を表示
+        }
+      }
+    }
+  }
 </script>
 {% endblock content %}
