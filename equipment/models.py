@@ -38,3 +38,14 @@ class StockChange(models.Model):
     changed_date = models.DateTimeField(auto_now_add=True)
     previous_stock = models.PositiveIntegerField()
     new_stock = models.PositiveIntegerField()
+
+#コメント機能を定義
+class Comment(models.Model):
+    class Meta:
+      db_table = 'comment'
+
+    equip = models.ForeignKey(Equipment, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    text = models.TextField(null=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True) #不要かもしれないけど一応追加しておく

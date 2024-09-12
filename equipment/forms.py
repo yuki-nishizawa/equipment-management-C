@@ -1,4 +1,4 @@
-from .models import Equipment
+from .models import Equipment,Comment
 from django import forms
 
 class EquipForm(forms.ModelForm):
@@ -23,3 +23,14 @@ class StockUpdateForm(forms.ModelForm):
         labels = {
          'stock': '在庫数',
       }
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+      model = Comment
+      fields = ['text']
+      labels = {
+         'text': 'コメント',
+      }
+      widgets = {
+         'text': forms.Textarea(attrs={'placeholder': 'コメントを入力...'}),
+        }
