@@ -1114,7 +1114,7 @@ tbody td a:hover {
   margin: 20px auto;
   border-collapse: collapse;
   border: 1px solid #ddd;
-  table-layout: fixed; /* ここを auto から fixed に変更 */
+  table-layout: auto; /* ここを auto から fixed に変更 */
 }
 /* 申請一覧 */
 .order-history-table {
@@ -1202,13 +1202,13 @@ tbody td a:hover {
    width: 90px;
    text-align: left;
 }
-.order-history-th:nth-child(10) /* 承認コメント */
+.order-history-th:nth-child(10) /* 承認 */
 {
-   width: 200px;
+   width: 150px ;
 }
-.order-history-th:nth-child(11) /* 操作 */
+.order-history-th:nth-child(11)  /* 承認コメント */
 {
-   width: 150px;
+   width: 200px ;
 }
 /*備品名にカーソルを当てると出るポップアップ*/
 .tooltip {
@@ -1283,12 +1283,12 @@ tbody td a:hover {
   flex-direction: column;
   justify-content: center; /* 縦方向の中央揃え */
   align-items: center;     /* 横方向の中央揃え */
-  height: 100vh;           /* 画面全体の高さ */
+  /* height: 100vh;           画面全体の高さ */
   text-align: center;
   position: relative;
 }
 .last-login-info {
-  position: absolute;
+  /* position: absolute; */
   top: 10px;
   right: 10px;
   background-color: #f5f5f5; /* 背景色 (任意) */
@@ -1334,4 +1334,22 @@ tbody td a:hover {
 .mypage-button:hover {
   background-color: #3B8E31;
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* 申請一覧の詳細はこちら */
+.detail-button {
+  background-color: #48A63F;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  border: none;
+  display: inline-block;
+}
+.detail-button:hover {
+  background-color: #3B8E31;
 }

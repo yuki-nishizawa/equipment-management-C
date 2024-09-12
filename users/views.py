@@ -6,6 +6,8 @@ from .forms import CustomUserCreationForm,CustomUserChangeForm      #forms.pyか
 from .models import CustomUser #このビュー内でmodels.pyに定義しているCustomUserモデルを使用する
 from django.contrib.auth.mixins import LoginRequiredMixin #ログインしていないと見れないようにするためのヤツ
 from django.http import HttpResponseForbidden#アクセスを禁止するためのヤツ
+from order.models import Order# orderをインポート
+from django.views.generic import TemplateView
 
 
 class IndexView(TemplateView):
@@ -86,5 +88,13 @@ class MyPageView(LoginRequiredMixin, TemplateView):
     template_name = 'users/mypage.html'
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['username'] = self.request.user.username
+        user = self.request.user
+        # ログインしているユーザーの注文情報の最新5件を取得
+        context['username'] = user.username
+        context['orders'] = Order.objects.filter(user=user).order_by('-order_date')[:5]  # 最新5件に制限
         return context
+
+
+class ForgetPWView(TemplateView):
+    template_name = 'users/forget.html' #テンプレートはusers/index.htmlにする
+

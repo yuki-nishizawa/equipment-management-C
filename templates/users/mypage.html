@@ -61,11 +61,91 @@ https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FIL
   <div class="button-container">
     <a class="myedit-button" href="{% url 'users:edit' user.id %}">登録情報を編集する</a>
 </div>
-        <!-- 自分の申請一覧リンク -->
-        <h3>{{ user.username }}さんの申請一覧</h3>
-        <p>今後追加予定です。</p>
-        <!-- お気に入り情報-->
-        <h3>お気に入り情報</h3>
-        <p>お気に入り機能は今後追加予定です。</p>
+ <!-- 申請一覧 -->
+ <h3>{{ user.username }}さんの申請一覧（最新5件）</h3>
+ <a href="{% url 'order:history' %}" class="detail-button" style="float: right; margin-right: 10px;">
+  詳細はこちら
+</a>
+ <table class="order-history-table" cellspacing="10" cellpadding="10">
+     <thead>
+         <tr class="order-history-header" align="center">
+             <th>備品名</th>
+             <th>貸出希望日</th>
+             <th>返却予定日</th>
+             <th>承認依頼日</th>
+             <th>ステータス</th>
+             <th>コメント</th>
+         </tr>
+     </thead>
+     <tbody>
+         {% for order in orders %}
+         <tr class="order-history-row" align="center">
+          <td>
+            <div class="tooltip">
+              <a href="{% url 'equipment:detail' order.equip.pk %}">{{ order.equip.equip_name }}</a>
+              <span class="tooltiptext">
+                <center>
+                  <img src="{{ order.equip.image.url }}" alt="{{ order.equip.equip_name }}" class="tooltip-image">
+                </center>
+                貸出状況: {{ order.equip.loan_status }}<br>
+                説明　　: {{ order.equip.text }}<br>
+                カテゴリ: {{ order.equip.category }}<br>
+                状態　　: {{ order.equip.condition }}<br>
+                保管場所: {{ order.equip.place }}<br>
+                <!--発注者　: {{ order.user.username}}<br>-->
+              </span>
+            </div>
+          </td>
+          <td>{{ order.loan_date|date:"Y/m/d" }}</td>
+          <td>{{ order.return_date|date:"Y/m/d" }}</td>
+          <td>{{ order.order_date|date:"Y/m/d" }}</td>
+          <td>
+            {% if order.approval_status == '承認待ち' %}
+                <span class="status-pending">{{ order.approval_status }}</span>
+            {% elif order.approval_status == '承認済み' %}
+                <span class="status-approved">{{ order.approval_status }}</span>
+            {% elif order.approval_status == '否決' %}
+                <span class="status-rejected">{{ order.approval_status }}</span>
+            {% else %}
+                <span>{{ order.approval_status }}</span>
+            {% endif %}
+        </td>
+          <td>{{ order.approval_comment|default:"-" }}</td> <!-- コメントがない場合は "-" を表示 -->
+      </tr>
+         {% empty %}
+         <tr>
+             <td colspan="6">申請がありません</td>
+         </tr>
+         {% endfor %}
+     </tbody>
+ </table>
+ <!-- お気に入り一覧 -->
+ <h3>{{ user.username }}さんのお気に入り一覧（最新5件）</h3>
+ <table class="favorite-equip-table" cellspacing="10" cellpadding="10">
+     <thead>
+         <tr class="favorite-equip-header" align="center">
+             <th>備品名</th>
+             <th>カテゴリー</th>
+             <th>貸出状況</th>
+         </tr>
+     </thead>
+     <tbody>
+         {% for favorite in favorites %}
+         <tr class="favorite-equip-row" align="center">
+          <td>
+            <a href="{% url 'equipment:detail' favorite.equip.id %}">
+                {{ favorite.equip.equip_name }}
+            </a>
+        </td>
+             <td>{{ favorite.equip.category }}</td>
+             <td>{{ favorite.equip.status }}</td> <!-- 貸出状況を表示 -->
+         </tr>
+         {% empty %}
+         <tr>
+             <td colspan="3">お気に入りがありません</td>
+         </tr>
+         {% endfor %}
+     </tbody>
+ </table>
 </div>
 {% endblock content %}

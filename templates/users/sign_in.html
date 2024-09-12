@@ -12,7 +12,7 @@
     {% csrf_token %}
     {% if form.errors %}
     <div class="field-error">
-        <p>ユーザIDまたは、パスワードが違います。</p>
+        <p>ユーザIDまたは、パスワードが違います</p>
     </div>
 {% endif %}
 
@@ -44,5 +44,10 @@
         <input type="submit" value="ログイン" class="button">
     </div>
 </form>
-<p>アカウントをお持ちでないですか？登録は<a href="{% url 'users:register' %}">こちら.</a></p>
+<p>アカウントをお持ちでないですか？</p>
+<br>
+<p><a href="{% url 'users:register' %}">▶ 登録はこちら</a></p>
+<br>
+<p><a href="{% url 'users:forgetpw' %}">▶ パスワードを忘れた方はこちら</a></p>
+<br>
 {% endblock content %}

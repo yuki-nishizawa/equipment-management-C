@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import IndexView, SignUpView, CustomUserListView, UserUpdateView, MenuView, MyPageView  # MyPageView に変更
+from .views import IndexView, SignUpView, CustomUserListView, UserUpdateView, MenuView, MyPageView,ForgetPWView  # MyPageView に変更
 from django.contrib.auth.views import LoginView,LogoutView
 
 app_name = "users"
@@ -12,5 +12,6 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(next_page='/'), name='logout'),#ログアウト機能
     path('menu/', MenuView.as_view(), name='menu'),#ログアウト機能
     path('mypage/', MyPageView.as_view(), name='mypage'),  # マイページへのパス
+    path('forgetpw/', ForgetPWView.as_view(), name='forgetpw'),  # マイページへのパス
 ]
 

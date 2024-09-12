@@ -19,7 +19,7 @@
       <option value="status">ステータス</option>
       <option value="approver">承認者</option>
       <option value="approval_date">承認日</option>
-      <option value="comment">承認コメント</option>
+      <option value="comment">コメント</option>
     </select>
     <input type="text" id="searchInput" class="order-search-box" placeholder="キーワードで検索する...">
     <button id="searchButton" class="search-button">検索</button>
@@ -43,10 +43,10 @@
       <th class="order-history-th">ステータス</th>
       <th class="order-history-th">承認者</th>
       <th class="order-history-th">承認日</th>
-      <th class="order-history-th">承認コメント</th>
       {% if user.is_admin %} <!-- 管理者のみ操作列を表示 -->
-      <th class="order-history-th">操作</th>
+      <th class="order-history-th">承認</th>
       {% endif %}
+      <th class="order-history-th">コメント</th>
     </tr>
   </thead>
   <tbody>
@@ -59,11 +59,12 @@
             <center>
               <img src="{{ order.equip.image.url }}" alt="{{ order.equip.equip_name }}" class="tooltip-image">
             </center>
+            貸出状況: {{ order.equip.loan_status }}<br>
             説明　　: {{ order.equip.text }}<br>
             カテゴリ: {{ order.equip.category }}<br>
             状態　　: {{ order.equip.condition }}<br>
-            設置場所: {{ order.equip.place }}<br>
-            発注者　: {{ order.user.username}}<br>
+            保管場所: {{ order.equip.place }}<br>
+            <!--発注者　: {{ order.user.username}}<br>-->
           </span>
         </div>
       </td>
@@ -83,7 +84,9 @@
         <span>-</span> <!-- 返却予定日がない場合 -->
         {% endif %}
       </td>
-      <td>{{ order.order_date|date:"Y/m/d H:i" }}</td>
+      <td>{{ order.order_date|date:"Y/m/d " }}
+        <!--{{ order.order_date|date:"Y/m/d H:i" }}承認依頼時間を表示される場合-->
+      </td>
       <td>
         {% if order.approval_status == "承認待ち" %}
         <span class="status-pending"><b>{{ order.approval_status }}</b></span>
@@ -104,14 +107,8 @@
       </td>
       <td>
         {% if order.approval_status == "承認済み" or order.approval_status == "否決" %}
-        {{ order.approval_date|date:"Y/m/d H:i"  }}
-        {% else %}
-        <span>－</span>
-        {% endif %}
-      </td>
-      <td>
-        {% if order.approval_comment %}
-        {{ order.approval_comment }}
+        {{ order.approval_date|date:"Y/m/d"  }}
+        <!--{{ order.approval_date|date:"Y/m/d H:i"  }} 承認時間を表示する場合-->
         {% else %}
         <span>－</span>
         {% endif %}
@@ -131,6 +128,13 @@
             <input type="submit" value="否決" class="button reject-button" data-order-id="{{ order.pk }}" data-action="reject">
           </form>
         </div>
+        {% else %}
+        <span>－</span>
+        {% endif %}
+      </td>
+      <td>
+        {% if order.approval_comment %}
+        {{ order.approval_comment }}
         {% else %}
         <span>－</span>
         {% endif %}
