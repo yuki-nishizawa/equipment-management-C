@@ -11,16 +11,20 @@
     <!--ここからメニュー-->
     <table class="menu-table">
       <tr>
-          <td><a href="{% url 'equipment:list' %}">備品一覧</a></td>
-          <td>備品の一覧、詳細を閲覧します。</td>
+        <td><a href="{% url 'users:mypage' %}">マイページ</a></td>
+        <td>ユーザー情報の確認・編集、申請一覧、お気に入りの確認をします。</td>
       </tr>
       <tr>
-          <td><a href="{% url 'order:history' %}">発注履歴</a></td>
-          <td>発注履歴の確認、承認を行います。</td>
+          <td><a href="{% url 'equipment:list' %}">備品一覧</a></td>
+          <td>備品の一覧・詳細を閲覧します。</td>
+      </tr>
+      <tr>
+          <td><a href="{% url 'order:history' %}">申請履歴</a></td>
+          <td>申請の確認・承認を行います。</td>
       </tr>
       <tr>
           <td><a href="{% url 'users:users' %}">ユーザー一覧</a></td>
-          <td>(管理者限定)ユーザーデータの確認、編集を行います。</td>
+          <td>(管理者限定)ユーザー情報の確認・編集を行います。</td>
       </tr>
   </table>
 
