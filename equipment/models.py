@@ -24,7 +24,7 @@ class Equipment(models.Model):
         ('貸出中', '貸出中'),
         ('貸出不可', '貸出不可'),
         ('その他', 'その他（説明欄に詳細）'),    ]
-  loan_status = models.CharField(choices=LOAN_STATUS_CHOICES,null=True,blank=True)
+  loan_status = models.CharField(choices=LOAN_STATUS_CHOICES,null=True,blank=True,max_length=50)
 
 
 #在庫数変更履歴に関係するデータベースを定義

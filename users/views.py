@@ -43,32 +43,48 @@ class CustomUserListView(LoginRequiredMixin,ListView): #ユーザー一覧用
 
 
 class UserUpdateView(LoginRequiredMixin, UpdateView):
-    #ユーザー情報を編集(アップデート）するビューの名前をUserUpdateViewとする
-    #ビューは、UpdateViewにする
-    #LoginRequiredMixinで、ログインしていないと見れないようにする！
     model = CustomUser
     form_class = CustomUserChangeForm
-    template_name = 'users/edit.html' #テンプレートはedit.htmlにする
-    success_url = reverse_lazy('users:users') #編集が成功したら、ユーザー一覧ページに戻る
+    template_name = 'users/edit.html'
 
     def get_object(self, queryset=None):
-        # URL から渡された pk を使って、特定のユーザーを取得
         user_id = self.kwargs.get("pk")
         return get_object_or_404(CustomUser, pk=user_id)
-    
+
     def dispatch(self, request, *args, **kwargs):
         user_id = self.kwargs.get("pk")
         user = get_object_or_404(CustomUser, pk=user_id)
 
-        # 管理者の場合は全てのユーザーの編集ページにアクセスできる
         if request.user.is_admin:
             return super().dispatch(request, *args, **kwargs)
-        
-        # 管理者でないユーザーは自分のユーザー情報だけ編集できる
+
         if request.user != user:
             return HttpResponseForbidden("このページにアクセスする権限がありません。")
-        
+
         return super().dispatch(request, *args, **kwargs)
+
+    def get_success_url(self):
+        # 管理者の場合は users:users にリダイレクト
+        if self.request.user.is_admin:
+            return reverse_lazy('users:users')
+        # スタッフの場合は users:mypage にリダイレクト
+        elif self.request.user.is_staff:
+            return reverse_lazy('users:mypage')
+        # デフォルトのリダイレクト先（追加の安全策として）
+        return reverse_lazy('users:mypage')
+    
+    def form_valid(self, form):
+        return super().form_valid(form)
+
+
     
 class MenuView(LoginRequiredMixin, TemplateView):
     template_name = 'users/menu.html' #テンプレートはusers/menu.htmlにする
+    
+
+class MyPageView(LoginRequiredMixin, TemplateView):
+    template_name = 'users/mypage.html'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['username'] = self.request.user.username
+        return context

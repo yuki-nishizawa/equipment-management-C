@@ -120,8 +120,8 @@ header a {
 }
 
 .badge {
-  background-color: #E6371E;
-  color: #FFFFFF;
+  background-color: #F76F6E; 
+  color: white;
   padding: 5px 10px;
   border-radius: 50%;
   font-size: 12px;
@@ -189,6 +189,25 @@ footer {
 }
 .field input {
   flex-grow: 1;
+}
+/* 備品一覧へ戻るボタンのスタイル */
+.return-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #48A63F; /* ボタンの背景色をグリーンに */
+  color: white; /* ボタンの文字色を白に */
+  border-radius: 25px; /* ボタンの角を丸くする */
+  text-decoration: none; /* 下線を消す */
+  font-weight: bold; /* ボタンの文字を太字に */
+  font-size: 16px; /* 文字サイズ */
+  text-align: center; /* テキストを中央揃え */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease; /* ホバー時のアニメーション */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 軽いシャドウを追加 */
+  margin-top: 20px; /* 上に余白を追加 */
+}
+.return-button:hover {
+  background-color: #3B8E31; /* ホバー時に色を濃くする */
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* ホバー時にシャドウを強調 */
 }
 
 /******************************************** 
@@ -581,28 +600,54 @@ tbody td a:hover {
   background-color: #FACDB9  ; /* ホバー時の背景色（削除ボタン） */
 }
   /* 備品追加のリンクを左寄せにする */
-  .add-item-container {
-    display: flex; /* フレックスボックスを使用してレイアウトを制御 */
-    justify-content: flex-start; /* 左寄せにする */
-    margin-bottom: 10px; /* 下に少し余白を追加 */
+.add-item-container {
+  display: flex; /* フレックスボックスを使用してレイアウトを制御 */
+  justify-content: flex-start; /* 左寄せにする */
+  margin-bottom: 10px; /* 下に少し余白を追加 */
   }
+
+  /* 貸出可能ボタンのスタイル */
+.filter-available-button {
+  background-color: #48A63F; /* ボタンの背景色 */
+  color: white; /* ボタンの文字色 */
+  padding: 0 20px; /* ボタンの左右の内側余白 */
+  border-radius: 25px; /* ボタンの角丸 */
+  text-decoration: none; /* 下線を消す */
+  font-weight: bold; /* ボタンの文字を太字に */
+  font-size: 16px; /* 文字サイズ */
+  transition: background-color 0.3s ease; /* ホバー時の背景色の変化にアニメーションを追加 */
+  cursor: pointer; /* ポインタを表示 */
+  border: none; /* ボーダーをなしに */
+  height: 40px; /* ボタンの高さを固定 */
+  line-height: 40px; /* テキストをボタンの高さに対して中央揃え */
+  text-align: center; /* テキストを中央揃え */
+  display: inline-block; /* インラインブロックに */
+}
+/* ホバー時の背景色変更 */
+.filter-available-button:hover {
+  background-color: #D7E6C3; /* ホバー時の色を変更 */
+}
   /* 備品追加ボタンのスタイル */
   .add-item-button {
-    background-color: #6a0dad; /* ボタンの背景色 */
+    background-color: #005CC8; /* ボタンの背景色 */
     color: white; /* ボタンの文字色 */
-    padding: 10px 20px; /* ボタン内の余白（上下、左右） */
+    padding: 0 20px; /* ボタンの左右の内側余白 */
     border-radius: 25px; /* ボタンの角丸 */
     text-decoration: none; /* 下線を消す */
     font-weight: bold; /* ボタンの文字を太字に */
-    text-align: center; /* ボタン内のテキストを中央揃え */
     font-size: 16px; /* 文字サイズ */
     transition: background-color 0.3s ease; /* ホバー時の背景色の変化にアニメーションを追加 */
+    cursor: pointer; /* ポインタを表示 */
+    border: none; /* ボーダーをなしに */
+    height: 40px; /* ボタンの高さを固定 */
+    line-height: 40px; /* テキストをボタンの高さに対して中央揃え */
+    text-align: center; /* テキストを中央揃え */
+    display: inline-block; /* インラインブロックに */
   }
   /* ホバー時の背景色変更 */
-  .add-item-button:hover {
-    background-color: #7b1fa2;
+  .add-item-button:hover{
+    background-color: #3484b9; /* ホバー時の色を変更 */
   }
-
   /*ユーザー一覧のアイコン*/
   .material-symbols-outlined {
     font-variation-settings:
@@ -728,7 +773,7 @@ tbody td a:hover {
   .item-list td:nth-child(9),
   .item-list th:nth-child(10),
   .item-list td:nth-child(10) {
-    width: 150px; /* 作成日と更新日 */
+    width: 150px; /* 登録日と最終更新日 */
   }
   
   .add-item-container {
@@ -1170,4 +1215,68 @@ tbody td a:hover {
   padding: 10px;
   vertical-align: top;
   text-align: left;
+}
+
+/******************************************** 
+マイページ
+*********************************************/
+.user-info-table {
+  margin-bottom: 20px; /* テーブルの下にスペースを作る */
+}
+.mypage-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* 縦方向の中央揃え */
+  align-items: center;     /* 横方向の中央揃え */
+  height: 100vh;           /* 画面全体の高さ */
+  text-align: center;
+  position: relative;
+}
+.last-login-info {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #f5f5f5; /* 背景色 (任意) */
+  padding: 5px 10px;
+  border-radius: 5px; /* 角を丸める (任意) */
+  font-size: 14px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1); /* 影を付ける (任意) */
+}
+.myedit-button {
+  background-color: #005CC8;
+  color: white;
+  padding: 0 20px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  border: none;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  display: inline-block;
+}
+/* ホバー時の背景色変更 */
+.myedit-button:hover {
+  background-color: #3484b9; /* ホバー時の背景色 */
+}
+/* マイページへ戻るボタン */
+.mypage-button {
+  display: block; /* ボタンをブロック要素にする */
+  /* margin-top: 10px; 上に余白を追加 */
+  background-color: #48A63F;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 25px;
+  text-decoration: none;
+  /* font-weight: bold; 太字*/
+  font-size: 16px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.mypage-button:hover {
+  background-color: #3B8E31;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }

@@ -21,15 +21,19 @@
             <option value="place">設置場所</option>
             <option value="description">説明</option>
             <option value="stock">在庫数</option>
-            <option value="created_at">作成日</option>
-            <option value="updated_at">更新日</option>
+            <option value="created_at">登録日</option>
+            <option value="updated_at">最終更新日</option>
         </select>
         <input type="text" id="searchInput" class="list-search-box" placeholder="キーワードで検索する...">
         <button id="searchButton" class="search-button">検索</button>
     </div>
 </form>
 <div class="add-item-container">
-    <a href="{% url 'equipment:add' %}" class="add-item-button">備品を追加</a>
+    {% if user.is_admin %}
+        <a href="{% url 'equipment:add' %}" class="add-item-button">備品を追加</a>
+    {% endif %}
+    <!-- 貸出可能のみ表示するボタン -->
+    <button id="filterAvailableButton" class="filter-available-button" onclick="filterAvailableItems()">貸出可を表示</button>
 </div>
 <table id="itemTable" class="equipment-table">
     <thead>
@@ -42,8 +46,8 @@
             <th>設置場所</th>
             <th>説明</th>
             <th>在庫数</th>
-            <th>作成日</th>
-            <th>更新日</th>
+            <th>登録日</th>
+            <th>最終更新日</th>
         </tr>
     </thead>
     <tbody>
@@ -164,5 +168,43 @@
             }
         });
     });
+</script>
+<!--貸出可能のみの表示-->
+<script>
+    let isFiltered = false;  // フィルタが適用されているかのフラグ
+    function filterAvailableItems() {
+        let input = "貸出可";  // ボタンでフィルタリングするテキスト（今回は「貸出可」）
+        let table = document.getElementById("itemTable");
+        let rows = table.getElementsByTagName("tr");
+    
+        // フィルタ状態に応じて表示/非表示を切り替える
+        for (let i = 1; i < rows.length; i++) {
+            let loanStatusCell = rows[i].getElementsByTagName("td")[2];  // 貸出状況は3番目のカラム
+            if (loanStatusCell) {
+                let txtValue = loanStatusCell.textContent || loanStatusCell.innerText;
+                txtValue = txtValue.trim();  // 空白を除去
+    
+                if (isFiltered) {
+                    // フィルタ解除（全て表示）
+                    rows[i].style.display = ""; 
+                } else {
+                    // フィルタ適用（貸出可のみ表示）
+                    if (txtValue.indexOf(input) === -1) {
+                        rows[i].style.display = "none";  // 貸出可以外を非表示
+                    } else {
+                        rows[i].style.display = "";  // 貸出可のものだけ表示
+                    }
+                }
+            }
+        }
+    
+        // ボタンのテキストを切り替える
+        let filterButton = document.getElementById("filterAvailableButton");
+        filterButton.textContent = isFiltered ? "貸出可能のみ表示" : "全て表示";
+    
+        // フィルタ状態を反転させる
+        isFiltered = !isFiltered;
+    }
+    
 </script>
 {% endblock content %}

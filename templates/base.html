@@ -15,7 +15,7 @@
                 {% if user.is_authenticated %} <!--ログインしているときの表示-->
                 <li><a href="{% url 'equipment:list' %}">備品一覧</a></li>
                 <li><a href="{% url 'order:history' %}">
-                  発注履歴
+                  申請履歴
                     {% if user.is_admin %}
                       {% if pending_orders_count > 0 %}
                         <span class="badge">
@@ -42,7 +42,7 @@
               <ul>
                 {% if user.is_authenticated %} <!--ログインしているときの表示-->
                         <li>
-            ようこそ、<a class="user-username" href="{% url 'users:users' %}"> {{ user.username }}</a>さん<!--ユーザー名を押下すると名マイページに飛ぶ※URL部分にに作成した新URLを追加-->
+                          ようこそ、<a class="user-username" href="{% url 'users:mypage' %}"> {{ user.username }}</a>さん<!--ユーザー名を押下すると名マイページに飛ぶ※URL部分にに作成した新URLを追加-->
                   {% if user.is_admin %}<!--ログインユーザーが管理者のときだけ、名前のうしろに(管理者)と表示-->
                   (管理者)
                   {% endif %}
