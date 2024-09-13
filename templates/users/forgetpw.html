@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}パスワード再設定{% endblock title %}
+{% block content %}
+
+<!--パスワード再設定-->
+<div class="title">
+    <h2>パスワード再設定</h2>
+</div>
+
+<div class="forget-password-container">
+    <div class="title-section">
+    </div>
+    
+    <div class="instruction-text">
+        <p>ログインIDとご登録メールアドレスを入力し、「送信」を押してください。</p>
+        <p>入力されたメールアドレス宛に、パスワード再設定のご案内をさせていただきます。</p>
+    </div>
+    
+    <form action="{% url 'users:forgetpw' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="login_id">ログインID：</label>
+            <input type="text" id="login_id" name="login_id" required>
+        </div>
+        <div class="form-group">
+            <label for="email">メールアドレス：</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div class="button-container">
+            <input type="submit" value="ログイン" class="submit-button">
+        </div>
+    </form>
+    
+    <div class="back-to-login">
+        <a href="{% url 'users:login' %}">▶ ログイン画面に戻る</a>
+    </div>
+</div>
+{% endblock content %}

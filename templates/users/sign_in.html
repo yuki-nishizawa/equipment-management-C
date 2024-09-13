@@ -44,10 +44,14 @@
         <input type="submit" value="ログイン" class="button">
     </div>
 </form>
+
 <p>アカウントをお持ちでないですか？</p>
 <br>
-<p><a href="{% url 'users:register' %}">▶ 登録はこちら</a></p>
-<br>
-<p><a href="{% url 'users:forgetpw' %}">▶ パスワードを忘れた方はこちら</a></p>
-<br>
+<div class="back-to-login">
+	<p><a href="{% url 'users:register' %}">▶ 登録はこちら</a></p>
+	<br>
+	<p><a href="{% url 'users:forgetpw' %}">▶ パスワードを忘れた方はこちら</a></p>
+	<br>
+</div>
+
 {% endblock content %}

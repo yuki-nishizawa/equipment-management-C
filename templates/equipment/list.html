@@ -30,9 +30,19 @@
 </form>
 <div class="add-item-container">
     {% if user.is_admin %}
-        <a href="{% url 'equipment:add' %}" class="add-item-button">備品を追加</a>
+    <a href="#" class="add-item-button" onclick="openModal()">備品を追加</a>
     {% endif %}
     <!-- 貸出可能のみ表示するボタン -->
+<!-- モーダルウィンドウのコンテナ -->
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span class="close-button" onclick="closeModal()">&times;</span>
+        <div id="modal-body">
+            <!-- ここに外部HTMLが読み込まれます -->
+        </div>
+    </div>
+</div>
+
     <button id="filterAvailableButton" class="filter-available-button" onclick="filterAvailableItems()">貸出可を表示</button>
 </div>
 <table id="itemTable" class="equipment-table">
@@ -100,8 +110,8 @@
             <td>{{ equipment.place }}</td>
             <td class="description">{{ equipment.text }}</td>
             <td>{{ equipment.stock }}</td>
-            <td>{{ equipment.created_at|date:"Y/m/d H:i" }}</td>
-            <td>{{ equipment.updated_at|date:"Y/m/d H:i" }}</td>
+            <td>{{ equipment.created_at|date:"Y/m/d" }}</td>
+            <td>{{ equipment.updated_at|date:"Y/m/d" }}</td>
         </tr>
         {% empty %}
         <tr align="center">
@@ -207,4 +217,36 @@
     }
     
 </script>
+<script>
+    // モーダルを開く処理
+    function openModal() {
+        const modal = document.getElementById('modal');
+        const modalBody = document.getElementById('modal-body');
+        
+    
+        // Ajaxでadd.htmlの内容を読み込む
+        fetch("{% url 'equipment:add' %}")
+            .then(response => response.text())
+            .then(data => {
+                modalBody.innerHTML = data; // モーダル内にHTMLを挿入
+                modal.style.display = 'block'; // モーダルを表示
+            })
+            .catch(error => console.log('Error loading modal content:', error));
+    }
+    
+    // モーダルを閉じる処理
+    function closeModal() {
+        const modal = document.getElementById('modal');
+        modal.style.display = 'none';
+    }
+    
+    // モーダル外をクリックしたら閉じる
+    {% comment %} window.onclick = function(event) {
+        const modal = document.getElementById('modal');
+        if (event.target == modal) {
+            closeModal();
+        }
+    } {% endcomment %}
+    </script>
+    
 {% endblock content %}

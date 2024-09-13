@@ -4,7 +4,7 @@
 {% block title %}備品登録{% endblock title %}
 {% block content %}
 <div class="main">
-    <!-- 備品一覧へ戻るボタン -->
+    <!-- 備品一覧へ戻るボタン（相対的な位置に配置）-->
     <div class="button-container">
         <a href="{% url 'equipment:list' %}" class="return-button">備品一覧へ戻る</a>
     </div>
@@ -12,7 +12,7 @@
         <h2>備品登録</h2>
     </div>
     <div class="content">
-        <form method="post" enctype="multipart/form-data">
+        <form method="post" action="{% url 'equipment:add' %}" enctype="multipart/form-data">
             {% csrf_token %}
             {% if form.errors %}
             <div class="field-error">
@@ -57,7 +57,64 @@
                 <input type="submit" value="登録" class="button">
             </div>
         </form>
-        
     </div>
+        <!-- 備品一覧へ戻るボタン（相対的な位置に配置）-->
+        <div class="button-container">
+            <a href="{% url 'equipment:list' %}" class="return-button">備品一覧へ戻る</a>
+        </div>
+    
+<!-- 閉じるボタン -->
+<div class="close-button-container">
+    <span class="close-text">閉じる</span> <!-- 閉じるの文字を追加 -->
+    <span class="close-button" onclick="closeModal()">&times;</span> <!-- 閉じる×ボタン -->
 </div>
+</div>
+<!-- モーダル内のみに適用するスタイル -->
+<style>
+    /* このページの背景画像を非表示にする */
+    body {
+        background-image: none;
+    }
+    /* モーダル内でヘッダーとフッターを非表示にする */
+    .modal header, .modal footer {
+        display: none;
+    }
+    /* モーダル内で .title-logo を無効にする */
+.modal .title-logo {
+    display: none;
+}
+    /* 備品一覧ボタン */
+    .return-button {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 5px;
+        z-index: 1001;
+    }
+    .close-button-container {
+        top: 20px;
+        right: 20px;
+        text-align: center;
+    }
+    .close-content {
+        display: flex;
+        flex-direction: column; /* 縦方向に並べる */
+        align-items: center; /* 中央揃え */
+    }
+    .close-text {
+        font-size: 12px;
+        color: #333;
+        margin-bottom: 5px; /* 「×」と「閉じる」の間のスペース */
+    }
+    .close-button {
+        font-size: 24px;
+        color: #333;
+        cursor: pointer;
+    }
+    .close-button:hover {
+        color: #f00; /* ホバー時に赤色に変更 */
+    }
+</style>
 {% endblock content %}

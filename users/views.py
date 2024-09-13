@@ -95,6 +95,7 @@ class MyPageView(LoginRequiredMixin, TemplateView):
         return context
 
 
-class ForgetPWView(TemplateView):
-    template_name = 'users/forget.html' #テンプレートはusers/index.htmlにする
+class ForgetPasswordView(TemplateView):
+    template_name = 'users/forgetpw.html'  # 忘れたパスワード用のテンプレート
+
 

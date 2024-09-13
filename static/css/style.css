@@ -51,7 +51,6 @@ body {
 }
 
 .title-logo {
-  content: "";
   position: fixed; /* スクロールしても位置を固定 */
   top: 0;
   left: 0;
@@ -1352,4 +1351,79 @@ tbody td a:hover {
 }
 .detail-button:hover {
   background-color: #3B8E31;
+}
+
+/******************************************** 
+ パスワード再設定ページ
+*********************************************/
+
+.title-section {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.instruction-text {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #555;
+  font-size: 16px;
+}
+
+.form-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  width: 150px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.form-group input {
+  width: calc(100% - 160px);
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.submit-button {
+  width: 100px;         /* ボタンの幅を100ピクセルに設定 */
+  height: 40px;         /* ボタンの高さを40ピクセルに設定 */
+  padding: 10px;
+  background-color: #005CC8;  /* ボタンの背景色を青色（#3484b9）に設定 */
+  color: #FFFFFF;       /* ボタン上のテキストの色を白色に設定 */
+  border: none;
+  border-radius: 50px;  /* ボタンの角を50ピクセルの半径で丸くする設定 */
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.submit-button:hover {
+  background-color: #3484b9;
+}
+
+/*********************************************
+　▶〇〇〇　ログイン画面、再設定ページ
+*********************************************/
+.back-to-login{
+  text-align: center;
+  margin-top: 20px;
+}
+
+.back-to-login a {
+  color: #0095da;
+  text-decoration: none;
+}
+
+.back-to-login a:hover {
+  text-decoration: underline;
+}
+
+.button-container {
+  display: flex;  /* フレックスボックスを使用 */
+  justify-content: center;  /* 子要素を中央揃え */
+  margin-top: 20px;  /* 上にマージンを追加して少し余白をつける */
 }
