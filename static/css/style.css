@@ -493,7 +493,7 @@ footer {
 
 .comment-delete {
   margin-left: auto; /* 削除ボタンを右側に寄せる */
-  margin-right:20px;
+  margin-right:10px;
 }
 
 .comment-button {

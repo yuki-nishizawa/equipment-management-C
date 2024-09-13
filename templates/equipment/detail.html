@@ -302,7 +302,7 @@
           {% endif %}
         </div>
         <div class="comment-time">
-          {{ comment.created_at }}
+          {{ comment.created_at|date:"Y/m/d H:i" }}
         </div>
       </div>
       <div class="comment-text">
