@@ -168,7 +168,7 @@ SESSION_SAVE_EVERY_REQUEST = True #ログアウトまでの時間計測の起点
 #マイグレーションがうまくいかないエラーが出たときは以下のコードのコメントアウトを解除してください
 #他に影響が出る可能性があるので、マイグレ後は再度コメントアウトしてください
 
-try:
-   from .local_settings import *
-except ImportError:
-   pass
+# try:
+#    from .local_settings import *
+# except ImportError:
+#    pass
