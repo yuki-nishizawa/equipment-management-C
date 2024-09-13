@@ -17,6 +17,20 @@ def equipment_list(request):
     equipments = Equipment.objects.all().order_by('-updated_at')
     return render(request, 'equipment/list.html', {'equipments': equipments})#equipment_list.htmlをlist.htmlに修正 #テンプレート上で、データをequipmentsという名前で呼び出す
 
+# 貸出処理
+def loan_equipment(request, pk):
+    equipment = get_object_or_404(Equipment, pk=pk)
+    equipment.loan_status = '貸出中'
+    equipment.save()
+    return redirect('equipment:list')
+
+# 返却処理
+def return_equipment(request, pk):
+    equipment = get_object_or_404(Equipment, pk=pk)
+    equipment.loan_status = '貸出可'
+    equipment.save()
+    return redirect('equipment:list')
+
 
 #備品追加ページ
 class EquipCreateView(LoginRequiredMixin, CreateView):#CREATE用のビューを使う＆ログインしてないと見れないようにする

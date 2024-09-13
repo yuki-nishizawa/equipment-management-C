@@ -462,7 +462,7 @@ footer {
 }
 
 .comment-field {
-  width: 60%;
+  width: 55%;
   background-color: #F9F9F9;
   margin: 20px;
   padding: 20px;
@@ -715,6 +715,7 @@ tbody td a:hover {
 
   }
 
+
 /******************************************** 
  ユーザー管理画面
 *********************************************/
@@ -793,11 +794,11 @@ tbody td a:hover {
   }
   .item-list th:nth-child(2),
   .item-list td:nth-child(2) {
-    width: 80px; /* 画像列の幅 */
+    width: 100px; /* 画像列の幅 */
   }
   .item-list th:nth-child(3),
   .item-list td:nth-child(3) {
-    width: 100px; /* 画像列の幅 */
+    width: 120px; /* 貸出状況の幅 */
   }
 
   .item-list th:nth-child(4),
@@ -821,13 +822,17 @@ tbody td a:hover {
 
   .item-list th:nth-child(8),
   .item-list td:nth-child(8) {
-    width: 80px; /* 在庫数の幅 */ 
+    width: 70px; /* 在庫数の幅 */ 
   }
   .item-list th:nth-child(9),
   .item-list td:nth-child(9),
   .item-list th:nth-child(10),
   .item-list td:nth-child(10) {
-    width: 150px; /* 登録日と最終更新日 */
+    width: 100px; /* 登録日と最終更新日 */
+  }
+  .item-list th:nth-child(11),
+  .item-list td:nth-child(11) {
+    width: 50px; /*返却ボタンの幅 */ 
   }
   
   .add-item-container {
@@ -850,6 +855,27 @@ tbody td a:hover {
   justify-content: center; /* 横方向に中央揃え */
   text-align: center; /* テキストを中央揃え */
   vertical-align: middle; /* テーブル内での縦方向中央揃え */
+}
+
+.status-loan-button, .status-return-button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #69c44b; /* 貸出ボタンの背景色 */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.status-return-button {
+  background-color: #EB6161;  /* 返却ボタンの背景色 */
+}
+
+.status-loan-button:hover, .status-return-button:hover {
+  opacity: 0.8;  /* ホバー時に少し薄くする */
+  text-decoration: none;
 }
 
 /******************************************** 

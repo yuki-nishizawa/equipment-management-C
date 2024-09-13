@@ -58,6 +58,7 @@
             <th>在庫数</th>
             <th>登録日</th>
             <th>最終更新日</th>
+            <th>操作(管理者権限)</th> <!-- 貸出・返却ボタンを配置する列 -->
         </tr>
     </thead>
     <tbody>
@@ -112,6 +113,23 @@
             <td>{{ equipment.stock }}</td>
             <td>{{ equipment.created_at|date:"Y/m/d" }}</td>
             <td>{{ equipment.updated_at|date:"Y/m/d" }}</td>
+            <td>
+                {% if user.is_admin %}
+                    {% if equipment.loan_status == '貸出可' %}
+                        <a href="{% url 'equipment:loan_equipment' equipment.pk %}" class="status-loan-button" onclick="return confirmLoan();">
+                            <span class="material-symbols-outlined"><font color="white">arrow_back</font></span>
+                            貸出
+                        </a>
+                    {% elif equipment.loan_status == '貸出中' %}
+                        <a href="{% url 'equipment:return_equipment' equipment.pk %}" class="status-return-button" onclick="return confirmLoan();">
+                            <span class="material-symbols-outlined"><font color="white">arrow_forward</font></span>
+                            返却
+                        </a>
+                    {% endif %}
+                {% else %}
+            <span>-</span>
+            {% endif %}
+            </td>
         </tr>
         {% empty %}
         <tr align="center">
@@ -277,6 +295,17 @@ function attachFormSubmitHandler() {
             closeModal();
         }
     } {% endcomment %}
+    </script>
+    <script>
+        // 貸出操作の確認メッセージ
+        function confirmLoan() {
+            return confirm("貸出操作を確定しますか？");
+        }
+    
+        // 返却操作の確認メッセージ
+        function confirmReturn() {
+            return confirm("返却操作を確定しますか？");
+        }
     </script>
     
 {% endblock content %}

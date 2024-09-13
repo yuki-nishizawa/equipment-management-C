@@ -64,11 +64,13 @@
             <div class="button-container">
               <input type="submit" value="保存" class="button"> <!--保存ボタン-->
             
-              <!-- スタッフのときのは「マイページへ戻る」ボタン、管理者は「ユーザー一覧に戻る」ボタン表示 -->
-              {% if user.is_staff %}
-              <a href="{% url 'users:mypage' %}" class="mypage-button">マイページへ戻る</a>
-              {% else %}
+              <!-- スタッフのときは「マイページへ戻る」ボタン、管理者は「ユーザー一覧に戻る」ボタン表示 -->
+              {% if user.is_admin %}
               <a href="{% url 'users:users' %}" class="mypage-button">ユーザー一覧へ戻る</a> 
+
+              {% else %}
+              <a href="{% url 'users:mypage' %}" class="mypage-button">マイページへ戻る</a>
+
               {% endif %} 
             </div>
             </center>
