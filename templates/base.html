@@ -30,6 +30,7 @@
                       {% endif %}
                       </a></li>
                     {% endif %}
+                    <li><a href="{% url 'users:favorite' %}">お気に入り</a></li>
                   {% else %}<!--ログインしてないときの表示-->
                 <li><a href="{% url 'users:index' %}">ホーム</a></li>
                 {% endif %}

@@ -1,0 +1,111 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% block title %}トップページ{% endblock title %}
+{% block content %}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<!-- 備品一覧ページ -->
+<h2>お気に入り一覧</h2> <!-- ヘッダーから分離 -->
+
+<main class="favorite-list">
+
+  <table class="favorite-table">
+    <thead>
+        <tr align="center">
+            <th>備品名</th>
+            <th>画像</th>
+            <th>貸出状況</th>
+            <th>カテゴリ</th>
+            <th>状態</th>
+            <th>設置場所</th>
+            <th>説明</th>
+            <th>在庫数</th>
+            <th>登録日</th>
+            <th>最終更新日</th>
+            <th>お気に入り追加日</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for favorite in favorites %}
+        <tr align="center">
+            <td><a href="{% url 'equipment:detail' favorite.equip.id %}">{{ favorite.equip.equip_name }}</a></td>
+            <td>
+                <a href="{% url 'equipment:detail' favorite.equip.id %}"> 
+                    {% if favorite.equip.image %}
+                        <img src="{{ favorite.equip.image.url }}" alt="{{ favorite.equip.equip_name }}" class="thumbnail-image" style="width: 100px; height: auto;">
+                    {% else %}
+                        <div class="no-image-list">
+                            <span class="material-symbols-outlined">
+                              <font color="#CCCCCC">no_photography</font>
+                            </span>
+                        </div>
+                    {% endif %}
+                </a>
+            </td>
+            <td>
+              {% if favorite.equip.loan_status == '貸出可' %}
+              <span class="material-symbols-outlined">
+                  <font color="#69c44b"><b>circle</span>
+              </span>
+                貸出可
+              {% elif favorite.equip.loan_status == '貸出不可' %}
+                <span class="material-symbols-outlined">
+                  <font color="#EB6161"><b>close
+                </span>
+                貸出不可
+                  </font></b>
+              {% elif favorite.equip.loan_status == '貸出中' %}
+              <span class="material-symbols-outlined">
+                <font color="#EB6161"><b>do_not_disturb_on
+              </span>
+              貸出中
+                </font></b>
+              {% else %}
+              <span class="material-symbols-outlined">
+                <font color="#00A0A8"><b>question_mark
+              </span>
+              その他<br>（詳細は説明欄を参照）
+              </font></b>
+              {% endif %}
+            </td>
+            <td>{{ favorite.equip.category }}</td>
+            <td>{{ favorite.equip.condition }}</td>
+            <td>{{ favorite.equip.place }}</td>
+            <td class="description">{{ favorite.equip.text }}</td>
+            <td>{{ favorite.equip.stock }}</td>
+            <td>{{ favorite.equip.created_at|date:"Y/m/d" }}</td>
+            <td>{{ favorite.equip.updated_at|date:"Y/m/d" }}</td>
+            <td>{{ favorite.added_at|date:"Y/m/d" }}</td>
+        </tr>
+        {% empty %}
+        <tr align="center">
+            <td colspan="10">お気に入りはありません</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</main>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      const thumbnailElements = document.querySelectorAll("img.thumbnail-image");
+      thumbnailElements.forEach(function(thumbnail) {
+          thumbnail.onerror = function() {
+              // 画像を非表示にし、代わりにエラーメッセージを表示
+              thumbnail.style.display = "none";
+              const noImageListDiv = document.createElement("div");
+              noImageListDiv.className = "no-image-list";
+              noImageListDiv.innerHTML = `
+                  <span class="material-symbols-outlined">
+                    <font color="#CCCCCC">
+                      no_photography
+                    </font>
+                  </span>
+              `;
+              thumbnail.parentNode.appendChild(noImageListDiv);
+          }
+      });
+  });
+</script>
+{% endblock content %}

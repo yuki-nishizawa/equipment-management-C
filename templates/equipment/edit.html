@@ -51,8 +51,9 @@
             {{ form.image }}
         </div>
         <div class="field">
-            <label for="{{ form.stock.id_for_label }}">在庫数</label>
+            <label for="{{ form.stock.id_for_label }}">在庫数<span class="field-error">※</span></label>
             {{ form.stock }}
+            <span class="field-error"><small>※原則在庫数は1としてください。<br>　 それ以外の場合は詳細を「説明」欄に記載してください。</small></span>
         </div>
         <div class="button-container">
             <input type="submit" value="登録" class="button">

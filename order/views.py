@@ -10,36 +10,33 @@ class OrderListView(LoginRequiredMixin, ListView):
     template_name = 'order/history.html'
     model = Order
     context_object_name = 'orders'
-    #paginate_by = 5  # 1ページに表示する発注数：ページ送り機能を付ける際に使用
-
+    # paginate_by = 5  # 1ページに表示する発注数：ページ送り機能を付ける際に使用
     def get_queryset(self):
         # すべての注文を取得し、発注日の降順に並べ替える
         queryset = Order.objects.order_by('-order_date')
         return queryset
     
     def post(self, request, *args, **kwargs):
-        # 承認ボタンが押された場合の処理
-        if 'approve_order' in request.POST:
-            order_id = request.POST.get('approve_order')
+        # 承認ボタンまたは否決ボタンが押された場合の処理
+        if 'approve_order' in request.POST or 'reject_order' in request.POST:
+            order_id = request.POST.get('approve_order') or request.POST.get('reject_order')
             order = get_object_or_404(Order, pk=order_id)
+            
             if request.user.is_admin:
-                order.approval_status = '承認済み'
+                if 'approve_order' in request.POST:
+                    order.approval_status = '承認済み'
+                    messages.success(request, '発注が承認されました。')
+                elif 'reject_order' in request.POST:
+                    order.approval_status = '否決'
+                    messages.success(request, '発注が否決されました。')
+                
+                # コメントを取得して保存
+                comment = request.POST.get('comment', '－')  # コメントがない場合は「－」をセット
+                order.approval_comment = comment
                 order.approval_user = request.user
-                order.approval_date = timezone.now()  # 現在の日時をセット
+                order.approval_date = timezone.now()  # 現在の日時を保存
                 order.save()
-                messages.success(request, '発注が承認されました。')
             else:
-                messages.error(request, '管理者のみ承認できます。')
-        # 否決ボタンが押された場合の処理
-        elif 'reject_order' in request.POST:
-            order_id = request.POST.get('reject_order')
-            order = get_object_or_404(Order, pk=order_id)
-            if request.user.is_admin:
-                order.approval_status = '否決'
-                order.approval_user = request.user
-                order.approval_date = timezone.now()  # 否決時にも現在の日時をセット
-                order.save()
-                messages.success(request, '発注が否決されました。')
-            else:
-                messages.error(request, '管理者のみ否決できます。')
+                messages.error(request, '管理者のみ操作可能です。')
+        
         return redirect('order:history')  # 発注履歴ページにリダイレクト

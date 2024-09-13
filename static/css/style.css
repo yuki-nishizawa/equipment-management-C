@@ -1388,6 +1388,13 @@ tbody td a:hover {
   border-radius: 4px;
 }
 
+.form-group textarea {
+  width: calc(100% - 160px);
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
 .submit-button {
   width: 100px;         /* ボタンの幅を100ピクセルに設定 */
   height: 40px;         /* ボタンの高さを40ピクセルに設定 */
@@ -1426,4 +1433,16 @@ tbody td a:hover {
   display: flex;  /* フレックスボックスを使用 */
   justify-content: center;  /* 子要素を中央揃え */
   margin-top: 20px;  /* 上にマージンを追加して少し余白をつける */
+}
+
+
+/******************************************** 
+ お気に入り一覧
+*********************************************/
+.favorite-table {
+  width:100%;
+}
+
+.description{
+  text-align: left;
 }

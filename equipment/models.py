@@ -12,7 +12,7 @@ class Equipment(models.Model):
   category = models.CharField(max_length=50,null=False)
   place = models.CharField(max_length=50,null=False)
   condition  = models.CharField(max_length=50,null=False)
-  stock = models.PositiveIntegerField(null=False)
+  stock = models.PositiveIntegerField(null=False, default=1)
   text = models.TextField(null=False)
   image = models.ImageField(upload_to='images/', blank=False, null=False)
   created_at = models.DateTimeField(auto_now_add=True)

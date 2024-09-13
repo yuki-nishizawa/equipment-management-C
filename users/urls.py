@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import IndexView, SignUpView, CustomUserListView, UserUpdateView, MenuView, MyPageView,ForgetPasswordView
+from .views import IndexView, SignUpView, CustomUserListView, UserUpdateView, MenuView, MyPageView,ForgetPasswordView,FavoriteListView
 from django.contrib.auth.views import LoginView,LogoutView
 
 app_name = "users"
@@ -13,5 +13,6 @@ urlpatterns = [
     path('menu/', MenuView.as_view(), name='menu'),#ログアウト機能
     path('mypage/', MyPageView.as_view(), name='mypage'),  # マイページへのパス
     path('forgetpw/', ForgetPasswordView.as_view(), name='forgetpw'),  # マイページへのパス
+    path('favorite/', FavoriteListView.as_view(), name='favorite'),  # お気に入り一覧へのパス
 ]
 

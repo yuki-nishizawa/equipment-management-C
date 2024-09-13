@@ -16,6 +16,7 @@ class Order(models.Model):
   approval_status = models.CharField(max_length=50, default='承認待ち')
   approval_date = models.DateTimeField(null=True, blank=True)
   approval_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='approved_orders', null=True, blank=True)
+  approval_comment = models.TextField(null=True, blank=True)  # コメント用フィールドを追加 # コメントがない場合もあるため、null=True, blank=Trueに設定
 
   def approve(self, approver):
       """承認処理"""

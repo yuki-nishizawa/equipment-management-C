@@ -329,6 +329,7 @@
   <div class="modal-content">
     <span id="close-comment-modal-btn" class="close-button">&times;</span>
     <h2>コメントを追加</h2>
+    <br>
     <form id="comment-form" method="post" action="{% url 'equipment:detail' equip.id %}">
         {% csrf_token %}
         <div class="form-group">
@@ -337,7 +338,7 @@
         <center>
         <button type="submit" class="modal-button approve-button">投稿する</button>
           <!-- キャンセルボタン -->
-          <button type="button" class="modal-button cancel-button" id="cancel-comment-btn">キャンセル</button>
+        <button type="button" class="modal-button cancel-button" id="cancel-comment-btn">キャンセル</button>
 
       </center>
     </form>

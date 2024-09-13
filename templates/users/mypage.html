@@ -121,6 +121,9 @@ https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FIL
  </table>
  <!-- お気に入り一覧 -->
  <h3>{{ user.username }}さんのお気に入り一覧（最新5件）</h3>
+ <a href="{% url 'users:favorite' %}" class="detail-button" style="float: right; margin-right: 10px;">
+  詳細はこちら
+  </a>
  <table class="favorite-equip-table" cellspacing="10" cellpadding="10">
      <thead>
          <tr class="favorite-equip-header" align="center">
@@ -133,12 +136,51 @@ https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FIL
          {% for favorite in favorites %}
          <tr class="favorite-equip-row" align="center">
           <td>
-            <a href="{% url 'equipment:detail' favorite.equip.id %}">
-                {{ favorite.equip.equip_name }}
-            </a>
-        </td>
+            <div class="tooltip">
+              <a href="{% url 'equipment:detail' favorite.equip.id %}">{{ favorite.equip.equip_name }}</a>
+              <span class="tooltiptext">
+                <center>
+                  <img src="{{ favorite.equip.image.url }}" alt="{{ favorite.equip.equip_name }}" class="tooltip-image">
+                </center>
+                貸出状況: {{ favorite.equip.loan_status }}<br>
+                説明　　: {{ favorite.equip.text }}<br>
+                カテゴリ: {{ favorite.equip.category }}<br>
+                状態　　: {{ favorite.equip.condition }}<br>
+                保管場所: {{ favorite.equip.place }}<br>
+                <!--発注者　: {{ order.user.username}}<br>-->
+              </span>
+            </div>
+          </td>
+
              <td>{{ favorite.equip.category }}</td>
-             <td>{{ favorite.equip.status }}</td> <!-- 貸出状況を表示 -->
+
+             <td><!-- 貸出状況を表示 -->
+              {% if favorite.equip.loan_status == '貸出可' %}
+              <span class="material-symbols-outlined">
+                  <font color="#69c44b"><b>circle</span>
+              </span>
+                貸出可
+              {% elif favorite.equip.loan_status == '貸出不可' %}
+                <span class="material-symbols-outlined">
+                  <font color="#EB6161"><b>close
+                </span>
+                貸出不可
+                  </font></b>
+              {% elif favorite.equip.loan_status == '貸出中' %}
+              <span class="material-symbols-outlined">
+                <font color="#EB6161"><b>do_not_disturb_on
+              </span>
+              貸出中
+                </font></b>
+              {% else %}
+              <span class="material-symbols-outlined">
+                <font color="#00A0A8"><b>question_mark
+              </span>
+              その他
+              </font></b>
+              {% endif %}
+             </td> 
+
          </tr>
          {% empty %}
          <tr>
@@ -148,4 +190,28 @@ https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FIL
      </tbody>
  </table>
 </div>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const images = document.querySelectorAll("img.tooltip-image");
+    images.forEach(imgElement => {
+      imgElement.onerror = function() {
+        // 画像が破損している場合、画像を非表示にし、no-imageクラスを表示
+        imgElement.style.display = "none";
+        const noImageDiv = document.createElement("div");
+        noImageDiv.className = "tooltip-noimage";
+        noImageDiv.innerHTML = `
+          <span class="material-symbols-outlined">
+            <font color="#FFFFFF" size="20">
+              no_photography
+            </font>
+          </span>
+        `;
+        imgElement.parentNode.appendChild(noImageDiv);
+      }
+    });
+  });
+</script>
+
 {% endblock content %}

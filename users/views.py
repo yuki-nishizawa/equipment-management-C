@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404,redirect
 from django.views import generic
 from django.views.generic import ListView,TemplateView,UpdateView #基本機能のビューをインポート
 from .forms import CustomUserCreationForm,CustomUserChangeForm      #forms.pyから輸入
-from .models import CustomUser #このビュー内でmodels.pyに定義しているCustomUserモデルを使用する
+from .models import CustomUser,FavoriteEquip #このビュー内でmodels.pyに定義しているCustomUserモデルを使用する
 from django.contrib.auth.mixins import LoginRequiredMixin #ログインしていないと見れないようにするためのヤツ
 from django.http import HttpResponseForbidden#アクセスを禁止するためのヤツ
 from order.models import Order# orderをインポート
@@ -92,6 +92,7 @@ class MyPageView(LoginRequiredMixin, TemplateView):
         # ログインしているユーザーの注文情報の最新5件を取得
         context['username'] = user.username
         context['orders'] = Order.objects.filter(user=user).order_by('-order_date')[:5]  # 最新5件に制限
+        context['favorites'] = FavoriteEquip.objects.filter(user=user).order_by('-added_at')[:5]  # 最新5件に制限
         return context
 
 
@@ -99,3 +100,11 @@ class ForgetPasswordView(TemplateView):
     template_name = 'users/forgetpw.html'  # 忘れたパスワード用のテンプレート
 
 
+class FavoriteListView(LoginRequiredMixin, ListView):
+    template_name = 'users/favorite.html'  # 使用するテンプレート
+    model = FavoriteEquip  # 使用するモデル
+    context_object_name = 'favorites'  # テンプレートに渡すコンテキスト名を変更
+
+    def get_queryset(self):
+        # ログインしているユーザーのお気に入りを取得し、追加日で並び替える
+        return FavoriteEquip.objects.filter(user=self.request.user).order_by('-added_at')
