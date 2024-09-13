@@ -1,3 +1,4 @@
+
 {% extends "base.html" %}
 {% load static %}
 {% block title %}【貸出希望】申請一覧{% endblock title %}
@@ -64,7 +65,6 @@
             カテゴリ: {{ order.equip.category }}<br>
             状態　　: {{ order.equip.condition }}<br>
             保管場所: {{ order.equip.place }}<br>
-            <!--発注者　: {{ order.user.username}}<br>-->
           </span>
         </div>
       </td>
@@ -85,7 +85,6 @@
         {% endif %}
       </td>
       <td>{{ order.order_date|date:"Y/m/d " }}
-        <!--{{ order.order_date|date:"Y/m/d H:i" }}承認依頼時間を表示される場合-->
       </td>
       <td>
         {% if order.approval_status == "承認待ち" %}
@@ -108,7 +107,6 @@
       <td>
         {% if order.approval_status == "承認済み" or order.approval_status == "否決" %}
         {{ order.approval_date|date:"Y/m/d"  }}
-        <!--{{ order.approval_date|date:"Y/m/d H:i"  }} 承認時間を表示する場合-->
         {% else %}
         <span>－</span>
         {% endif %}
@@ -140,7 +138,6 @@
         <span>－</span>
         {% endif %}
       </td>
-      
     </tr>
     {% empty %}
     <tr class="order-history-empty" align="center">
@@ -153,7 +150,7 @@
 <div id="commentModal" class="modal">
   <div class="modal-content">
     <span class="close">&times;</span>
-    <h2>コメントを入力してください</h2> <!-- モーダルのタイトル -->
+    <h2>コメントを入力してください</h2>
     <textarea id="modalComment" placeholder="コメントを入力..." rows="5"></textarea>
     <div class="modal-buttons">
       <button id="submitWithComment" class="modal-button approve-button">送信</button>
@@ -286,64 +283,6 @@
   }
   {% endif %}
 </script>
-<script>
-  
-// 承認・否決ボタンをクリックしたときにモーダルを表示
-document.querySelectorAll('.confirm-button, .reject-button').forEach(button => {
-  button.addEventListener('click', function(event) {
-    event.preventDefault();
-    selectedOrder = this.getAttribute('data-order-id');
-    selectedAction = this.getAttribute('data-action');
-    
-    // 承認なら「承認しますか？」、否決なら「否決しますか？」を表示
-    var actionMessage = selectedAction === 'approve' ? '承認しますか？' : '否決しますか？';
-    modalTitle.textContent = actionMessage;  // モーダルのタイトルを変更
-
-    modal.style.display = 'block'; // モーダルを表示
-  });
-});
-
-// モーダルを閉じる処理（×ボタン）
-closeModal.onclick = function() {
-  modal.style.display = 'none';
-};
-
-// モーダル外のクリックでモーダルを閉じる処理
-window.onclick = function(event) {
-  if (event.target === modal) {
-    modal.style.display = 'none';
-  }
-};
-
-// コメントを送信する処理
-document.getElementById('submitWithComment').addEventListener('click', function() {
-  var comment = document.getElementById('modalComment').value || '－'; // コメントがない場合は「－」
-  submitAction(selectedAction, selectedOrder, comment); // コメントと共にアクションを送信
-  modal.style.display = 'none'; // モーダルを閉じる
-});
-
-// キャンセルボタンが押されたとき
-document.getElementById('cancelModal').addEventListener('click', function() {
-  modal.style.display = 'none'; // モーダルを閉じる
-});
-
-// アクションをサーバーに送信する関数
-function submitAction(action, orderId, comment) {
-  var form = document.createElement('form');  // 新しいフォームを作成
-  form.method = 'post';
-  form.style.display = 'none';
-  form.innerHTML = `
-    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-    <input type="hidden" name="${action}_order" value="${orderId}">
-    <input type="hidden" name="comment" value="${comment}">
-  `;
-  document.body.appendChild(form);
-  form.submit(); // フォームを送信
-}
-});
-
-</script>
-
 <!--検索機能に関するscript-->
 <script>
   // ページ読み込み時にイベントリスナーを追加
