@@ -39,10 +39,10 @@
         <span class="close-button" onclick="closeModal()">&times;</span>
         <div id="modal-body">
             <!-- ここに外部HTMLが読み込まれます -->
+            {% include 'equipment/add.html' %}
         </div>
     </div>
 </div>
-
     <button id="filterAvailableButton" class="filter-available-button" onclick="filterAvailableItems()">貸出可を表示</button>
 </div>
 <table id="itemTable" class="equipment-table">
@@ -218,28 +218,58 @@
     
 </script>
 <script>
-    // モーダルを開く処理
-    function openModal() {
-        const modal = document.getElementById('modal');
+// モーダルを開く処理
+function openModal() {
+    const modal = document.getElementById('modal');
+    const modalBody = document.getElementById('modal-body');
+    // Ajaxでadd.htmlの内容を読み込む
+    fetch("{% url 'equipment:add' %}")
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to load content');
+            }
+            return response.text();
+        })
+        .then(data => {
+            modalBody.innerHTML = data; // モーダル内にHTMLを挿入
+            modal.style.display = 'block'; // モーダルを表示
+            attachFormSubmitHandler(); // フォーム送信イベントを再設定
+        })
+        .catch(error => console.error('Error loading modal content:', error));
+}
+// モーダルを閉じる処理
+function closeModal() {
+    const modal = document.getElementById('modal');
+    modal.style.display = 'none';
+}
+// フォームをAjaxで送信する処理
+function submitForm(event) {
+    event.preventDefault(); // フォームのデフォルトの送信を防ぐ
+    
+    const form = event.target; // イベント発生元のフォームを取得
+    const formData = new FormData(form);
+    fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+        }
+    })
+    .then(response => response.text())
+    .then(data => {
         const modalBody = document.getElementById('modal-body');
-        
-    
-        // Ajaxでadd.htmlの内容を読み込む
-        fetch("{% url 'equipment:add' %}")
-            .then(response => response.text())
-            .then(data => {
-                modalBody.innerHTML = data; // モーダル内にHTMLを挿入
-                modal.style.display = 'block'; // モーダルを表示
-            })
-            .catch(error => console.log('Error loading modal content:', error));
+        modalBody.innerHTML = data; // エラーがあれば再度モーダル内に表示
+        attachFormSubmitHandler(); // 新しく描画されたフォームにも送信イベントを再設定
+    })
+    .catch(error => console.error('Error submitting form:', error));
+}
+// フォーム送信イベントを設定する処理
+function attachFormSubmitHandler() {
+    const form = document.querySelector('#modal-body form');
+    if (form) {
+        form.addEventListener('submit', submitForm);
     }
-    
-    // モーダルを閉じる処理
-    function closeModal() {
-        const modal = document.getElementById('modal');
-        modal.style.display = 'none';
-    }
-    
+}
     // モーダル外をクリックしたら閉じる
     {% comment %} window.onclick = function(event) {
         const modal = document.getElementById('modal');
