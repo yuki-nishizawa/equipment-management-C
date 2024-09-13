@@ -132,15 +132,15 @@
         <span>－</span>
         {% endif %}
       </td>
+      {% endif %}
       <td>
         {% if order.approval_comment %}
-        {{ order.approval_comment }}
+        {{ order.approval_comment }} <!-- 承認者コメント -->
         {% else %}
         <span>－</span>
         {% endif %}
       </td>
       
-      {% endif %}
     </tr>
     {% empty %}
     <tr class="order-history-empty" align="center">
@@ -161,6 +161,71 @@
     </div>
   </div>
 </div>
+<!-- JavaScript for handling modal and actions -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var modal = document.getElementById('commentModal');
+    var closeModal = document.getElementsByClassName('close')[0];
+    var modalTitle = document.querySelector('#commentModal h2');
+    var selectedOrder = '';
+    var selectedAction = '';
+    // 承認・否決ボタンをクリックしたときにモーダルを表示
+    document.querySelectorAll('.confirm-button, .reject-button').forEach(button => {
+      button.addEventListener('click', function(event) {
+        event.preventDefault();
+        selectedOrder = this.getAttribute('data-order-id');
+        selectedAction = this.getAttribute('data-action');
+        
+        var actionMessage = selectedAction === 'approve' ? '承認しますか？' : '否決しますか？';
+        modalTitle.textContent = actionMessage;
+        modal.style.display = 'block'; // モーダルを表示
+      });
+    });
+    // モーダルを閉じる処理（×ボタン）
+    closeModal.onclick = function() {
+      modal.style.display = 'none';
+    };
+    // モーダル外のクリックでモーダルを閉じる処理
+    window.onclick = function(event) {
+      if (event.target === modal) {
+        modal.style.display = 'none';
+      }
+    };
+    // コメントを送信する処理
+    document.getElementById('submitWithComment').addEventListener('click', function() {
+      var comment = document.getElementById('modalComment').value || '－';  // コメントがない場合は「－」
+      submitAction(selectedAction, selectedOrder, comment);
+      modal.style.display = 'none'; // モーダルを閉じる
+    });
+    // キャンセルボタンが押されたとき
+    document.getElementById('cancelModal').addEventListener('click', function() {
+      modal.style.display = 'none'; // モーダルを閉じる
+    });
+    // アクションをサーバーに送信する関数
+    function submitAction(action, orderId, comment) {
+      var form = document.createElement('form');  // 新しいフォームを作成
+      form.method = 'post';
+      form.action = window.location.href;
+      var csrfTokenInput = document.createElement('input');
+      csrfTokenInput.type = 'hidden';
+      csrfTokenInput.name = 'csrfmiddlewaretoken';
+      csrfTokenInput.value = '{{ csrf_token }}';
+      form.appendChild(csrfTokenInput);
+      var actionInput = document.createElement('input');
+      actionInput.type = 'hidden';
+      actionInput.name = action + '_order';
+      actionInput.value = orderId;
+      form.appendChild(actionInput);
+      var commentInput = document.createElement('input');
+      commentInput.type = 'hidden';
+      commentInput.name = 'comment';
+      commentInput.value = comment;
+      form.appendChild(commentInput);
+      document.body.appendChild(form);
+      form.submit(); // フォームを送信
+    }
+  });
+</script>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     const images = document.querySelectorAll("img.tooltip-image");
@@ -222,68 +287,63 @@
   {% endif %}
 </script>
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    var modal = document.getElementById('commentModal');
-    var closeModal = document.getElementsByClassName('close')[0];
-    var modalTitle = document.querySelector('#commentModal h2'); // モーダル内のタイトル要素を取得
-    var selectedOrder = '';
-    var selectedAction = '';
   
-    // 承認・否決ボタンをクリックしたときにモーダルを表示
-    document.querySelectorAll('.confirm-button, .reject-button').forEach(button => {
-      button.addEventListener('click', function(event) {
-        event.preventDefault();
-        selectedOrder = this.getAttribute('data-order-id');
-        selectedAction = this.getAttribute('data-action');
-        
-        // 承認なら「承認しますか？」、否決なら「否決しますか？」を表示
-        var actionMessage = selectedAction === 'approve' ? '承認しますか？' : '否決しますか？';
-        modalTitle.textContent = actionMessage;  // モーダルのタイトルを変更
-  
-        modal.style.display = 'block'; // モーダルを表示
-      });
-    });
-  
-    // モーダルを閉じる処理（×ボタン）
-    closeModal.onclick = function() {
-      modal.style.display = 'none';
-    };
-  
-    // モーダル外のクリックでモーダルを閉じる処理
-    window.onclick = function(event) {
-      if (event.target === modal) {
-        modal.style.display = 'none';
-      }
-    };
-  
-    // コメントを送信する処理
-    document.getElementById('submitWithComment').addEventListener('click', function() {
-      var comment = document.getElementById('modalComment').value || '－'; // コメントがない場合は「－」
-      submitAction(selectedAction, selectedOrder, comment); // コメントと共にアクションを送信
-      modal.style.display = 'none'; // モーダルを閉じる
-    });
-  
-    // キャンセルボタンが押されたとき
-    document.getElementById('cancelModal').addEventListener('click', function() {
-      modal.style.display = 'none'; // モーダルを閉じる
-    });
-  
-    // アクションをサーバーに送信する関数
-    function submitAction(action, orderId, comment) {
-      var form = document.createElement('form');  // 新しいフォームを作成
-      form.method = 'post';
-      form.style.display = 'none';
-      form.innerHTML = `
-        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-        <input type="hidden" name="${action}_order" value="${orderId}">
-        <input type="hidden" name="comment" value="${comment}">
-      `;
-      document.body.appendChild(form);
-      form.submit(); // フォームを送信
-    }
+// 承認・否決ボタンをクリックしたときにモーダルを表示
+document.querySelectorAll('.confirm-button, .reject-button').forEach(button => {
+  button.addEventListener('click', function(event) {
+    event.preventDefault();
+    selectedOrder = this.getAttribute('data-order-id');
+    selectedAction = this.getAttribute('data-action');
+    
+    // 承認なら「承認しますか？」、否決なら「否決しますか？」を表示
+    var actionMessage = selectedAction === 'approve' ? '承認しますか？' : '否決しますか？';
+    modalTitle.textContent = actionMessage;  // モーダルのタイトルを変更
+
+    modal.style.display = 'block'; // モーダルを表示
   });
-  
+});
+
+// モーダルを閉じる処理（×ボタン）
+closeModal.onclick = function() {
+  modal.style.display = 'none';
+};
+
+// モーダル外のクリックでモーダルを閉じる処理
+window.onclick = function(event) {
+  if (event.target === modal) {
+    modal.style.display = 'none';
+  }
+};
+
+// コメントを送信する処理
+document.getElementById('submitWithComment').addEventListener('click', function() {
+  var comment = document.getElementById('modalComment').value || '－'; // コメントがない場合は「－」
+  submitAction(selectedAction, selectedOrder, comment); // コメントと共にアクションを送信
+  modal.style.display = 'none'; // モーダルを閉じる
+});
+
+// キャンセルボタンが押されたとき
+document.getElementById('cancelModal').addEventListener('click', function() {
+  modal.style.display = 'none'; // モーダルを閉じる
+});
+
+// アクションをサーバーに送信する関数
+function submitAction(action, orderId, comment) {
+  var form = document.createElement('form');  // 新しいフォームを作成
+  form.method = 'post';
+  form.style.display = 'none';
+  form.innerHTML = `
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+    <input type="hidden" name="${action}_order" value="${orderId}">
+    <input type="hidden" name="comment" value="${comment}">
+  `;
+  document.body.appendChild(form);
+  form.submit(); // フォームを送信
+}
+});
+
 </script>
+
 <!--検索機能に関するscript-->
 <script>
   // ページ読み込み時にイベントリスナーを追加
