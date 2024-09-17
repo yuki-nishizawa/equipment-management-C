@@ -236,9 +236,19 @@ def get_calendar_context(request, year=None, month=None, equip=None):
     year = int(request.GET.get('year', datetime.now().year)) if year is None else int(year)
     month = int(request.GET.get('month', datetime.now().month)) if month is None else int(month)
 
-    # 今月の日数を取得
-    _, days_in_month = calendar.monthrange(year, month)
+    # 月の最初の日が何曜日か（0=月曜日, 6=日曜日）とその月の日数を取得
+    first_weekday, days_in_month = calendar.monthrange(year, month)
+
+    # 月曜日始まりから日曜日始まりに変換
+    if first_weekday == 6:  # 日曜日の場合
+        first_weekday = 0
+    else:
+        first_weekday += 1
+
     days_in_month_range = range(1, days_in_month + 1)
+
+    # 空のセルの数（first_weekday の値分）
+    empty_days = range(first_weekday)
 
     # 貸出予定を取得（フィルタ条件はアプリに応じて変更）
     loaned_days = set()
@@ -279,6 +289,7 @@ def get_calendar_context(request, year=None, month=None, equip=None):
         'loaned_days': loaned_days,
         'current_year': year,
         'current_month': month,
+        'empty_days': empty_days,  # 空のセル数を渡す
         'prev_month_year': prev_month_year,
         'prev_month': prev_month,
         'next_month_year': next_month_year,

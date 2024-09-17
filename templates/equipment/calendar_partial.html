@@ -5,8 +5,16 @@
 </div>
 
 <div class="calendar">
+  <!-- 曜日のヘッダー -->
   <div>日</div><div>月</div><div>火</div><div>水</div><div>木</div><div>金</div><div>土</div>
+
+  <!-- 最初の日の前に空のセルを挿入して曜日を調整 -->
+  {% for _ in empty_days %}
+    <div class="empty"></div>
+  {% endfor %}
+
+  <!-- カレンダーの日付を表示 -->
   {% for day in days_in_month %}
-      <div class="{% if day in loaned_days %}loaned{% endif %}">{{ day }}</div>
+    <div class="{% if day in loaned_days %}loaned{% endif %}">{{ day }}</div>
   {% endfor %}
 </div>
