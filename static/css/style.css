@@ -32,13 +32,12 @@ body {
   background-color: #f5f5f5;
   width: 100%; 
   margin: 0; 
-  padding-top: 70px;
 }
 
 .main {  /*白いハコ*/
   background-color: white;
   width: 95%;
-  margin: 15px auto 100px auto; 
+  margin: 120px auto 60px auto; 
   padding: 15px; 
   display: flex;
   flex-direction: column; 
@@ -52,7 +51,7 @@ body {
 
 .title-logo {
   position: fixed; /* スクロールしても位置を固定 */
-  top: 0;
+  top: 75px;
   left: 0;
   width: 100%;
   height: 100%;
@@ -74,8 +73,6 @@ form input {
  ヘッダー(base.html)
 *********************************************/
 header {
-  padding: 15px;
-  background-color: #00964B; /*Tokyu Green*/ 
   width: 100%; /* 全幅に広げる */
   position: fixed; /* スクロールしても固定する */
   top: 0; /* 上部に固定 */
@@ -83,34 +80,55 @@ header {
   z-index: 1000; /* 画像よりも前に表示させる設定 */
 }
 
-header a {
-  color:#FFFFFF;
+
+.header-top {
+  display: flex; /* 横に並べる */
+  align-items: center;
+  padding: 10px 20px 0 20px; /* 内側の余白 */
+  background-color: #FBFBFA;
+  height: 50px;
+}
+
+.header-top h2 {
+  margin: 0; /* タイトルの余白をなくす */
+  font-size: 1.5em; /* タイトルのサイズ調整 */
+}
+
+.user-username {
+  margin-left: left;
+  color: #414141; /* テキストの色を白に設定 */
+  text-decoration: none; /* 下線を消す */
+  padding: 0 15px;
+}
+
+/* メニューの調整 */
+.header-content {
+  display: flex; /* 横に並べる */
+  justify-content: space-between; /* 左右に配置 */
+  align-items: center; /* 縦方向に中央揃え */
+  background: linear-gradient(90deg, #A9CB03, #48A63F);
+  padding: 10px 20px; /* 内側の余白を調整 */
+  margin: 0 auto; /* 中央寄せ */
+  width: 100%; /* 全幅に設定 */
+  height: 50px;
+}
+
+.header-content a{
+  color: #FBFBFA;
   text-decoration: none;
 }
 
-.header-content {
-  display: flex; 
-  justify-content: space-between;
-  align-items: center;
-  margin: 0 auto;
-  padding: 0 20px;
-  color: #FFFFFF;
-}
 .header-content ul {
-  list-style: none;
-  margin: 0; 
-  padding: 0;
-  display: flex;
-}
-.header-content ul li {
-  margin: 0 15px;
+  display: flex; /* メニューを横に並べる */
+  padding: 0; /* パディングをリセット */
+  margin: 0; /* マージンをリセット */
 }
 
-.header-content .center { /*備品貸出簿という文字が中心に配置されるように修正*/
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+.header-content ul li {
+  margin: 0 15px; /* メニュー項目間の余白を調整 */
 }
+
+
 
 /* baseスタイル、ユーザ名リンクのデザイン※重要なスタイルがある場合は!importantを使用 */
 .user-username {
@@ -135,10 +153,10 @@ footer {
   position: fixed; /* フッターを画面下部に固定し、スクロールしても常に表示 */
   bottom: 0; /* フッターを画面の一番下に配置 */
   width: 100%; /* フッターの幅を画面いっぱいに設定 */
-  background-color: #00964B; /*Tokyu Green*/ 
+  background: linear-gradient(90deg, #A9CB03, #48A63F);
   padding: 15px; /* フッターの内側の余白 */
   text-align: center; /* フッターのテキストを中央揃え */
-  color: white; /* フッターのテキストカラー */
+  color: #FBFBFA;
   font-size: 16px; /* フッターのフォントサイズ */
   z-index: 1000; /* 画像よりも前に表示させる設定 */
 }

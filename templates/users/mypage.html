@@ -6,11 +6,11 @@ https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FIL
 />
 
 <div class="mypage-container">
-    <div class="last-login-info">
+    {% comment %} <div class="last-login-info">
         <ul>
             <li><strong>最終ログイン:</strong> {{ user.last_login|date:"Y/m/d H:i" }}</li>
         </ul>
-    </div>
+    </div> {% endcomment %}
     <h2>{{ user.username }}さんのマイページ</h2>
     <table class="user-info-table">
       <tr>

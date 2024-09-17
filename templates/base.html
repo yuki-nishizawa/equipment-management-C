@@ -11,13 +11,26 @@
 </head>
 <body>
   <header>
+    <div class="header-top">
+      <a href="{% url 'users:menu' %}" style="text-decoration: none; color: #48A63F;">
+        <h2>書籍貸出管理 -Webシステム</h2>
+      </a>
+      {% if user.is_authenticated %} <!--ログインしているときの表示-->
+      <a class="user-username" href="{% url 'users:mypage' %}"> {{ user.username }} さん
+          <!--ユーザー名を押下すると名マイページに飛ぶ※URL部分にに作成した新URLを追加-->
+      {% if user.is_admin %}
+      (管理者)  <!--ログインユーザーが管理者のときだけ、名前のうしろに(管理者)と表示-->
+      {% endif %}
+      </a>
+      最終ログイン:{{ user.last_login|date:"Y/m/d H:i" }}
+      {% endif %}
+    </div>
       <div class="header-content">
           <div class="left">
               <ul>
                 {% if user.is_authenticated %} <!--ログインしているときの表示-->
                 <li><a href="{% url 'equipment:list' %}">書籍一覧</a></li>
-                <li><a href="{% url 'order:history' %}">
-                  申請履歴
+                <li><a href="{% url 'order:history' %}">申請一覧
                     {% if user.is_admin %}
                       {% if pending_orders_count > 0 %}
                         <span class="badge">
@@ -30,32 +43,23 @@
                       {% endif %}
                       </a></li>
                     {% endif %}
-                    <li><a href="{% url 'users:favorite' %}">お気に入り</a></li>
+                    <li><a href="{% url 'users:favorite' %}">お気に入り一覧</a></li>
                   {% else %}<!--ログインしてないときの表示-->
-                <li><a href="{% url 'users:index' %}">ホーム</a></li>
+                {% comment %} <li><a href="{% url 'users:index' %}">ホーム</a></li> {% endcomment %}
                 {% endif %}
               </ul>
           </div>
-
-          <div class="center">
-            <a href="{% url 'users:menu' %}"><h2>貸出管理簿</h2></a>
-          </div>
-
           <div class="right">
               <ul>
                 {% if user.is_authenticated %} <!--ログインしているときの表示-->
-                        <li>
-                          ようこそ、<a class="user-username" href="{% url 'users:mypage' %}"> {{ user.username }}</a>さん<!--ユーザー名を押下すると名マイページに飛ぶ※URL部分にに作成した新URLを追加-->
-                  {% if user.is_admin %}<!--ログインユーザーが管理者のときだけ、名前のうしろに(管理者)と表示-->
-                  (管理者)
-                  {% endif %}
+
                   {% if user.is_admin %}<!--ログインユーザーが管理者のときだけ、ユーザー一覧を表示-->
                   <li><a href="{% url 'users:users' %}">ユーザー一覧</a></li>
                   {% endif %}
                 <li><a href="{% url 'users:logout' %}">ログアウト</a></li>
                 {% else %}<!--ログインしてないときの表示-->
-                <li><a href="{% url 'users:login' %}">ログイン</a></li>
-                <li><a href="{% url 'users:register' %}">登録</a></li>
+                {% comment %} <li><a href="{% url 'users:login' %}">ログイン</a></li>
+                <li><a href="{% url 'users:register' %}">登録</a></li> {% endcomment %}
                 {% endif %}
               </ul>
           </div>
