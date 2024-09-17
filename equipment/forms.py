@@ -4,7 +4,7 @@ from django import forms
 class EquipForm(forms.ModelForm):
     class Meta:
       model = Equipment
-      fields = ['equip_name','category', 'condition','loan_status','place','text','image','stock']
+      fields = ['equip_name','category', 'condition','loan_status','place','text','web_site','image','stock']
       labels = {
          'equip_name':'名前',
          'category': 'カテゴリ',
@@ -12,6 +12,7 @@ class EquipForm(forms.ModelForm):
          'loan_status': '貸出状況',
          'place': '設置場所',
          'text': '説明',
+         'web_site': '参考URL',
          'image': '画像',
          'stock': '在庫数',
       }

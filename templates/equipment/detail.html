@@ -90,6 +90,20 @@
 
 <table class="info-table">
   <tr>
+    <td>説明</td>
+    <td>{{ equip.text }}</td>
+  </tr>
+  <tr>
+    <td>参考URL</td>
+    <td>
+      {% if equip.web_site %}
+        <a href="{{ equip.web_site }}" target="_blank" onclick="return confirmNavigation();">{{ equip.web_site }}</a>
+      {% else %}
+        -
+      {% endif %}
+    </td>
+  </tr>
+  <tr>
     <td>カテゴリ</td>
     <td>{{ equip.category }}</td>
   </tr>
@@ -372,6 +386,14 @@
     return confirm("本当にこのコメントを削除しますか？この操作は元に戻せません。");
   }
 </script>
+
+<script>
+// 外部リンクに遷移する前に確認メッセージを表示する関数
+function confirmNavigation() {
+    return confirm("別のサイトに遷移します。よろしいですか？");
+}
+</script>
+
 <!--画像破損対応-->
 <script>
   document.addEventListener("DOMContentLoaded", function() {

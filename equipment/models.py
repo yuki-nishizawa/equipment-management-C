@@ -14,6 +14,7 @@ class Equipment(models.Model):
   condition  = models.CharField(max_length=50,null=False)
   stock = models.PositiveIntegerField(null=False, default=1)
   text = models.TextField(null=False)
+  web_site = models.URLField(blank=True) #URL入力箇所を追加
   image = models.ImageField(upload_to='images/', blank=False, null=False)
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
