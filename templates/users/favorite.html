@@ -5,9 +5,27 @@
 {% block content %}
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <!-- 備品一覧ページ -->
-<h2>お気に入り一覧</h2> <!-- ヘッダーから分離 -->
+<h2 class="order-history-title">お気に入り一覧</h2><!-- ヘッダーから分離 -->
+<!-- 検索フォーム -->
+<form id="searchForm" onsubmit="searchTable(); return false;">
+  <div class="search-container">
+    <select id="searchCategory" class="search-category">
+      <option value="all">すべて</option>
+      <option value="equip_name">備品名</option>
+      <option value="loan_status">貸出状況</option>
+      <option value="category">カテゴリ</option>
+      <option value="condition">状態</option>
+      <option value="place">設置場所</option>
+      <option value="stock">在庫数</option>
+    </select>
+    <input type="text" id="searchInput" class="order-search-box" placeholder="キーワードで検索する...">
+    <button id="searchButton" class="search-button">検索</button>
+  </div>
+</form>
 
 <main class="favorite-list">
+  <button id="filterAvailableButton" class="filter-available-button" onclick="filterAvailableItems()">貸出可を表示</button>
+  <div class="favorite-table-container">
 
   <table class="favorite-table">
     <thead>
@@ -22,7 +40,7 @@
             <th>在庫数</th>
             <th>登録日</th>
             <th>最終更新日</th>
-            <th>お気に入り追加日</th>
+            <th>お気に入り<br>追加日</th>
         </tr>
     </thead>
     <tbody>
@@ -84,7 +102,9 @@
         {% endfor %}
     </tbody>
 </table>
+</div>
 </main>
+
 
 
 <script>
@@ -108,4 +128,94 @@
       });
   });
 </script>
+<!--検索機能に関するscript-->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('searchButton').addEventListener('click', function() {
+      searchTable();
+    });
+    document.getElementById('searchForm').addEventListener('keydown', function(event) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        searchTable();
+      }
+    });
+  });
+  function searchTable() {
+    var input = document.getElementById('searchInput').value.toUpperCase();
+    var category = document.getElementById('searchCategory').value;
+    var table = document.querySelector('.favorite-table');
+    var tr = table.getElementsByTagName('tr');
+    for (var i = 1; i < tr.length; i++) {
+      tr[i].style.display = 'none';
+      var td;
+      
+      if (category === "equip_name") {
+        td = tr[i].getElementsByTagName("td")[0]; // 備品名
+      } else if (category === "loan_status") {
+        td = tr[i].getElementsByTagName("td")[2]; // 貸出状況
+      } else if (category === "category") {
+        td = tr[i].getElementsByTagName("td")[3]; // カテゴリ
+      } else if (category === "condition") {
+        td = tr[i].getElementsByTagName("td")[4]; // 状態
+      } else if (category === "place") {
+        td = tr[i].getElementsByTagName("td")[5]; // 設置場所
+      } else if (category === "stock") {
+        td = tr[i].getElementsByTagName("td")[7]; // 在庫数
+      } else if (category === "all") {
+        var tds = tr[i].getElementsByTagName("td");
+        for (var j = 0; j < tds.length; j++) {
+          if (tds[j]) {
+            var txtValue = tds[j].textContent || tds[j].innerText;
+            if (txtValue.toUpperCase().indexOf(input) > -1) {
+              tr[i].style.display = '';
+              break;
+            }
+          }
+        }
+        continue;
+      }
+      if (td) {
+        var txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(input) > -1) {
+          tr[i].style.display = '';
+        }
+      }
+    }
+  }
+</script>
+<!--貸出可能のみの表示-->
+<script>
+  let isFiltered = false;  // フィルタが適用されているかのフラグ
+  function filterAvailableItems() {
+      let input = "貸出可";  // ボタンでフィルタリングするテキスト（今回は「貸出可」）
+      let table = document.querySelector(".favorite-table");  // テーブルのIDを正しく指定
+      let rows = table.getElementsByTagName("tr");
+      // フィルタ状態に応じて表示/非表示を切り替える
+      for (let i = 1; i < rows.length; i++) {
+          let loanStatusCell = rows[i].getElementsByTagName("td")[2];  // 貸出状況は3番目のカラム
+          if (loanStatusCell) {
+              let txtValue = loanStatusCell.textContent || loanStatusCell.innerText;
+              txtValue = txtValue.trim();  // 空白を除去
+              if (isFiltered) {
+                  // フィルタ解除（全て表示）
+                  rows[i].style.display = ""; 
+              } else {
+                  // フィルタ適用（貸出可のみ表示）
+                  if (txtValue.indexOf(input) === -1) {
+                      rows[i].style.display = "none";  // 貸出可以外を非表示
+                  } else {
+                      rows[i].style.display = "";  // 貸出可のものだけ表示
+                  }
+              }
+          }
+      }
+      // ボタンのテキストを切り替える
+      let filterButton = document.getElementById("filterAvailableButton");
+      filterButton.textContent = isFiltered ? "貸出可能のみ表示" : "全て表示";
+      // フィルタ状態を反転させる
+      isFiltered = !isFiltered;
+  }
+</script>
+
 {% endblock content %}

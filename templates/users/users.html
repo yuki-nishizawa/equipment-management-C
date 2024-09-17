@@ -25,7 +25,8 @@
       <button id="searchButton" class="search-button">検索</button>
     </div>
   </form>
-  <table id="userTable">
+  <div class="table-container">
+    <table id="userTable"  class="equipment-table userlist">
     <thead><!-- 項目を表示 -->
       <tr>
         <th>ユーザー名</th>
@@ -76,6 +77,7 @@
       {% endfor %}
     </tbody>
   </table>
+</div>
 </main>
 <script>
   document.getElementById('searchButton').addEventListener('click', function() {

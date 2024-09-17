@@ -576,6 +576,55 @@ th {
   padding: 12px;
   border: 1px solid #ddd;
 }
+
+/* テーブルヘッダーの色を統一 */
+.common-header th {
+  background-color: #f2f2f2; /* 背景色を統一 */
+  color: #000; /* 文字色を統一 */
+  text-align: center;
+  padding: 10px;
+  border-bottom: 2px solid #ddd;
+  height: 50px; /* ヘッダーの高さを統一 */
+}
+/* テーブルのスクロールを有効にするためのコンテナ */
+.table-container {
+  width: 100%;
+  max-height: 600px; /* 必要に応じて調整 */
+  overflow-x: auto; /* 横スクロール */
+  overflow-y: auto; /* 縦スクロール */
+}
+/* テーブル本体のスタイル */
+.equipment-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; /* 列幅を自動調整 */
+}
+.equipment-table td, .equipment-table th {
+  padding: 12px;
+  border: 1px solid #ddd;
+}
+/* 奇数・偶数行に異なる背景色を設定 */
+.equipment-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+.equipment-table tbody tr:nth-child(odd) {
+  background-color: #fff;
+}
+/* ヘッダーの固定 */
+.equipment-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+/* ヘッダーの色を統一 */
+.userlist th {
+  background-color: #f2f2f2; /* 背景色を統一 */
+  color: #000; /* 文字色を統一 */
+  padding: 10px; /* 内側余白を設定 */
+  border-bottom: 2px solid #ddd; /* 下部に線を追加 */
+  height: 50px; /* 高さを統一 */
+  text-align: center;
+}
 /* ユーザー一覧：ユーザー名、メールアドレスは左寄せにする ※ユーザー一覧のみに適用*/
 .userlist td:nth-child(1),
 .userlist td:nth-child(2) {
@@ -758,6 +807,9 @@ tbody td a:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
+    max-width: 100%; /* 親要素の幅に応じてテーブルの幅を制限 */
+    overflow-x: auto; /* 横スクロールを許可 */
+    margin: 0 auto; /* テーブルを中央寄せに */
   }
   .item-list img {
     max-width: 100%; /* 画像の最大幅を100%に設定して画面に合わせる */
@@ -768,9 +820,44 @@ tbody td a:hover {
   .item-list table {
     width: 100%; /* テーブルの幅を100%に設定 */
     /* max-width: 1200px; 最大幅を1200pxに設定→不要なら後で消す */
-    margin: 20px auto; /* 上下の外側の余白を20px、左右の外側の余白を自動で設定して中央に配置 */
-    border-collapse: collapse; /* ボーダーの重なりを解消 */
+     /*margin: 20px auto; /* 上下の外側の余白を20px、左右の外側の余白を自動で設定して中央に配置 */
+    /* border-collapse: collapse; ボーダーの重なりを解消 */
+    min-width: 800px; /* テーブルの最小幅を800pxに */
+    table-layout: fixed; /* テーブルの列幅を固定 */
+    border-collapse: collapse; /* セルの余白をなくす */
   }
+    
+.equipment-table-container {
+  max-height: auto; /* 縦スクロールが発生する最大の高さを設定 */
+  overflow-y: auto; /* 縦スクロールを許可 */
+  overflow-x: hidden; /* 横スクロールは親要素で制御 */
+  position: relative;
+}
+/* テーブルヘッダーを固定 */
+.equipment-table thead {
+  position: sticky; /* 固定 */
+  top: 0; /* 一番上に固定 */
+  z-index: 2; /* ヘッダーを最前面に */
+}
+/* テーブルのヘッダーとセルで折り返し表示を許可 */
+.equipment-table th,
+.equipment-table td {
+  word-wrap: break-word; /* はみ出た単語を折り返す */
+  word-break: break-all; /* 長い単語も折り返す */
+  white-space: normal; /* 折り返しを有効に */
+}
+ 
+/* テーブルをスクロール可能にするためのコンテナ */
+.table-container {
+  max-height: 800px; /* 必要に応じて調整 */
+  overflow-y: auto;
+}
+/* ヘッダーを固定 */
+table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
   /* 備品一覧テーブルの横幅設定 */
   .item-list {
     width: 100%;
@@ -798,12 +885,12 @@ tbody td a:hover {
   }
   .item-list th:nth-child(3),
   .item-list td:nth-child(3) {
-    width: 120px; /* 貸出状況の幅 */
+    width: 100px; /* 画像列の幅 */
   }
 
   .item-list th:nth-child(4),
   .item-list td:nth-child(4) {
-    width: 80px; /* カテゴリ列の幅 */
+    width: 110px; /* カテゴリ列の幅 */
   }
   .item-list th:nth-child(5),
   .item-list td:nth-child(5) {
@@ -811,13 +898,13 @@ tbody td a:hover {
   }
   .item-list th:nth-child(6),
   .item-list td:nth-child(6) {
-    width: 130px; /* 設置場所の幅 */
+    width: 100px; /* 設置場所の幅 */
   }
 
   .item-list th:nth-child(7),
   .item-list td:nth-child(7) {
     text-align: left;
-    width: 400px; /* 説明の幅 */
+    width: 350px; /* 説明の幅 */
   }
 
   .item-list th:nth-child(8),
@@ -832,9 +919,9 @@ tbody td a:hover {
   }
   .item-list th:nth-child(11),
   .item-list td:nth-child(11) {
-    width: 50px; /*返却ボタンの幅 */ 
+    width: 100px; /* 在庫数の幅 */ 
   }
-  
+
   .add-item-container {
     display: block; /* コンテナが全幅を持つようにする */
     width: 100%; /* 親要素の全幅を取る */
@@ -843,7 +930,7 @@ tbody td a:hover {
   }
 
 .no-image-list {
-  width: 100px;
+  width: 100%;
   height: 40px;
   border: 1px solid #ccc;
   font-size: 14px;
@@ -859,14 +946,15 @@ tbody td a:hover {
 
 .status-loan-button, .status-return-button {
   display: inline-block;
-  padding: 10px 20px;
-  font-size: 16px;
+  padding: 10px 10px;
   color: #fff;
   background-color: #69c44b; /* 貸出ボタンの背景色 */
   border: none;
   border-radius: 5px;
   cursor: pointer;
   text-decoration: none;
+  width:100%;
+  white-space: nowrap; /* 改行させない */
 }
 
 .status-return-button {
@@ -1147,7 +1235,7 @@ tbody td a:hover {
 }
 /* ヘッダーのスタイル */
 .order-history-header {
-  background-color: #f2f2f2;
+  background-color: #f5f5f5;
 }
 .order-history-th {
   padding: 10px;
@@ -1466,9 +1554,137 @@ tbody td a:hover {
  お気に入り一覧
 *********************************************/
 .favorite-table {
-  width:100%;
+  width: 100%; /* テーブル幅を150%に設定 */
+  min-width: 800px; /* テーブルの最小幅を800pxに */
+  table-layout: fixed; /* テーブルの列幅を固定 */
+  border-collapse: collapse; /* セルの余白をなくす */
+}
+.favorite-list {
+  max-width: 100%; /* 親要素の幅に応じてテーブルの幅を制限 */
+  overflow-x: auto; /* 横スクロールを許可 */
+  margin: 0 auto; /* テーブルを中央寄せに */
+}
+.favorite-table-container {
+  max-height: auto; /* 縦スクロールが発生する最大の高さを設定 */
+  overflow-y: auto; /* 縦スクロールを許可 */
+  overflow-x: hidden; /* 横スクロールは親要素で制御 */
+  position: relative;
 }
 
+.favorite-list img {
+  max-width: 100%; /* 画像の最大幅を100%に設定して画面に合わせる */
+  height: auto; /* 画像の高さを自動で設定 */
+  border: 1px solid #ddd; /* 画像に境界線を追加 */
+  border-radius: 10px; /* 画像の角を丸くする */
+}
+
+/* テーブルのヘッダーを固定 */
+.favorite-table thead {
+  position: sticky; /* 固定するための設定 */
+  top: 0; /* 一番上に固定 */
+  z-index: 2; /* ヘッダーを最前面に表示 */
+}
+/* テーブルのヘッダーとセルで折り返し表示を許可 */
+.favorite-table th,
+.favorite-table td {
+  word-wrap: break-word; /* はみ出た単語を折り返す */
+  word-break: break-all; /* 長い単語も折り返す */
+  white-space: normal; /* 折り返しを有効に */
+}
 .description{
   text-align: left;
+}
+
+
+/* 各列の幅をピクセル単位で指定 */
+.favorite-table th:nth-child(1),
+.favorite-table td:nth-child(1) {
+    width: 150px; /* 備品名 */
+}
+.favorite-table th:nth-child(2),
+.favorite-table td:nth-child(2) {
+    width: 100px; /* 画像列 */
+}
+.favorite-table th:nth-child(3),
+.favorite-table td:nth-child(3) {
+    width: 120px; /* 貸出状況列 */
+}
+.favorite-table th:nth-child(4),
+.favorite-table td:nth-child(4) {
+    width: 120px; /* カテゴリ列 */
+}
+.favorite-table th:nth-child(5),
+.favorite-table td:nth-child(5) {
+    width: 100px; /* 状態列 */
+}
+.favorite-table th:nth-child(6),
+.favorite-table td:nth-child(6) {
+    width: 130px; /* 設置場所列 */
+}
+.favorite-table th:nth-child(7),
+.favorite-table td:nth-child(7) {
+    width: 200px; /* 説明 */
+}
+.favorite-table th:nth-child(8),
+.favorite-table td:nth-child(8) {
+    width: 80px; /* 在庫数 */
+}
+.favorite-table th:nth-child(9),
+.favorite-table td:nth-child(9),
+.favorite-table th:nth-child(10),
+.favorite-table td:nth-child(10),
+.favorite-table th:nth-child(11),
+.favorite-table td:nth-child(11) {
+    width: 100px; /* 日付 */
+}
+/* テーブルヘッダーの背景色を統一 */
+.item-list th,
+.order-history-th,
+.favorite-table th,
+.user-info-table th, 
+.order-history-header th,
+.order-history-table th,
+.favorite-equip-table th,
+.favorite-equip-header th,
+.equipment-table th{
+    background-color: #f2f2f2; /* 背景色を統一 */
+    color: #000; /* 文字色も統一 */
+    text-align: center;
+    padding: 10px;
+    border-bottom: 2px solid #ddd;
+    height: 50px; /* ヘッダーの高さを統一 */
+}
+/* テーブルの偶数行と奇数行の背景色を統一 */
+.item-list tbody tr:nth-child(even),
+.order-history-row:nth-child(even),
+.favorite-table tbody tr:nth-child(even) 
+.user-info-table th tr:nth-child(even), 
+.order-history-header  tr:nth-child(even),
+.order-history-table  tr:nth-child(even),
+.favorite-equip-table  tr:nth-child(even),
+.favorite-equip-header  tr:nth-child(even){
+    background-color: #f9f9f9; /* 偶数行の背景色 */
+}
+.item-list tbody tr:nth-child(odd),
+.order-history-row:nth-child(odd),
+.favorite-table tbody tr:nth-child(odd),
+.user-info-table th tr:nth-child(odd), 
+.order-history-header  tr:nth-child(odd),
+.order-history-table  tr:nth-child(odd),
+.favorite-equip-table  tr:nth-child(odd),
+.favorite-equip-header  tr:nth-child(odd) {
+    background-color: #fff; /* 奇数行の背景色 */
+}
+/* テーブルセルのスタイルを統一 */
+.item-list td,
+.order-history-row td,
+.favorite-table td,
+.user-info-table td, 
+.order-history-header td,
+.order-history-table td,
+.favorite-equip-table td,
+.favorite-equip-header td {
+    padding: 10px;
+    border: 1px solid #ddd; /* セルの境界線 */
+    text-align: center;
 }

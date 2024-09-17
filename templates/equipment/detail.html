@@ -107,7 +107,11 @@
   </tr>
 </table>
 {% if user.is_admin %}<!-- 管理者の場合にだけ表示される！ -->
-<h2>在庫数の変更</h2>
+<!-- 在庫数変更セクションのタイトルと折りたたみ -->
+<h2 id="stock-update-title" style="cursor:pointer;">在庫数の変更 
+  <span class="material-symbols-outlined arrow-icon" id="stock-toggle"><font color="gray">keyboard_arrow_down</font></span>
+</h2>
+<div id="stock-update-section" style="display:none;">
   <!-- フォームの表示 -->
   <form method="post">
    {% csrf_token %}
@@ -116,40 +120,48 @@
    <input type="submit" value="保存" class="save-button">
    </center>
   </form>
+</div>
+
+<h2 id="stock-history-title" style="cursor:pointer;">在庫数変更履歴 <small>※最新5件を表示</small> 
+  <span class="material-symbols-outlined arrow-icon" id="history-toggle"><font color="gray">keyboard_arrow_down</font></span>
+</h2>
+<div id="stock-history-section" style="display:none;">
+  <table class="detail-table">
+    <thead>
+      <tr align="center">
+        <th>変更日時</th>
+        <th>変更前の在庫数</th>
+        <th>変更後の在庫数</th>
+        <th>変更したユーザー</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for change in stock_changes %}
+      <tr align="center">
+        <td>{{ change.changed_date|date:"Y/m/d H:i"  }}</td>
+        <td>{{ change.previous_stock }}</td>
+        <td>{{ change.new_stock }}</td>
+        <td>{{ change.user.username }}</td>
+      </tr>
+      {% empty %}
+      <tr align="center">
+        <td colspan="4">変更履歴はありません</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 {% endif %}
-{% if user.is_admin %} <!-- 管理者の場合にだけ表示される！ -->
-<h2>在庫数変更履歴 <small>※最新5件を表示</small></h2>
-<table class="detail-table">
-  <thead>
-    <tr align="center">
-      <th>変更日時</th>
-      <th>変更前の在庫数</th>
-      <th>変更後の在庫数</th>
-      <th>変更したユーザー</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for change in stock_changes %}
-    <tr align="center">
-      <td>{{ change.changed_date|date:"Y/m/d H:i"  }}</td>
-      <td>{{ change.previous_stock }}</td>
-      <td>{{ change.new_stock }}</td>
-      <td>{{ change.user.username }}</td>
-    </tr>
-    {% empty %}
-    <tr align="center">
-      <td colspan="4">変更履歴はありません</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-{% endif %}
-<!-- 貸出希望依頼ボタン -->
-<button id="openModalButton" class="order-button custom-size">貸出希望依頼</button>
+
+
+
+
+
 <!-- モーダルウィンドウ -->
 <div id="orderModal" class="modal">
   <div class="modal-content">
     <span class="close-button" id="closeModalButton">&times;</span>
+    <center>
     <h2>貸出希望依頼</h2>
     <form method="post">
       {% csrf_token %}
@@ -167,7 +179,7 @@
         <label for="return_date">返却予定日</label>
         <input type="date" id="return_date" name="return_date" required>
       </div>
-      <center>
+
         <input type="submit" value="送信" class="modal-button approve-button">
       </center>
     </form>
@@ -182,6 +194,8 @@
   </center>
 </form> {% endcomment %}
 <h2>貸出の承認履歴 <small>※最新5件を表示</small></h2>
+<!-- 貸出希望依頼ボタン -->
+<button id="openModalButton" class="order-button custom-size">貸出希望依頼</button>
 <table class="detail-table">
   <thead>
     <tr align="center">
@@ -468,7 +482,33 @@
     });
 });
 </script>
+<script>
+  // 在庫数変更セクションの表示・非表示を切り替える
+  document.getElementById('stock-update-title').addEventListener('click', function() {
+    const stockUpdateSection = document.getElementById('stock-update-section');
+    const stockToggle = document.getElementById('stock-toggle');
+    if (stockUpdateSection.style.display === 'none') {
+      stockUpdateSection.style.display = 'block';
+      stockToggle.innerHTML = '<font color="gray">keyboard_arrow_up</font>';
+    } else {
+      stockUpdateSection.style.display = 'none';
+      stockToggle.innerHTML = '<font color="gray">keyboard_arrow_down</font>';
+    }
+  });
 
+  // 在庫数変更履歴セクションの表示・非表示を切り替える
+  document.getElementById('stock-history-title').addEventListener('click', function() {
+    const stockHistorySection = document.getElementById('stock-history-section');
+    const historyToggle = document.getElementById('history-toggle');
+    if (stockHistorySection.style.display === 'none') {
+      stockHistorySection.style.display = 'block';
+      historyToggle.innerHTML = '<font color="gray">keyboard_arrow_up</font>';
+    } else {
+      stockHistorySection.style.display = 'none';
+      historyToggle.innerHTML = '<font color="gray">keyboard_arrow_down</font>';
+    }
+  });
+</script>
 {% comment %} JavaScriptここまで {% endcomment %}
 
 {% endblock content %}
