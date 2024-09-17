@@ -45,6 +45,7 @@ body {
   align-items: center; 
   border-radius: 10px;
 }
+
 .title {/*各ページのタイトル部分*/
   margin-bottom: 15px;
 }
@@ -1669,7 +1670,6 @@ table th {
 .description{
   text-align: left;
 }
-
 
 /* 各列の幅をピクセル単位で指定 */
 .favorite-table th:nth-child(1),

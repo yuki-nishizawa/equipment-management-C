@@ -3,7 +3,7 @@
 {% load static %}
 {% block title %}書籍登録{% endblock title %}
 {% block content %}
-<div class="main">
+
     <!-- 書籍一覧へ戻るボタン（相対的な位置に配置）-->
     <div class="button-container">
         <a href="{% url 'equipment:list' %}" class="return-button">書籍一覧へ戻る</a>
@@ -73,13 +73,14 @@
     <span class="close-text">閉じる</span> <!-- 閉じるの文字を追加 -->
     <span class="close-button" onclick="closeModal()">&times;</span> <!-- 閉じる×ボタン -->
 </div>
-</div>
+
 <!-- モーダル内のみに適用するスタイル -->
 <style>
     /* このページの背景画像を非表示にする */
     body {
         background-image: none;
     }
+    
     /* モーダル内でヘッダーとフッターを非表示にする */
     .modal header, .modal footer {
         display: none;
