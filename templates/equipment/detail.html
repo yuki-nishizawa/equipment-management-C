@@ -207,9 +207,52 @@
 <input type="submit" value="貸出希望依頼" class="order-button">
   </center>
 </form> {% endcomment %}
+
+
+<h2>今後の貸出予定</h2>
+<button id="openModalButton" class="order-button custom-size">貸出希望依頼</button>
+
+
+<!-- カレンダーの表示 -->
+<div class="approved-order">
+<div id="calendar-container">
+  {% include 'equipment/calendar_partial.html' %}
+</div>
+
+<div class="approved-table">
+  <big><b>※直近の貸出予定(直近の5件を表示)</b></big>
+<table class="detail-table">
+  <thead>
+    <tr align="center">
+      <th>貸出依頼者</th>
+      <th>数量</th>
+      <th>貸出希望日</th>
+      <th>返却予定日</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for order in future_orders %}
+    <tr align="center">
+        <td>{{ order.user.username }}</td>
+        <td>{{ order.quantity }}</td>
+        <td>{{ order.loan_date|date:"Y/m/d" }}</td>
+        <td>{{ order.return_date|date:"Y/m/d" }}</td>
+      </tr>
+    {% empty %}
+    <tr align="center">
+        <td colspan="4">今後の貸出予定はありません</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+</div>
+
+
+
 <h2>貸出の承認履歴 <small>※最新5件を表示</small></h2>
 <!-- 貸出希望依頼ボタン -->
-<button id="openModalButton" class="order-button custom-size">貸出希望依頼</button>
+
 <table class="detail-table">
   <thead>
     <tr align="center">
@@ -529,6 +572,39 @@ function confirmNavigation() {
       stockHistorySection.style.display = 'none';
       historyToggle.innerHTML = '<font color="gray">keyboard_arrow_down</font>';
     }
+  });
+</script>
+<!--カレンダー機能実装-->
+<script>
+  // イベントリスナーを適用する関数
+  function bindCalendarNavigation() {
+      document.querySelectorAll(".calendar-navigation a").forEach(function(link) {
+          link.addEventListener("click", function(event) {
+              event.preventDefault();  // 通常のリンクの動作を無効化
+              var url = this.href;  // リンク先のURLを取得
+
+              // Fetch APIで非同期にカレンダーを取得
+              fetch(url, {
+                  headers: {
+                      "X-Requested-With": "XMLHttpRequest"  // AJAXリクエストであることを示すヘッダー
+                  }
+              })
+              .then(response => response.text())
+              .then(html => {
+                  // 取得したHTMLをカレンダーの部分に挿入
+                  document.querySelector("#calendar-container").innerHTML = html;
+
+                  // カレンダーが更新されたので、再度イベントリスナーをバインド
+                  bindCalendarNavigation();
+              })
+              .catch(error => console.error("Error loading calendar:", error));
+          });
+      });
+  }
+
+  // 初期ロード時にイベントリスナーをバインド
+  document.addEventListener("DOMContentLoaded", function() {
+      bindCalendarNavigation();  // 最初のバインド
   });
 </script>
 {% comment %} JavaScriptここまで {% endcomment %}

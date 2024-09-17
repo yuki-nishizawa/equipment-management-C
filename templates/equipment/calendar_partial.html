@@ -1,0 +1,12 @@
+<div class="calendar-navigation">
+  <a href="?year={{ prev_month_year }}&month={{ prev_month }}">前月</a>
+  <span>{{ current_year }}年{{ current_month }}月の貸出予定</span>
+  <a href="?year={{ next_month_year }}&month={{ next_month }}">次月</a>
+</div>
+
+<div class="calendar">
+  <div>日</div><div>月</div><div>火</div><div>水</div><div>木</div><div>金</div><div>土</div>
+  {% for day in days_in_month %}
+      <div class="{% if day in loaned_days %}loaned{% endif %}">{{ day }}</div>
+  {% endfor %}
+</div>

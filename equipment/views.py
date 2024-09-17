@@ -3,13 +3,16 @@ from django.urls import reverse_lazy
 from .models import Equipment,StockChange,Comment
 from django.contrib.auth.mixins import LoginRequiredMixin #ログインしてないと見れないようにするやつ
 from django.contrib.auth.decorators import login_required
-from django.views.generic import CreateView,DetailView,UpdateView,DeleteView
+from django.views.generic import CreateView,DetailView,UpdateView,DeleteView,TemplateView
 from .forms import EquipForm,StockUpdateForm,CommentForm
 from order.forms import OrderForm
 from order.models import Order
-from django.http import HttpResponseForbidden,HttpResponseRedirect #アクセスを禁止するためのヤツ
-from django.http import JsonResponse
+from django.http import HttpResponseForbidden,HttpResponseRedirect,HttpResponse,JsonResponse #アクセスを禁止するためのヤツ
 from users.models import FavoriteEquip
+from datetime import datetime, timedelta
+import calendar
+from django.utils import timezone
+from django.template.loader import render_to_string
 
 #備品管理一覧
 @login_required#ログインしていないと見れないようにするデコレータを追加
@@ -53,7 +56,8 @@ class EquipDetailView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         equip = context['equip']
         user = self.request.user
-        #context['image_url'] = equip.image.url if equip.image else '/static/images/no_image.jpg'# 画像URLが空の場合、デフォルト画像URLを設定：別方法で実装したため不要！一応残しておく
+        now = timezone.now().date()  # 現在の日付を取得
+
         context['stock_update_form'] = StockUpdateForm(instance=equip) #在庫数更新のフォームが使えるようになる、instance=equipは、今ビューで処理しているequipのデータを初期設定として入れておく、の意味
         context['stock_changes'] = StockChange.objects.filter(equip=equip).order_by('-changed_date')[:5]#StockChangeモデルのデータが使えるようになる
         context['order_form'] = OrderForm() #発注数更新フォームが使えるようになる
@@ -62,7 +66,47 @@ class EquipDetailView(LoginRequiredMixin, DetailView):
         context['favorite_count'] = FavoriteEquip.objects.filter(equip=equip).count()#お気に入り登録人数をカウント
         context['comments'] = Comment.objects.filter(equip=equip).order_by('created_at')
         context['comment_form'] = CommentForm() #コメントフォームが使えるようになる
+
+        # 貸出予定リスト用！承認済みで、貸出希望日または返却予定日が未来のものを取得し、5件に絞る
+        context['future_orders'] = (
+            Order.objects.filter(
+                equip=equip,
+                approval_status='承認済み',
+                loan_date__gte=now  # 貸出希望日が現在以降
+            )
+            .union(
+                Order.objects.filter(
+                    equip=equip,
+                    approval_status='承認済み',
+                    return_date__gte=now  # 返却予定日が現在以降
+                )
+            )
+            .order_by('loan_date')[:5]  # 貸出希望日でソートして5件に絞る
+        )
+
+
+
+        # カレンダー部分のコンテキストをヘルパーメソッドで取得
+        calendar_context = get_calendar_context(
+            request=self.request,
+            year=self.request.GET.get('year'),
+            month=self.request.GET.get('month'),
+            equip=self.object
+        )
+
+        # カレンダーのコンテキストをマージする
+        context.update(calendar_context)
+
         return context
+
+    def render_to_response(self, context, **response_kwargs):
+        if self.request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            # AJAXリクエストの場合、カレンダーの部分だけ返す
+            html = render_to_string('equipment/calendar_partial.html', context, request=self.request)
+            return HttpResponse(html)
+        else:
+            # 通常のリクエストの場合、全体を返す
+            return super().render_to_response(context, **response_kwargs)
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -183,3 +227,60 @@ class CommentDeleteView(LoginRequiredMixin, DeleteView):
             return HttpResponseForbidden("このコメントを削除する権限がありません。")
         
         return super().dispatch(request, *args, **kwargs)
+
+
+
+#カレンダー機能：ヘルパーメソッド
+def get_calendar_context(request, year=None, month=None, equip=None):
+    # URLから年と月のパラメータを取得し、明示的にint型に変換
+    year = int(request.GET.get('year', datetime.now().year)) if year is None else int(year)
+    month = int(request.GET.get('month', datetime.now().month)) if month is None else int(month)
+
+    # 今月の日数を取得
+    _, days_in_month = calendar.monthrange(year, month)
+    days_in_month_range = range(1, days_in_month + 1)
+
+    # 貸出予定を取得（フィルタ条件はアプリに応じて変更）
+    loaned_days = set()
+    future_orders = Order.objects.filter(
+        equip=equip,
+        loan_date__year=year,
+        loan_date__month=month,
+        approval_status='承認済み'
+    )
+
+    # 貸出日をセットに格納
+    for order in future_orders:
+        loan_date = order.loan_date
+        return_date = order.return_date
+        current_day = loan_date
+        while current_day <= return_date and current_day.month == month:
+            loaned_days.add(current_day.day)
+            current_day += timedelta(days=1)
+
+    # 前月と次月の計算
+    if month == 1:
+        prev_month_year = year - 1
+        prev_month = 12
+    else:
+        prev_month_year = year
+        prev_month = month - 1
+
+    if month == 12:
+        next_month_year = year + 1
+        next_month = 1
+    else:
+        next_month_year = year
+        next_month = month + 1
+
+    # コンテキストを返す
+    return {
+        'days_in_month': days_in_month_range,
+        'loaned_days': loaned_days,
+        'current_year': year,
+        'current_month': month,
+        'prev_month_year': prev_month_year,
+        'prev_month': prev_month,
+        'next_month_year': next_month_year,
+        'next_month': next_month,
+    }

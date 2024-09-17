@@ -517,6 +517,52 @@ footer {
   cursor: pointer;      /* ボタンにマウスカーソルが乗ったとき、ポインター（手の形のカーソル）に変更 */
 }
 
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* 7列（曜日ごと） */
+  gap: 5px;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.calendar div {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+}
+
+.loaned {
+  background-color: #28a745; /* 貸出予定の日の色 */
+  color: white;
+}
+
+.calendar-navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.calendar-container {
+  margin-right: 20px;
+}
+
+.approved-order {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  width:50%;
+  height:100%;
+  gap:40px;
+  margin-bottom: 10px;
+}
+
+.approved-table {
+  display: flex;
+  flex-direction: column; 
+  align-items: center; /* 中央揃え */
+  width:100%;
+}
+
 /******************************************** 
  ユーザー一覧画面
 *********************************************/
