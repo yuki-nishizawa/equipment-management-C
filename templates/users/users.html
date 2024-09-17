@@ -18,11 +18,12 @@
         <option value="all">すべて</option>
         <option value="username">ユーザー名</option>
         <option value="email">メールアドレス</option>
-        <option value="staff">スタッフ</option>
-        <option value="admin">管理者</option>
+        <!--<option value="staff">スタッフ</option>
+        <option value="admin">管理者</option>-->
       </select>
       <input type="text" id="searchInput" class="user-list-search-box" placeholder="キーワードで検索する...">
       <button id="searchButton" class="search-button">検索</button>
+      <button type="button" id="clearButton" class="clear-button" onclick="clearSearch()">クリア</button>
     </div>
   </form>
   <div class="table-container">
@@ -79,6 +80,7 @@
   </table>
 </div>
 </main>
+<!--検索機能のscript-->
 <script>
   document.getElementById('searchButton').addEventListener('click', function() {
     searchTable();
@@ -115,5 +117,20 @@
       rows[i].style.display = found ? "" : "none";
     }
   }
+</script>
+<!--検索をクリアのscript-->
+<script>
+  function clearSearch() {
+    // 検索入力ボックスをクリア
+    document.getElementById('searchInput').value = '';
+    // カテゴリをデフォルトに戻す
+    document.getElementById('searchCategory').value = 'all';
+    // テーブルのすべての行を表示
+    let table = document.getElementById('userTable'); // テーブルのIDを取得
+    let rows = table.getElementsByTagName('tr');
+    for (let i = 1; i < rows.length; i++) {
+        rows[i].style.display = ''; // 全ての行を表示
+    }
+}
 </script>
 {% endblock content %}

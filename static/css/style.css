@@ -789,9 +789,9 @@ tbody td a:hover {
   background-color: #48A63F; /* ボタンの背景色 */
   color: white; /* ボタンの文字色 */
   padding: 0 20px; /* ボタンの左右の内側余白 */
-  border-radius: 25px; /* ボタンの角丸 */
+  border-radius: 5px; /* ボタンの角丸 */
   text-decoration: none; /* 下線を消す */
-  font-weight: bold; /* ボタンの文字を太字に */
+   /* font-weight: bold;ボタンの文字を太字に */
   font-size: 16px; /* 文字サイズ */
   transition: background-color 0.3s ease; /* ホバー時の背景色の変化にアニメーションを追加 */
   cursor: pointer; /* ポインタを表示 */
@@ -800,6 +800,13 @@ tbody td a:hover {
   line-height: 40px; /* テキストをボタンの高さに対して中央揃え */
   text-align: center; /* テキストを中央揃え */
   display: inline-block; /* インラインブロックに */
+}
+.left-align-container{
+  display: flex; /* フレックスボックスを使用 */
+  justify-content: flex-start; /* 左寄せ */
+  align-items: center; /* 垂直方向の中央揃え */
+  width: 100%; /* 必要に応じて幅を調整 */
+  margin-bottom: 10px; /* ボタンと他の要素の間に余白を追加 */
 }
 /* ホバー時の背景色変更 */
 .filter-available-button:hover {
@@ -836,8 +843,49 @@ tbody td a:hover {
     color: #69c44b; /* アイコンの色を緑に設定 */
     font-size: 1.2em; /* テキストとアイコンのサイズを調整 */
     vertical-align: middle; /* アイコンを中央揃えに */
-
   }
+  /* 返却要のみ表示するボタン */
+/* 返却要のみ表示するボタン */
+.filter-returned-button {
+  background-color: #EB6161; /* ボタンの背景色 */
+  color: white; /* ボタンの文字色 */
+  padding: 10px 25px; /* ボタンの内側余白 */
+  border-radius: 5px; /* ボタンの角丸 */
+  text-decoration: none; /* 下線を消す */
+  /*font-weight: bold;  ボタンの文字を太字に */
+  font-size: 16px; /* 文字サイズ */
+  transition: background-color 0.3s ease; /* ホバー時の背景色の変化にアニメーションを追加 */
+  cursor: pointer; /* ポインタを表示 */
+  border: none; /* ボーダーをなしに */
+  text-align: center; /* テキストを中央揃え */
+  display: inline-block; /* インラインブロックに */
+}
+/* ホバー時の背景色変更 */
+.filter-returned-button:hover {
+  background-color: #D9534F; /* ホバー時の色を変更 */
+}
+
+/* ボタン全体を囲むコンテナ */
+.button-container {
+  display: flex; /* フレックスボックスを使用 */
+  justify-content: space-between; /* 左右に要素を配置 */
+  align-items: center; /* 縦方向の中央揃え */
+  margin-bottom: 10px; /* ボタンの下に余白を追加 */
+}
+/* 左側のボタンコンテナ */
+.left-buttons {
+  display: flex; /* 左側のボタンを横並びに */
+  gap: 10px; /* ボタン間のスペースを調整 */
+}
+/* 右側のボタンコンテナ */
+.right-buttons {
+  margin-left: auto; /* 自動的に左側の余白を広げて右寄せにする */
+  color: white;
+  padding: 5px 5px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
 
 
 /******************************************** 
@@ -1071,6 +1119,15 @@ table th {
   font-size: 10px;
   cursor: pointer; /* ボタンにカーソルポインターを表示 */
   width: 80px;
+}
+/* 検索をクリアのボタン */
+.clear-button {
+  padding: 3px 10px; /* パディングを小さくしてボタンを小さくする */
+  font-size: 9px; /* フォントサイズを小さくする */
+  cursor: pointer;
+  width: 60px; /* 幅を小さくする */
+  margin-left: 10px; /* クリアボタンと検索ボタンの間に余白を追加 */
+  margin-bottom: 3px; /* クリアボタンの下に余白を追加 */
 }
   /* 備品一覧の検索ボックスのスタイルを調整 */
 .list-search-box{

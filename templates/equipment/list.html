@@ -26,13 +26,24 @@
         </select>
         <input type="text" id="searchInput" class="list-search-box" placeholder="キーワードで検索する...">
         <button id="searchButton" class="search-button">検索</button>
+        <button type="button" id="clearButton" class="clear-button" onclick="clearSearch()">クリア</button>
     </div>
 </form>
-<div class="add-item-container">
-    {% if user.is_admin %}
-    <a href="#" class="add-item-button" onclick="openModal()">書籍を追加</a>
-    {% endif %}
-    <!-- 貸出可能のみ表示するボタン -->
+<div class="add-item-container button-container">
+    <!-- 左側のボタン（備品を追加、貸出可を表示） -->
+    <div class="left-buttons">
+        {% if user.is_admin %}
+        <a href="#" class="add-item-button" onclick="openModal()">書籍を追加</a>
+        {% endif %}
+        <button id="filterAvailableButton" class="filter-available-button" onclick="filterAvailableItems()">貸出可を表示</button>
+    </div>
+    <!-- 右側のボタン（返却を表示） -->
+    <div class="right-buttons">
+        {% if user.is_admin %}
+        <button id="filterReturnedButton" class="filter-returned-button" onclick="filterReturnedItems()">要返却を表示</button>
+        {% endif %}
+    </div>
+</div>
 <!-- モーダルウィンドウのコンテナ -->
 <div id="modal" class="modal">
     <div class="modal-content">
@@ -43,8 +54,7 @@
         </div>
     </div>
 </div>
-    <button id="filterAvailableButton" class="filter-available-button" onclick="filterAvailableItems()">貸出可を表示</button>
-</div>
+
 <table id="itemTable" class="equipment-table">
     <thead>
         <tr align="center">
@@ -64,7 +74,26 @@
     <tbody>
         {% for equipment in equipments %}
         <tr align="center">
-            <td><a href="{% url 'equipment:detail' equipment.pk %}">{{ equipment.equip_name }}</a></td>
+            <td>           <!--POP -->
+                <div class="tooltip">
+                    <a href="{% url 'equipment:detail' equipment.pk %}">{{ equipment.equip_name }}</a>
+                    <span class="tooltiptext">
+                        <center>
+                            <img src="{{ equipment.image.url }}" alt="{{ equipment.equip_name }}" class="tooltip-image">
+                        </center>
+           <!-- 関連する注文情報を表示 -->
+           {% with equipment.order_set.all.last as latest_order %}
+           {% if latest_order %}
+               貸出希望日: {{ latest_order.loan_date|date:"Y/m/d" }}<br>
+               返却予定日: {{ latest_order.return_date|date:"Y/m/d" }}<br>
+           {% else %}
+               貸出希望日: なし<br>
+               返却予定日: なし<br>
+           {% endif %}
+       {% endwith %}
+                    </span>
+                </div>
+            </td><!--POP -->
             <td>
                 <a href="{% url 'equipment:detail' equipment.pk %}">
                     {% if equipment.image %}
@@ -133,12 +162,13 @@
         </tr>
         {% empty %}
         <tr align="center">
-            <td colspan="9">備品が見つかりませんでした。</td>
+            <td colspan="11">備品が見つかりませんでした。</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
 </main>
+<!--検索機能のscript-->
 <script>
     function searchTable() { 
         let input = document.getElementById("searchInput").value.toLowerCase();
@@ -173,6 +203,23 @@
                 }
             }
             rows[i].style.display = found ? "" : "none";
+        }
+    }
+</script>
+    <!--検索をクリアのscript-->
+<script>
+    function clearSearch() {
+        // 検索入力ボックスをクリア
+        document.getElementById('searchInput').value = '';
+    
+        // カテゴリをデフォルトに戻す
+        document.getElementById('searchCategory').value = 'all';
+    
+        // テーブルのすべての行を表示
+        let table = document.getElementById('itemTable');
+        let rows = table.getElementsByTagName('tr');
+        for (let i = 1; i < rows.length; i++) {
+            rows[i].style.display = '';
         }
     }
 </script>
@@ -307,5 +354,58 @@ function attachFormSubmitHandler() {
             return confirm("返却操作を確定しますか？");
         }
     </script>
+    <!--返却の必要がある備品のみを表示するscript-->
+    <script>
+        let isReturnFiltered = false;  // フィルタが適用されているかのフラグ
+function filterReturnedItems() {
+    let table = document.getElementById("itemTable");
+    let rows = table.getElementsByTagName("tr");
+    // フィルタ状態に応じて表示/非表示を切り替える
+    for (let i = 1; i < rows.length; i++) {
+        let operationCell = rows[i].getElementsByTagName("td")[10];  // 操作は11番目のカラム
+        if (operationCell) {
+            let txtValue = operationCell.textContent || operationCell.innerText;
+            txtValue = txtValue.trim();  // 空白を除去
+            if (isReturnFiltered) {
+                // フィルタ解除（全て表示）
+                rows[i].style.display = ""; 
+            } else {
+                // フィルタ適用（「返却」のみ表示）
+                if (txtValue.indexOf("返却") === -1) {
+                    rows[i].style.display = "none";  // 「返却」以外を非表示
+                } else {
+                    rows[i].style.display = "";  // 「返却」のものだけ表示
+                }
+            }
+        }
+    }
+    // ボタンのテキストを切り替える
+    let filterButton = document.getElementById("filterReturnedButton");
+    filterButton.textContent = isReturnFiltered ? "返却を表示" : "全て表示";
+    // フィルタ状態を反転させる
+    isReturnFiltered = !isReturnFiltered;
+        }
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+          const images = document.querySelectorAll("img.tooltip-image");
+          images.forEach(imgElement => {
+            imgElement.onerror = function() {
+              // 画像が破損している場合、画像を非表示にし、no-imageクラスを表示
+              imgElement.style.display = "none";
+              const noImageDiv = document.createElement("div");
+              noImageDiv.className = "tooltip-noimage";
+              noImageDiv.innerHTML = `
+                <span class="material-symbols-outlined">
+                  <font color="#FFFFFF" size="20">
+                    no_photography
+                  </font>
+                </span>
+              `;
+              imgElement.parentNode.appendChild(noImageDiv);
+            }
+          });
+        });
+      </script>
     
 {% endblock content %}

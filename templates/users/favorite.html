@@ -20,11 +20,14 @@
     </select>
     <input type="text" id="searchInput" class="order-search-box" placeholder="キーワードで検索する...">
     <button id="searchButton" class="search-button">検索</button>
+    <button type="button" id="clearButton" class="clear-button" onclick="clearSearch()">クリア</button>
   </div>
 </form>
 
 <main class="favorite-list">
-  <button id="filterAvailableButton" class="filter-available-button" onclick="filterAvailableItems()">貸出可を表示</button>
+  <div class="left-align-container">
+    <button id="filterAvailableButton" class="filter-available-button" onclick="filterAvailableItems()">貸出可を表示</button>
+  </div>
   <div class="favorite-table-container">
 
   <table class="favorite-table">
@@ -184,6 +187,21 @@
     }
   }
 </script>
+<!--検索をクリアのscript-->
+<script>
+  function clearSearch() {
+    // 検索入力ボックスをクリア
+    document.getElementById('searchInput').value = '';
+    // カテゴリをデフォルトに戻す
+    document.getElementById('searchCategory').value = 'all';
+    // テーブルのすべての行を表示
+    let table = document.querySelector('.favorite-table'); // テーブルのクラス名で取得
+    let rows = table.getElementsByTagName('tr');
+    for (let i = 1; i < rows.length; i++) {
+        rows[i].style.display = ''; // 全ての行を表示
+    }
+}
+  </script>
 <!--貸出可能のみの表示-->
 <script>
   let isFiltered = false;  // フィルタが適用されているかのフラグ
