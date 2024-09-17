@@ -24,6 +24,7 @@
     </select>
     <input type="text" id="searchInput" class="order-search-box" placeholder="キーワードで検索する...">
     <button id="searchButton" class="search-button">検索</button>
+    <button type="button" id="clearButton" class="clear-button" onclick="clearSearch()">クリア</button>
   </div>
 </form>
 <!-- 管理者のみ承認待ちフィルターを表示 -->
@@ -354,4 +355,19 @@
     }
   }
 </script>
+<!--検索をクリアのscript-->
+<script>
+  function clearSearch() {
+    // 検索入力ボックスをクリア
+    document.getElementById('searchInput').value = '';
+    // カテゴリをデフォルトに戻す
+    document.getElementById('searchCategory').value = 'all';
+    // テーブルのすべての行を表示
+    var table = document.querySelector('.order-history-table'); // テーブルのクラス名で取得
+    var rows = table.getElementsByTagName('tr');
+    for (var i = 1; i < rows.length; i++) {
+        rows[i].style.display = ''; // 全ての行を表示
+    }
+}
+  </script>
 {% endblock content %}
