@@ -15,7 +15,7 @@
           <div class="left">
               <ul>
                 {% if user.is_authenticated %} <!--ログインしているときの表示-->
-                <li><a href="{% url 'equipment:list' %}">備品一覧</a></li>
+                <li><a href="{% url 'equipment:list' %}">書籍一覧</a></li>
                 <li><a href="{% url 'order:history' %}">
                   申請履歴
                     {% if user.is_admin %}

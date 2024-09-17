@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
         <div class="button-container">
-            <a href="{% url 'equipment:list' %}" class="return-button">備品一覧へ戻る</a>
+          <a href="{% url 'equipment:list' %}" class="return-button">書籍一覧へ戻る</a>
         </div>
 
 <h2>{{ equip.equip_name }}</h2><!--備品タイトル-->
@@ -168,7 +168,7 @@
       
       <div class="form-group">
         <label for="quantity">数　量</label>
-        <input type="number" id="quantity" name="quantity" min="1" required class="narrow-input">
+        <input type="number" id="quantity" name="quantity" min="1" value="1" required class="narrow-input">
       </div>
       
       <div class="form-group">

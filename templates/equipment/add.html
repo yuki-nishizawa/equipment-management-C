@@ -1,15 +1,15 @@
 
 {% extends "base.html" %}
 {% load static %}
-{% block title %}備品登録{% endblock title %}
+{% block title %}書籍登録{% endblock title %}
 {% block content %}
 <div class="main">
-    <!-- 備品一覧へ戻るボタン（相対的な位置に配置）-->
+    <!-- 書籍一覧へ戻るボタン（相対的な位置に配置）-->
     <div class="button-container">
-        <a href="{% url 'equipment:list' %}" class="return-button">備品一覧へ戻る</a>
+        <a href="{% url 'equipment:list' %}" class="return-button">書籍一覧へ戻る</a>
     </div>
     <div class="title">
-        <h2>備品登録</h2>
+        <h2>書籍登録</h2>
     </div>
     <div class="content">
         <form method="post" action="{% url 'equipment:add' %}" enctype="multipart/form-data">
@@ -59,9 +59,9 @@
             </div>
         </form>
     </div>
-        <!-- 備品一覧へ戻るボタン（相対的な位置に配置）-->
+        <!-- 書籍一覧へ戻るボタン（相対的な位置に配置）-->
         <div class="button-container">
-            <a href="{% url 'equipment:list' %}" class="return-button">備品一覧へ戻る</a>
+            <a href="{% url 'equipment:list' %}" class="return-button">書籍一覧へ戻る</a>
         </div>
     
 <!-- 閉じるボタン -->
@@ -84,7 +84,7 @@
 .modal .title-logo {
     display: none;
 }
-    /* 備品一覧ボタン */
+    /* 書籍一覧ボタン */
     .return-button {
         position: absolute;
         top: 20px;

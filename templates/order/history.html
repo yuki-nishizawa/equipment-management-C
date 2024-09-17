@@ -11,7 +11,7 @@
   <div class="search-container">
     <select id="searchCategory" class="search-category">
       <option value="all">すべて</option>
-      <option value="equip_name">備品名</option>
+      <option value="equip_name">書籍名</option>
       <option value="quantity">数量</option>
       <option value="requester">担当者</option>
       <option value="loan_date">貸出希望日</option> <!-- 貸出希望日を追加 -->
@@ -35,7 +35,7 @@
 <table class="order-history-table" cellspacing="10" cellpadding="10">
   <thead>
     <tr class="order-history-header" align="center">
-      <th class="order-history-th">備品名</th>
+      <th class="order-history-th">書籍名</th>
       <th class="order-history-th">数量</th>
       <th class="order-history-th">担当者</th>
       <th class="order-history-th">貸出希望日</th> <!-- 貸出希望日を追加 -->
@@ -141,7 +141,7 @@
     </tr>
     {% empty %}
     <tr class="order-history-empty" align="center">
-      <td colspan="8">【貸出希望】申請一覧はありません</td>
+      <td colspan="8">　申請はありません</td>
     </tr>
     {% endfor %}
   </tbody>
@@ -311,7 +311,7 @@
       var td;
       // カテゴリに応じて適切な列を取得
       if (category === "equip_name") {
-        td = tr[i].getElementsByTagName("td")[0]; // 備品名
+        td = tr[i].getElementsByTagName("td")[0]; // 書籍名
       } else if (category === "quantity") {
         td = tr[i].getElementsByTagName("td")[1]; // 数量
       } else if (category === "requester") {
