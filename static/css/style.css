@@ -38,12 +38,16 @@ body {
   background-color: white;
   width: 95%;
   margin: 120px auto 60px auto; 
-  padding: 15px; 
+  padding-top: 15px; 
+  padding-bottom:40px;
   display: flex;
   flex-direction: column; 
   justify-content: center; 
   align-items: center; 
   border-radius: 10px;
+  overflow-x: auto; /* はみ出した場合に横スクロールを有効に */
+  overflow-y: auto; /* はみ出した場合に縦スクロールを有効にする */
+  
 }
 
 .title {/*各ページのタイトル部分*/
@@ -260,6 +264,41 @@ footer {
 /******************************************** 
  備品詳細画面
 *********************************************/
+
+
+.detail-content {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/*備品タイトルバー*/
+.detail-title-bar {
+  margin-top:20px;
+  padding: 5px 20px;
+  border-radius: 10px;
+  width:100%;
+  background-color: #EBF5E6;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title-status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px; /* タイトルとステータスの間隔 */
+}
+
+.detail-button-group {
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  gap:10px;
+}
+
 /*お気に入りボタン*/
 .favorite {
   display: inline-flex;
@@ -380,31 +419,38 @@ footer {
   background-color: #005CC8;
 }
 
-/*貸出ステータス*/
-.loan-status{
-  border: solid 2px #ccc;
-  padding:10px;
-  margin-bottom:10px;
-  border-radius: 10px;
-}
-
 /* アイテム詳細 */
 .item-details {
   font-size: 16px; /* フォントサイズを統一 */
   margin-bottom: 10px; /* 各アイテムの間に余白を追加 */
 }
+
+.image-info {
+  width: 100%;
+  display: flex;
+  justify-content: center; /* 要素を横方向に中央揃え */
+  align-items: flex-start; /* コンテンツを縦方向に上揃え */
+  flex-wrap: wrap; /* 画面幅が狭い場合、折り返しを有効に */
+  gap: 15px; /* 画像とテーブルの間の余白 */
+  margin-top: 20px;
+}
+
+.image-box, .infomation {
+  flex-shrink: 0; /* 要素が縮まないように設定 */
+}
+
 /* 画像のスタイル */
 .image {
   display: inline-block;
-  width: auto; /* アスペクト比を維持しながら高さを自動調整 */
-  max-height: 300px; /* 例えば300pxに制限する */
+  max-width: 400px; /* アスペクト比を維持しながら高さを自動調整 */
+  max-height: 400px; /* 例えば300pxに制限する */
   border: 1px solid #ccc;
 }
 
 /* 画像がないときに表示させる部分 */
 .image-box {
-  width: 300px; 
-  height: 300px; 
+  width: 400px; 
+  height: 400px; 
   position: relative; 
   text-align: center;
   display: flex;
@@ -412,9 +458,14 @@ footer {
   justify-content: center;
 }
 
+.image-box img {
+  max-width: 100%; /* 画像が親要素をはみ出さないように */
+  max-width: 100%; /* アスペクト比を維持 */
+}
+
 .no-image {
-  width: 300px;
-  height: 300px;
+  width: 400px;
+  height: 400px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -453,28 +504,44 @@ footer {
   margin-bottom: 5px; /* 最初のフィールド説明の下に少し余白を追加 */
 }
 /* アイテム詳細のテーブル */
+
+.infomation {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .info-table {
-  width: 20%; /* テーブルの幅を全体の50%に設定 */
-  margin: 20px auto; /* テーブルを中央に配置 */
+  width: 100%; /* テーブルの幅を全体の50%に設定 */
+  height:400px;
   border-collapse: collapse; /* ボーダーを結合 */
-  font-size: 16px; /* テキストのサイズを調整 */
+  margin-top: 0px;
 }
 
 .info-table td a {
   display: inline-block;
-  max-width: 200px; /* URLの最大幅を指定 */
-  white-space: nowrap; /* 改行をしない */
+  max-width: 80%; /* URLの最大幅を指定 */
   overflow: hidden; /* はみ出した部分を隠す */
   text-overflow: ellipsis; /* 省略記号 (...) を表示 */
 }
 
 .info-table td {
   padding: 8px 12px; /* セル内に余白を追加 */
-  border: 1px solid #ddd; /* セルの枠線を追加 */
-  text-align: center; /* テキストを中央揃え */
+  border: 1px solid #ddd;
+  text-align: left;
+  word-wrap: break-word; /* 長い単語を折り返す */
+  word-break: break-all; /* 必要に応じて単語全体を折り返す */
+  white-space: normal; /* テキストを折り返せるように設定 */
 }
 .info-table tr:nth-child(even) {
   background-color: #f9f9f9; /* 偶数行に背景色を設定 */
+}
+
+.info-table td:first-child {
+  width: 100px; /* 左側の列の幅を固定 */
+  white-space: nowrap; /* テキストを折り返さない */
 }
 
 /*コメントのモーダル設定 ボタンは貸出依頼と共通*/
@@ -491,17 +558,18 @@ footer {
 }
 
 .comment-field {
-  width: 55%;
+  width: 100%;
   background-color: #F9F9F9;
   margin: 20px;
   padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  border-radius: 10px;
 }
 
 .comment-contents {
-  width: 80%;
+  width: 90%;
   padding-bottom: 10px;
   margin-bottom: 10px;
   border-bottom: solid 1px #414141;
@@ -547,7 +615,7 @@ footer {
 
 .calendar div {
   border: 1px solid #ccc;
-  padding: 10px;
+  padding: 8px;
   text-align: center;
 }
 
@@ -558,7 +626,7 @@ footer {
 
 .calendar-navigation {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   margin-bottom: 20px;
 }
 
@@ -568,8 +636,8 @@ footer {
 
 .approved-order {
   display: flex;
-  justify-content: space-between;
-  align-content: center;
+  justify-content: center; /* 水平方向に中央揃え */
+  align-items:flex-start; /* 垂直方向に中央揃え（必要に応じて） */
   width:50%;
   height:100%;
   gap:40px;
@@ -594,6 +662,9 @@ footer {
   color:#00A0A8;
 }
 
+#stock-update-section {
+  margin:20px;
+}
 
 /******************************************** 
  ユーザー一覧画面
@@ -772,8 +843,8 @@ tbody td a:hover {
 }
 .button-group {
   display: flex;          /* フレックスボックスを使用して横並びにする */
-  gap: 10px;              /* ボタン間のスペースを調整 */
   align-items: center;    /*ボタンを縦方向の中央に配置 */
+  gap: 10px;              /* ボタン間のスペースを調整 */
   margin-bottom: 15px;
 }
 /* 編集ボタンのスタイル */

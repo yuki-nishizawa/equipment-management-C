@@ -5,73 +5,115 @@
 {% block content %}
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
+
         <div class="button-container">
           <a href="{% url 'equipment:list' %}" class="return-button">書籍一覧へ戻る</a>
         </div>
 
-<h2>{{ equip.equip_name }}</h2><!--備品タイトル-->
-<!--貸出中ステータス表示-->
-<div class="loan-status">
-    <p>貸出状況：
-    {% if equip.loan_status == '貸出可' %}
+
+<!--備品タイトル-->
+
+<div class="detail-content">
+
+<div class="detail-title-bar">
+  <div class="title-status-bar">
+  <h2>
     <span class="material-symbols-outlined">
-      <font color="#69c44b"><b>circle</span>
+      import_contacts
     </span>
-    貸出可
-      </font></b>
+    {{ equip.equip_name }}</h2><!--備品タイトル-->
+      <p>貸出状況：
+      {% if equip.loan_status == '貸出可' %}
+      <span class="material-symbols-outlined">
+        <font color="#69c44b"><b>circle</span>
+      貸出可
+        </font></b>
     {% elif equip.loan_status == '貸出不可' %}
       <span class="material-symbols-outlined">
-        <font color="#EB6161"><b>close
-      </span>
+        <font color="#EB6161"><b>close</span>
       貸出不可
         </font></b>
     {% elif equip.loan_status == '貸出中' %}
     <span class="material-symbols-outlined">
-      <font color="#EB6161"><b>do_not_disturb_on
-    </span>
+      <font color="#EB6161"><b>do_not_disturb_on</span>
     貸出中
       </font></b>
     {% else %}
     <span class="material-symbols-outlined">
-      <font color="#00A0A8"><b>question_mark
-    </span>
+      <font color="#00A0A8"><b>question_mark</span>
     その他（詳細は説明欄を参照）
-  </font></b>
-    {% endif %}
-    </p>
+    </font></b>
+      {% endif %}
+      </p>
+  </div>
+
+  {% if user.is_admin %}<!-- 管理者の場合にだけ表示される！ -->
+  <div class="detail-button-group">
+    <!--備品編集ページへのリンク-->
+    <form action="{% url 'equipment:edit' equip.id %}" method="get">
+      {% csrf_token %}
+      <input type="submit" class="button" value="編集">
+    </form>
+    <!--備品削除リンク※ページは遷移しない-->
+    <form action="{% url 'equipment:delete' equip.id %}" method="post" onsubmit="return confirmDelete();">
+      {% csrf_token %}
+      <input type="submit" class="button delete-button" value="削除">
+    </form>
+  </div>
+  {% endif %}
 </div>
-<!--貸出中ステータスここまで-->
 
 
-{% if user.is_admin %}<!-- 管理者の場合にだけ表示される！ -->
-<div class="button-group">
-  <!--備品編集ページへのリンク-->
-  <form action="{% url 'equipment:edit' equip.id %}" method="get">
-    {% csrf_token %}
-    <input type="submit" class="button" value="編集">
-  </form>
-  <!--備品削除リンク※ページは遷移しない-->
-  <form action="{% url 'equipment:delete' equip.id %}" method="post" onsubmit="return confirmDelete();">
-    {% csrf_token %}
-    <input type="submit" class="button delete-button" value="削除">
-  </form>
-</div>
-{% endif %}
+<div class="image-info">
+  <!--画像-->
+  {% if equip.image %}<!--もし画像があるときは-->
+  <div class="image-box">
+    <img src="{{ equip.image.url }}" alt="{{ equip.equip_name }}" class="image">
+  </div>
+  {% else %}<!--もし画像がないときは-->
+  <div class="no-image">
+    <span class="material-symbols-outlined"><font color="#FFFFFF">no_photography</font></span>
+  </div>
+  {% endif %}
 
-
-{% if equip.image %}<!--もし画像があるときは-->
-<div class="image-box">
-  <img src="{{ equip.image.url }}" alt="{{ equip.equip_name }}" class="image">
-</div>
-{% else %}<!--もし画像がないときは-->
-<div class="no-image">
-  <span class="material-symbols-outlined">
-    <font color="#FFFFFF">
-    no_photography
-    </font>
-  </span>
-</div>
-{% endif %}
+  <!--情報テーブル-->
+  <div class="infomation">
+    <table class="info-table">
+      <tr>
+        <td>説明</td>
+        <td>{{ equip.text }}</td>
+      </tr>
+      <tr>
+        <td>参考URL</td>
+        <td>
+          {% if equip.web_site %}
+            <a href="{{ equip.web_site }}" target="_blank" onclick="return confirmNavigation();">{{ equip.web_site }}</a>
+            <br>(外部リンク)
+            
+          {% else %}
+            -
+          {% endif %}
+        </td>
+      </tr>
+      <tr>
+        <td>カテゴリ</td>
+        <td>{{ equip.category }}</td>
+      </tr>
+      <tr>
+        <td>状態</td>
+        <td>{{ equip.condition }}</td>
+      </tr>
+      <tr>
+        <td>設置場所</td>
+        <td>{{ equip.place }}</td>
+      </tr>
+      <tr>
+        <td>在庫数</td>
+        <td>{{ equip.stock }}</td>
+      </tr>
+    </table>
+  </div><!--infomation-->
+</div><!--image-info-->
 
 <!--お気に入り登録ボタン-->
 <button class="favorite {% if is_favorite %}favorite-active{% else %}favorite-inactive{% endif %}" id="favorite-button" data-equip-id="{{ equip.id }}">
@@ -88,94 +130,12 @@
 <!--お気に入り登録ボタンここまで-->
 
 
-<table class="info-table">
-  <tr>
-    <td>説明</td>
-    <td>{{ equip.text }}</td>
-  </tr>
-  <tr>
-    <td>参考URL</td>
-    <td>
-      {% if equip.web_site %}
-        <a href="{{ equip.web_site }}" target="_blank" onclick="return confirmNavigation();">{{ equip.web_site }}</a>
-      {% else %}
-        -
-      {% endif %}
-    </td>
-  </tr>
-  <tr>
-    <td>カテゴリ</td>
-    <td>{{ equip.category }}</td>
-  </tr>
-  <tr>
-    <td>状態</td>
-    <td>{{ equip.condition }}</td>
-  </tr>
-  <tr>
-    <td>設置場所</td>
-    <td>{{ equip.place }}</td>
-  </tr>
-  <tr>
-    <td>在庫数</td>
-    <td>{{ equip.stock }}</td>
-  </tr>
-</table>
-{% if user.is_admin %}<!-- 管理者の場合にだけ表示される！ -->
-<!-- 在庫数変更セクションのタイトルと折りたたみ -->
-<h2 id="stock-update-title" style="cursor:pointer;">在庫数の変更 
-  <span class="material-symbols-outlined arrow-icon" id="stock-toggle"><font color="gray">keyboard_arrow_down</font></span>
-</h2>
-<div id="stock-update-section" style="display:none;">
-  <!-- フォームの表示 -->
-  <form method="post">
-   {% csrf_token %}
-   {{ stock_update_form.as_p }}
-   <center>
-   <input type="submit" value="保存" class="save-button">
-   </center>
-  </form>
-</div>
-
-<h2 id="stock-history-title" style="cursor:pointer;">在庫数変更履歴 <small>※最新5件を表示</small> 
-  <span class="material-symbols-outlined arrow-icon" id="history-toggle"><font color="gray">keyboard_arrow_down</font></span>
-</h2>
-<div id="stock-history-section" style="display:none;">
-  <table class="detail-table">
-    <thead>
-      <tr align="center">
-        <th>変更日時</th>
-        <th>変更前の在庫数</th>
-        <th>変更後の在庫数</th>
-        <th>変更したユーザー</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for change in stock_changes %}
-      <tr align="center">
-        <td>{{ change.changed_date|date:"Y/m/d H:i"  }}</td>
-        <td>{{ change.previous_stock }}</td>
-        <td>{{ change.new_stock }}</td>
-        <td>{{ change.user.username }}</td>
-      </tr>
-      {% empty %}
-      <tr align="center">
-        <td colspan="4">変更履歴はありません</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
-{% endif %}
-
-
-
-
 
 <!-- モーダルウィンドウ -->
 <div id="orderModal" class="modal">
   <div class="modal-content">
     <span class="close-button" id="closeModalButton">&times;</span>
-    <center>
+
     <h2>貸出希望依頼</h2>
     <form method="post">
       {% csrf_token %}
@@ -208,9 +168,12 @@
   </center>
 </form> {% endcomment %}
 
-
-<h2>今後の貸出予定</h2>
-<button id="openModalButton" class="order-button custom-size">貸出希望依頼</button>
+<div class="detail-title-bar">
+  <h2><span class="material-symbols-outlined"><big>calendar_month</big></span>
+    今後の貸出予定</h2>
+</div>
+<button id="openModalButton" class="order-button custom-size">
+  <span class="material-symbols-outlined"><font color="#FFFFFF">local_library</span> 貸出依頼</font></button>
 
 
 <!-- カレンダーの表示 -->
@@ -249,8 +212,10 @@
 </div>
 
 
-
-<h2>貸出の承認履歴 <small>※最新5件を表示</small></h2>
+<div class="detail-title-bar">
+<h2><span class="material-symbols-outlined"><big>
+  event_available</big></span> 貸出の承認履歴 <small>※最新5件を表示</small></h2>
+</div>
 <!-- 貸出希望依頼ボタン -->
 
 <table class="detail-table">
@@ -351,8 +316,9 @@
   </tbody>
 </table>
 
-
-<h2>コメント</h2>
+<div class="detail-title-bar">
+<h2><span class="material-symbols-outlined"><big>forum</span></big> コメント</h2>
+</div>
 
 <!-- コメントリスト -->
 <div class="comment-field">
@@ -368,7 +334,8 @@
           {% if comment.user == request.user or request.user.is_admin %}
           <form action="{% url 'equipment:comment-delete' comment.id %}" method="post" onsubmit="return confirmDeleteComment();">
             {% csrf_token %}
-            <button type="submit" class="comment-button delete-button">削除</button>
+            <button type="submit" class="comment-button delete-button">
+              <span class="material-symbols-outlined"><font color="#FFFFFF">delete</font></span></button>
           </form>
           {% endif %}
         </div>
@@ -416,6 +383,68 @@
   </div>
 </div>
 
+
+
+{% if user.is_admin %}<!-- 管理者の場合にだけ表示される！ -->
+<!-- 在庫数変更セクションのタイトルと折りたたみ -->
+<div class="detail-title-bar">
+  <h2 id="stock-update-title" style="cursor:pointer; display: inline-block;">
+    <span class="material-symbols-outlined"><big>change_circle</big></span>
+    在庫数の変更</h2>
+  <span class="material-symbols-outlined arrow-icon" id="stock-toggle" style="float: right; cursor: pointer;">
+    <font color="gray">keyboard_arrow_down</font>
+  </span>
+</div>
+<div id="stock-update-section" style="display:none;">
+  <!-- フォームの表示 -->
+  <form method="post">
+   {% csrf_token %}
+   {{ stock_update_form.as_p }}
+   <center>
+   <input type="submit" value="保存" class="save-button">
+   </center>
+  </form>
+</div>
+
+
+<!-- 在庫数変更履歴セクション -->
+<div class="detail-title-bar">
+  <h2 id="stock-history-title" style="cursor:pointer; display: inline-block;">
+    <span class="material-symbols-outlined"><big>deployed_code_history</big></span>
+     在庫数変更履歴 <small>※最新5件を表示</small></h2>
+  <span class="material-symbols-outlined arrow-icon" id="history-toggle" style="float: right; cursor: pointer;">
+    <font color="gray">keyboard_arrow_down</font>
+  </span>
+</div>
+<div id="stock-history-section" style="display:none;">
+  <table class="detail-table">
+    <thead>
+      <tr align="center">
+        <th>変更日時</th>
+        <th>変更前の在庫数</th>
+        <th>変更後の在庫数</th>
+        <th>変更したユーザー</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for change in stock_changes %}
+      <tr align="center">
+        <td>{{ change.changed_date|date:"Y/m/d H:i"  }}</td>
+        <td>{{ change.previous_stock }}</td>
+        <td>{{ change.new_stock }}</td>
+        <td>{{ change.user.username }}</td>
+      </tr>
+      {% empty %}
+      <tr align="center">
+        <td colspan="4">変更履歴はありません</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
+</div><!--detail-content-->
 
 
 
@@ -548,31 +577,37 @@ function confirmNavigation() {
 });
 </script>
 <script>
-  // 在庫数変更セクションの表示・非表示を切り替える
-  document.getElementById('stock-update-title').addEventListener('click', function() {
-    const stockUpdateSection = document.getElementById('stock-update-section');
-    const stockToggle = document.getElementById('stock-toggle');
-    if (stockUpdateSection.style.display === 'none') {
-      stockUpdateSection.style.display = 'block';
-      stockToggle.innerHTML = '<font color="gray">keyboard_arrow_up</font>';
-    } else {
-      stockUpdateSection.style.display = 'none';
-      stockToggle.innerHTML = '<font color="gray">keyboard_arrow_down</font>';
-    }
-  });
+// 在庫数変更セクションの表示・非表示を切り替える
+document.getElementById('stock-update-title').addEventListener('click', toggleStockSection);
+document.getElementById('stock-toggle').addEventListener('click', toggleStockSection);
 
-  // 在庫数変更履歴セクションの表示・非表示を切り替える
-  document.getElementById('stock-history-title').addEventListener('click', function() {
-    const stockHistorySection = document.getElementById('stock-history-section');
-    const historyToggle = document.getElementById('history-toggle');
-    if (stockHistorySection.style.display === 'none') {
-      stockHistorySection.style.display = 'block';
-      historyToggle.innerHTML = '<font color="gray">keyboard_arrow_up</font>';
-    } else {
-      stockHistorySection.style.display = 'none';
-      historyToggle.innerHTML = '<font color="gray">keyboard_arrow_down</font>';
-    }
-  });
+function toggleStockSection() {
+  const stockUpdateSection = document.getElementById('stock-update-section');
+  const stockToggle = document.getElementById('stock-toggle');
+  if (stockUpdateSection.style.display === 'none') {
+    stockUpdateSection.style.display = 'block';
+    stockToggle.innerHTML = '<font color="gray">keyboard_arrow_up</font>';
+  } else {
+    stockUpdateSection.style.display = 'none';
+    stockToggle.innerHTML = '<font color="gray">keyboard_arrow_down</font>';
+  }
+}
+
+// 在庫数変更履歴セクションの表示・非表示を切り替える
+document.getElementById('stock-history-title').addEventListener('click', toggleHistorySection);
+document.getElementById('history-toggle').addEventListener('click', toggleHistorySection);
+
+function toggleHistorySection() {
+  const stockHistorySection = document.getElementById('stock-history-section');
+  const historyToggle = document.getElementById('history-toggle');
+  if (stockHistorySection.style.display === 'none') {
+    stockHistorySection.style.display = 'block';
+    historyToggle.innerHTML = '<font color="gray">keyboard_arrow_up</font>';
+  } else {
+    stockHistorySection.style.display = 'none';
+    historyToggle.innerHTML = '<font color="gray">keyboard_arrow_down</font>';
+  }
+}
 </script>
 <!--カレンダー機能実装-->
 <script>
@@ -608,5 +643,6 @@ function confirmNavigation() {
   });
 </script>
 {% comment %} JavaScriptここまで {% endcomment %}
+
 
 {% endblock content %}
