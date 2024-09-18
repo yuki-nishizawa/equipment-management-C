@@ -536,6 +536,7 @@ footer {
   cursor: pointer;      /* ボタンにマウスカーソルが乗ったとき、ポインター（手の形のカーソル）に変更 */
 }
 
+/*カレンダー機能*/
 .calendar {
   display: grid;
   grid-template-columns: repeat(7, 1fr); /* 7列（曜日ごと） */
@@ -581,6 +582,18 @@ footer {
   align-items: center; /* 中央揃え */
   width:100%;
 }
+
+.dayofweek {
+  background-color: #f9f9f9;
+}
+.sunday {
+  color: #E6371E;
+}
+
+.saturday {
+  color:#00A0A8;
+}
+
 
 /******************************************** 
  ユーザー一覧画面
