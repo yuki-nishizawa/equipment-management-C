@@ -15,9 +15,9 @@
 
 <div class="detail-content">
 
-<div class="detail-title-bar">
+<div class="detail-title-bar booktitle">
   <div class="title-status-bar">
-  <h2>
+  <h2><big>
     <span class="material-symbols-outlined">
       import_contacts
     </span>
@@ -44,6 +44,7 @@
     その他（詳細は説明欄を参照）
     </font></b>
       {% endif %}
+    </big>
       </p>
   </div>
 
@@ -171,9 +172,10 @@
 <div class="detail-title-bar">
   <h2><span class="material-symbols-outlined"><big>calendar_month</big></span>
     今後の貸出予定</h2>
+    <button id="openModalButton" class="order-button custom-size">
+      <span class="material-symbols-outlined"><font color="#FFFFFF">local_library</span> 貸出依頼</font></button>
 </div>
-<button id="openModalButton" class="order-button custom-size">
-  <span class="material-symbols-outlined"><font color="#FFFFFF">local_library</span> 貸出依頼</font></button>
+
 
 
 <!-- カレンダーの表示 -->
@@ -183,7 +185,7 @@
 </div>
 
 <div class="approved-table">
-  <big><b>※直近の貸出予定(直近の5件を表示)</b></big>
+  <big><b>※直近の貸出予定(現在以降の5件を表示)</b></big>
 <table class="detail-table">
   <thead>
     <tr align="center">
@@ -212,112 +214,58 @@
 </div>
 
 
+{% if user.is_staff or user.is_admin %}
 <div class="detail-title-bar">
-<h2><span class="material-symbols-outlined"><big>
-  event_available</big></span> 貸出の承認履歴 <small>※最新5件を表示</small></h2>
+  <h2 id="approval-history-title" style="cursor:pointer; display: inline-block;">
+    <span class="material-symbols-outlined"><big>event_available</big></span> 
+    貸出の承認履歴 <small>※最新5件を表示</small>
+  </h2>
+  <span class="material-symbols-outlined arrow-icon" id="approval-toggle" style="float: right; cursor: pointer;">
+    <font color="gray">keyboard_arrow_down</font>
+  </span>
 </div>
-<!-- 貸出希望依頼ボタン -->
 
-<table class="detail-table">
-  <thead>
-    <tr align="center">
-      <th>承認依頼日</th>
-      <th>貸出希望者</th>
-      <th>数量</th>
-      <th>貸出希望日</th>
-      <th>返却予定日</th>
-      <th>承認ステータス</th>
-      <th>承認日時</th>
-      <th>承認者コメント</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for order in orders %}
-    <tr align="center">
-      <td>{{ order.order_date|date:"Y/m/d H:i" }}</td> <!-- 承認依頼日 -->
-      <td>{{ order.user.username }}</td> <!-- 貸出希望者 -->
-      <td>{{ order.quantity }}</td> <!-- 数量 -->
-      <!-- 貸出希望日 -->
-      <td>
-        {% if order.loan_date %}
-        {{ order.loan_date|date:"Y/m/d" }} <!-- 貸出希望日 -->
-        {% else %}
-        <span>-</span>
-        {% endif %}
-      </td>
-      <!-- 返却予定日 -->
-      <td>
-        {% if order.return_date %}
-        {{ order.return_date|date:"Y/m/d" }} <!-- 返却予定日 -->
-        {% else %}
-        <span>-</span>
-        {% endif %}
-      </td>
-      <!-- 承認ステータス -->
-      <td>
-        {% if order.approval_status == "承認待ち" %}
-        <span class="status-pending"><b>{{ order.approval_status }}</b></span>
-        {% elif order.approval_status == "承認済み" %}
-        <span class="status-approved"><b>{{ order.approval_status }}</b></span>
-        {% elif order.approval_status == "否決" %}
-        <span class="status-rejected"><b>{{ order.approval_status }}</b></span>
-        {% else %}
-        {{ order.approval_status }}
-        {% endif %}
-      </td>
-      <!-- 承認日時 -->
-      <td>
-        {% if order.approval_date %}
-        {{ order.approval_date|date:"Y/m/d H:i" }} <!-- 承認日時 -->
-        {% else %}
-        <span>-</span>
-        {% endif %}
-      </td>
-      <!-- 承認者コメント -->
-      <td>
-        {% if order.approval_comment %}
-        {{ order.approval_comment }} <!-- 承認者コメント -->
-        {% else %}
-        <span>-</span>
-        {% endif %}
-      </td>
-      {% comment %}
-      <td>
-        {% if order.approval_status == '承認待ち' %}
-        <!-- 承認ボタン -->
-        <form method="post" style="display:inline;">
-          {% csrf_token %}
-          <input type="hidden" name="approve_order" value="{{ order.pk }}">
-          <input type="submit" value="承認する" class="button">
-        </form>
-        {% if order.approval_status != '否決' %}
-          <!-- 否決ボタン -->
-          <form method="post" style="display:inline;">
-            {% csrf_token %}
-            <input type="hidden" name="reject_order" value="{{ order.pk }}">
-            <input type="submit" value="否決する" class="button delete-button">
-          </form>
-        {% else %}
-          <!-- 否決ステータス表示 -->
-          <span>否決</span>
-        {% endif %}
-      {% else %}
-        <!-- 否決ステータスが承認済みなら何も表示しない -->
-        <span>－</span>
-      {% endif %}
-      </td>
-      {% endcomment %}
-    </tr>
-    {% empty %}
-    <tr align="center">
-      <td colspan="8">貸出希望はありません</td> <!-- colspanを8に変更 -->
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+<div id="approval-history-section" style="display:none;">
+  <table class="detail-table">
+    <thead>
+      <tr align="center">
+        <th>承認依頼日</th>
+        <th>貸出希望者</th>
+        <th>数量</th>
+        <th>貸出希望日</th>
+        <th>返却予定日</th>
+        <th>承認ステータス</th>
+        <th>承認日時</th>
+        <th>承認者コメント</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+      <tr align="center">
+        <td>{{ order.order_date|date:"Y/m/d H:i" }}</td>
+        <td>{{ order.user.username }}</td>
+        <td>{{ order.quantity }}</td>
+        <td>{{ order.loan_date|date:"Y/m/d" }}</td>
+        <td>{{ order.return_date|date:"Y/m/d" }}</td>
+        <td>{{ order.approval_status }}</td>
+        <td>{{ order.approval_date|date:"Y/m/d H:i" }}</td>
+        <td>{{ order.approval_comment }}</td>
+      </tr>
+      {% empty %}
+      <tr align="center">
+        <td colspan="8">貸出希望はありません</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
 
 <div class="detail-title-bar">
-<h2><span class="material-symbols-outlined"><big>forum</span></big> コメント</h2>
+  <h2><span class="material-symbols-outlined"><big>forum</span></big> コメント</h2>
+  <!-- 「コメントをする」ボタン -->
+  <button type="button" class="order-button custom-size" id="open-comment-modal-btn">
+    <span class="material-symbols-outlined"><font color="#FFFFFF">mode_comment</font></span> コメントする</button>
 </div>
 
 <!-- コメントリスト -->
@@ -357,8 +305,7 @@
         </span></p>
   {% endif %}
 
-  <!-- 「コメントをする」ボタン -->
-  <button type="button" class="order-button custom-size" id="open-comment-modal-btn">コメントをする</button>
+
 </div>
 
 
@@ -390,7 +337,7 @@
 <div class="detail-title-bar">
   <h2 id="stock-update-title" style="cursor:pointer; display: inline-block;">
     <span class="material-symbols-outlined"><big>change_circle</big></span>
-    在庫数の変更</h2>
+    在庫数の変更<small>(管理者権限)</small></h2>
   <span class="material-symbols-outlined arrow-icon" id="stock-toggle" style="float: right; cursor: pointer;">
     <font color="gray">keyboard_arrow_down</font>
   </span>
@@ -400,6 +347,7 @@
   <form method="post">
    {% csrf_token %}
    {{ stock_update_form.as_p }}
+   <br>
    <center>
    <input type="submit" value="保存" class="save-button">
    </center>
@@ -411,7 +359,7 @@
 <div class="detail-title-bar">
   <h2 id="stock-history-title" style="cursor:pointer; display: inline-block;">
     <span class="material-symbols-outlined"><big>deployed_code_history</big></span>
-     在庫数変更履歴 <small>※最新5件を表示</small></h2>
+     在庫数変更履歴 <small> ※最新5件を表示(管理者権限)</small></h2>
   <span class="material-symbols-outlined arrow-icon" id="history-toggle" style="float: right; cursor: pointer;">
     <font color="gray">keyboard_arrow_down</font>
   </span>
@@ -577,6 +525,23 @@ function confirmNavigation() {
 });
 </script>
 <script>
+
+  // 貸出の承認履歴セクションの表示・非表示を切り替える
+document.getElementById('approval-history-title').addEventListener('click', toggleApprovalHistorySection);
+document.getElementById('approval-toggle').addEventListener('click', toggleApprovalHistorySection);
+
+function toggleApprovalHistorySection() {
+  const approvalHistorySection = document.getElementById('approval-history-section');
+  const approvalToggle = document.getElementById('approval-toggle');
+  if (approvalHistorySection.style.display === 'none') {
+    approvalHistorySection.style.display = 'block';
+    approvalToggle.innerHTML = '<font color="gray">keyboard_arrow_up</font>';
+  } else {
+    approvalHistorySection.style.display = 'none';
+    approvalToggle.innerHTML = '<font color="gray">keyboard_arrow_down</font>';
+  }
+}
+
 // 在庫数変更セクションの表示・非表示を切り替える
 document.getElementById('stock-update-title').addEventListener('click', toggleStockSection);
 document.getElementById('stock-toggle').addEventListener('click', toggleStockSection);
@@ -608,6 +573,7 @@ function toggleHistorySection() {
     historyToggle.innerHTML = '<font color="gray">keyboard_arrow_down</font>';
   }
 }
+
 </script>
 <!--カレンダー機能実装-->
 <script>

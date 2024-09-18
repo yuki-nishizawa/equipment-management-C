@@ -38,16 +38,14 @@ body {
   background-color: white;
   width: 95%;
   margin: 120px auto 60px auto; 
-  padding-top: 15px; 
-  padding-bottom:40px;
+
+  padding: 15px 20px 40px;
   display: flex;
   flex-direction: column; 
   justify-content: center; 
   align-items: center; 
   border-radius: 10px;
-  overflow-x: auto; /* はみ出した場合に横スクロールを有効に */
-  overflow-y: auto; /* はみ出した場合に縦スクロールを有効にする */
-  
+
 }
 
 .title {/*各ページのタイトル部分*/
@@ -305,9 +303,8 @@ footer {
   align-items: center;
   background-color: #fafafa;
   border: solid 3px #F76F6E;
-  padding: 10px;
+  padding: 15px;
   cursor: pointer;
-  margin-top:20px;
 }
 
 .favorite:hover {
@@ -409,8 +406,6 @@ footer {
   display: flex; /* フレックスボックスのレイアウトを使用 */
   justify-content: center; /* 横方向で中央に配置 */
   align-items: center; /* 縦方向でも中央に配置 */
-  margin-top: 20px;
-  margin-bottom: 20px; /* ボタンの下に20pxの余白を追加 */
   width: 200px;
   flex-wrap: wrap; /* 必要に応じてコンテンツを折り返す */
 }
@@ -454,7 +449,7 @@ footer {
   position: relative; 
   text-align: center;
   display: flex;
-  align-items: center;
+  align-items: flex-start; /* コンテンツを縦方向に上揃え */
   justify-content: center;
 }
 
@@ -641,7 +636,7 @@ footer {
   width:50%;
   height:100%;
   gap:40px;
-  margin-bottom: 10px;
+  margin: 20px;
 }
 
 .approved-table {
@@ -652,7 +647,7 @@ footer {
 }
 
 .dayofweek {
-  background-color: #f9f9f9;
+  background-color: #f2f2f2;
 }
 .sunday {
   color: #E6371E;

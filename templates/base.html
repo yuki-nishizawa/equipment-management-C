@@ -12,17 +12,22 @@
 <body>
   <header>
     <div class="header-top">
+      {% if user.is_authenticated %} <!--ログインしているときの表示-->
       <a href="{% url 'users:menu' %}" style="text-decoration: none; color: #48A63F;">
         <h2>書籍貸出管理 -Webシステム</h2>
       </a>
-      {% if user.is_authenticated %} <!--ログインしているときの表示-->
       <a class="user-username" href="{% url 'users:mypage' %}"> {{ user.username }} さん
           <!--ユーザー名を押下すると名マイページに飛ぶ※URL部分にに作成した新URLを追加-->
-      {% if user.is_admin %}
-      (管理者)  <!--ログインユーザーが管理者のときだけ、名前のうしろに(管理者)と表示-->
-      {% endif %}
+        {% if user.is_admin %}
+          (管理者)  <!--ログインユーザーが管理者のときだけ、名前のうしろに(管理者)と表示-->
+        {% endif %}
       </a>
       最終ログイン:{{ user.last_login|date:"Y/m/d H:i" }}
+      {% else %}
+      <a href="{% url 'users:index' %}" style="text-decoration: none; color: #48A63F;">
+        <h2>書籍貸出管理 -Webシステム</h2>
+      </a>
+
       {% endif %}
     </div>
       <div class="header-content">
