@@ -133,7 +133,7 @@ class EquipDetailView(LoginRequiredMixin, DetailView):
             order.equip = self.object
             order.user = request.user
             order.save()
-            return redirect(self.get_success_url())
+            return redirect(self.get_success_url() + '?loan_success=true')
 
         # 承認ボタンが押されたかを確認
         order_id = request.POST.get('approve_order')
@@ -173,7 +173,7 @@ class EquipDetailView(LoginRequiredMixin, DetailView):
             comment.user = request.user
             comment.save()
 
-            return redirect(self.get_success_url())
+            return redirect(self.get_success_url() + '?comment_success=true')
 
         return self.render_to_response(self.get_context_data(
             stock_update_form=stock_update_form,
@@ -190,7 +190,7 @@ class EquipUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'equipment/edit.html'
     
     def get_success_url(self):
-        return reverse_lazy('equipment:detail', kwargs={'pk': self.object.pk})
+         return reverse_lazy('equipment:detail', kwargs={'pk': self.object.pk}) + '?success=true'
     #管理者以外に書籍編集ページへのアクセスを許可しない
     def dispatch(self, request, *args, **kwargs):#管理者以外に書籍編集ページへのアクセスを許可しない
     # ログインユーザーのis_adminがTrueかどうかをチェック

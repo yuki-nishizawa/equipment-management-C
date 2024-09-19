@@ -223,7 +223,7 @@
   </span>
 </div>
 
-<div id="approval-history-section" style="display:none;">
+<div id="approval-history-section" style="display:block;">
   <table class="detail-table">
     <thead>
       <tr align="center">
@@ -621,6 +621,27 @@ function toggleHistorySection() {
       bindCalendarNavigation();  // 最初のバインド
   });
 </script>
+{% if request.GET.success == 'true' %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        alert("保存が完了しました。");
+    });
+</script>
+{% endif %}
+{% if request.GET.loan_success == 'true' %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        alert("貸出申請が完了しました。");
+    });
+</script>
+{% endif %}
+{% if request.GET.comment_success == 'true' %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        alert("コメントを投稿しました。");
+    });
+</script>
+{% endif %}
 {% comment %} JavaScriptここまで {% endcomment %}
 
 

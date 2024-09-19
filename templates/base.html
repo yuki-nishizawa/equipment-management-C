@@ -34,8 +34,16 @@
           <div class="left">
               <ul>
                 {% if user.is_authenticated %} <!--ログインしているときの表示-->
-                <li><a href="{% url 'equipment:list' %}">書籍一覧</a></li>
-                <li><a href="{% url 'order:history' %}">申請一覧
+                <li><a href="{% url 'equipment:list' %}">
+                  <span class="material-symbols-outlined">
+                    import_contacts
+                    </span>
+                  書籍一覧</a></li>
+                <li><a href="{% url 'order:history' %}">
+                  <span class="material-symbols-outlined">
+                    description
+                    </span>
+                  申請一覧
                     {% if user.is_admin %}
                       {% if pending_orders_count > 0 %}
                         <span class="badge">
@@ -48,7 +56,12 @@
                       {% endif %}
                       </a></li>
                     {% endif %}
-                    <li><a href="{% url 'users:favorite' %}">お気に入り一覧</a></li>
+                  <li><a href="{% url 'users:favorite' %}">
+                    <span class="material-symbols-outlined">
+                      favorite
+                      </span>
+                      お気に入り一覧
+                    </a></li>
                   {% else %}<!--ログインしてないときの表示-->
                 {% comment %} <li><a href="{% url 'users:index' %}">ホーム</a></li> {% endcomment %}
                 {% endif %}
@@ -59,9 +72,18 @@
                 {% if user.is_authenticated %} <!--ログインしているときの表示-->
 
                   {% if user.is_admin %}<!--ログインユーザーが管理者のときだけ、ユーザー一覧を表示-->
-                  <li><a href="{% url 'users:users' %}">ユーザー一覧</a></li>
+
+                  <li><a href="{% url 'users:users' %}">
+                    <span class="material-symbols-outlined">
+                      group
+                      </span>
+                    ユーザー一覧</a></li>
                   {% endif %}
-                <li><a href="{% url 'users:logout' %}">ログアウト</a></li>
+
+                <li><a href="{% url 'users:logout' %}">
+                  <span class="material-symbols-outlined">
+                    logout
+                    </span>ログアウト</a></li>
                 {% else %}<!--ログインしてないときの表示-->
                 {% comment %} <li><a href="{% url 'users:login' %}">ログイン</a></li>
                 <li><a href="{% url 'users:register' %}">登録</a></li> {% endcomment %}
@@ -87,3 +109,4 @@
   
 </body>
 </html>
+

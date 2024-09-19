@@ -133,7 +133,7 @@ header {
 /* baseスタイル、ユーザ名リンクのデザイン※重要なスタイルがある場合は!importantを使用 */
 .user-username {
   text-decoration: underline !important;
-  color: #160161 !important;
+  color: #414141 !important;
 }
 
 .badge {
@@ -144,6 +144,11 @@ header {
   font-size: 12px;
   margin-left: 5px;
   font-weight: bold;
+}
+
+/* ヘッダー内のアイコンを白色に変更 */
+header .material-symbols-outlined {
+  color: white; /* アイコンの色を白に設定 */
 }
 
 /******************************************** 
@@ -307,8 +312,9 @@ footer {
   align-items: center;
   background-color: #fafafa;
   border: solid 3px #F76F6E;
-  padding: 15px;
+  padding: 15px 20px;
   cursor: pointer;
+  border-radius: 50px;
 }
 
 .favorite:hover {
