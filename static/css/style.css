@@ -226,27 +226,24 @@ footer {
 .return-button {
   display: inline-block;
   padding: 10px 20px;
-  background-color: #48A63F; /* ボタンの背景色をグリーンに */
+  background-color: #A9CB03;
   color: white; /* ボタンの文字色を白に */
   border-radius: 25px; /* ボタンの角を丸くする */
   text-decoration: none; /* 下線を消す */
   font-weight: bold; /* ボタンの文字を太字に */
   font-size: 16px; /* 文字サイズ */
   text-align: center; /* テキストを中央揃え */
-  transition: background-color 0.3s ease, box-shadow 0.3s ease; /* ホバー時のアニメーション */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 軽いシャドウを追加 */
   margin-top: 20px; /* 上に余白を追加 */
 }
 .return-button:hover {
-  background-color: #3B8E31; /* ホバー時に色を濃くする */
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* ホバー時にシャドウを強調 */
+  background-color: #48A63F;
 }
 
 /******************************************** 
  共通ボタンの設定・各ページ固有のものはそれぞれのページカテゴリに分類
 *********************************************/
 
-.button-container { /*add.html［登録］*/
+.button-container { /*［登録］［送信］［編集］*/
   display: flex; 
   justify-content: center;
   width: 100%;
@@ -259,7 +256,7 @@ footer {
   width: 100px;         /* ボタンの幅を100ピクセルに設定 */
   height: 40px;         /* ボタンの高さを40ピクセルに設定 */
   border-radius: 50px;  /* ボタンの角を50ピクセルの半径で丸くする設定、これにより丸みのあるボタンが作られます */
-  background-color: #005CC8;  /* ボタンの背景色を青色（#3484b9）に設定 */
+  background-color: #3484b9;
   color: #FFFFFF;       /* ボタン上のテキストの色を白色に設定 */
   text-align: center;   /* ボタン上のテキストを中央揃えに設定 */
   border-width: 0px;    /* ボタンの境界線をなくす設定 */
@@ -267,7 +264,7 @@ footer {
   cursor: pointer;      /* ボタンにマウスカーソルが乗ったとき、ポインター（手の形のカーソル）に変更 */
 }
 .button:hover {
-  background-color: #3484b9;
+  background-color: #005CC8;
 }
 
 /******************************************** 
@@ -280,11 +277,11 @@ footer {
   flex-direction: column;
   align-items: center;
 }
-.detail-content a {
-  color: #007BFF;
+.detail-content a {/*🌟*/
+  color: #3484b9;
   text-decoration: none;
 }
-.detail-content a:hover {
+.detail-content a:hover {/*🌟*/
   text-decoration: underline;
 }
 
@@ -392,7 +389,6 @@ footer {
   max-width: 500px; /* モーダルの最大幅 */
   max-height: 80%; /* モーダルの最大高さ */
   overflow-y: auto; /* 高さが超えた場合にスクロール */
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* 影を付ける */
   text-align: center; /* ここでテキストを中央揃え */
 }
 .close-button {
@@ -431,7 +427,7 @@ footer {
 .save-button,
 .order-button
  { /* 保存ボタンと発注依頼ボタンの両方に適用 */
-  background-color: #3484b9; /* 背景色をブルーに設定 */
+  background-color: #3484b9;
   color: white; /* テキストの色を白に設定 */
   padding: 10px 20px; /* 上下10px、左右20pxの内側余白を設定 */
   border: none; /* 枠線をなしに設定 */
@@ -663,12 +659,12 @@ footer {
 
 .approved-order {
   display: flex;
-  justify-content: center; /* 水平方向の中央揃え */
-  align-items: flex-start; /* 垂直方向で開始位置 */
-  width: 100%; /* 親要素の幅に合わせる */
-  max-width: 900px; /* 必要に応じて最大幅を設定 */
-  margin: 20px auto; /* 自動で中央揃え */
-  gap: 40px; /* カレンダーとリストの間のスペース */
+  justify-content: center; /* 水平方向に中央揃え */
+  align-items:flex-start; /* 垂直方向に中央揃え（必要に応じて） */
+  width:50%;
+  height:100%;
+  gap:40px;
+  margin: 20px;
 }
 
 .approved-table {
@@ -850,23 +846,29 @@ tbody tr:nth-child(even) {
   background-color: #f9f9f9;
 }
 tbody td a {
-  color: #007BFF;
+  color: #3484b9;
   text-decoration: none;
 }
 tbody td a:hover {
   text-decoration: underline;
+}
+.userlist tbody td a {
+  color: #FFFFFF;
+  text-decoration: none;
+}
+ 
+.userlist tbody td a:hover {
+  text-decoration: none;
 }
 /* 編集ボタンのスタイル */
 .edit-button {
   display: inline-block;  /* インライン要素として表示 */
   padding: 6px 12px;  /* 内側の余白 */
   border-radius: 20px;  /* 楕円形にするための角の丸み */
-  background-color: #ccc;
+  background-color: #3484b9;
   text-decoration: none;  /* 下線を消す */
   font-size: 14px;
   text-align: center;
-  border: 1px solid #999;  /* 薄いグレーの枠線*/
-  /* padding: auto; */
   gap: 110px; /* ボタン間のスペースを調整 */
 }
 .button-group {
@@ -877,17 +879,18 @@ tbody td a:hover {
 }
 /* 編集ボタンのスタイル */
 .edit-button:hover {
-  background-color: #bbb;  /* ホバー時の背景色編集ボタンのスタイル） */
+  background-color: #005CC8;
 }
-/* 備品詳細削除ボタン */
+
+/* 備品詳細削除ボタン🌟 */
 .delete-button {
-  background-color: #E6371E  ; /* 削除ボタンの背景色 */
+  background-color: #EB6161;
   border-radius: 20px;  /* 角を丸くする */
  /* gap: 110px; 削除 */
 }
-/* 備品詳細削除ボタン */
+/* 備品詳細削除ボタン 🌟*/
 .delete-button:hover {
-  background-color: #FACDB9  ; /* ホバー時の背景色（削除ボタン） */
+  background-color: #E6371E  ; /* ホバー時の背景色（削除ボタン） */
 }
   /* 備品追加のリンクを左寄せにする */
 .add-item-container {
@@ -905,7 +908,7 @@ tbody td a:hover {
   text-decoration: none; /* 下線を消す */
    /* font-weight: bold;ボタンの文字を太字に */
   font-size: 16px; /* 文字サイズ */
-  transition: background-color 0.3s ease; /* ホバー時の背景色の変化にアニメーションを追加 */
+
   cursor: pointer; /* ポインタを表示 */
   border: none; /* ボーダーをなしに */
   height: 40px; /* ボタンの高さを固定 */
@@ -926,14 +929,13 @@ tbody td a:hover {
 }
   /* 備品追加ボタンのスタイル */
   .add-item-button {
-    background-color: #005CC8; /* ボタンの背景色 */
+    background-color: #3484b9;
     color: white; /* ボタンの文字色 */
     padding: 0 20px; /* ボタンの左右の内側余白 */
     border-radius: 25px; /* ボタンの角丸 */
     text-decoration: none; /* 下線を消す */
-    font-weight: bold; /* ボタンの文字を太字に */
     font-size: 16px; /* 文字サイズ */
-    transition: background-color 0.3s ease; /* ホバー時の背景色の変化にアニメーションを追加 */
+
     cursor: pointer; /* ポインタを表示 */
     border: none; /* ボーダーをなしに */
     height: 40px; /* ボタンの高さを固定 */
@@ -943,7 +945,7 @@ tbody td a:hover {
   }
   /* ホバー時の背景色変更 */
   .add-item-button:hover{
-    background-color: #3484b9; /* ホバー時の色を変更 */
+    background-color: #005CC8; /* ホバー時の色を変更 */
   }
   /*ユーザー一覧のアイコン*/
   .material-symbols-outlined {
@@ -959,14 +961,12 @@ tbody td a:hover {
   /* 返却要のみ表示するボタン */
 /* 返却要のみ表示するボタン */
 .filter-returned-button {
-  background-color: #EB6161; /* ボタンの背景色 */
+  background-color: #EB6161; /* ボタンの背景色🌟 */
   color: white; /* ボタンの文字色 */
   padding: 10px 25px; /* ボタンの内側余白 */
   border-radius: 5px; /* ボタンの角丸 */
   text-decoration: none; /* 下線を消す */
-  /*font-weight: bold;  ボタンの文字を太字に */
   font-size: 16px; /* 文字サイズ */
-  transition: background-color 0.3s ease; /* ホバー時の背景色の変化にアニメーションを追加 */
   cursor: pointer; /* ポインタを表示 */
   border: none; /* ボーダーをなしに */
   text-align: center; /* テキストを中央揃え */
@@ -974,7 +974,7 @@ tbody td a:hover {
 }
 /* ホバー時の背景色変更 */
 .filter-returned-button:hover {
-  background-color: #D9534F; /* ホバー時の色を変更 */
+  background-color: #E6371E; /* ホバー時の色を変更 🌟*/
 }
 
 /* ボタン全体を囲むコンテナ */
@@ -1280,9 +1280,13 @@ table th {
   background-color: #EB6161;  /* 返却ボタンの背景色 */
 }
 
-.status-loan-button:hover, .status-return-button:hover {
-  opacity: 0.8;  /* ホバー時に少し薄くする */
+.status-loan-button:hover,.status-return-button:hover  {
   text-decoration: none;
+  background-color:#E6371E;
+}
+
+.status-loan-button:hover  {
+  background-color:#3B8E31;
 }
 
 /******************************************** 
@@ -1363,7 +1367,7 @@ table th {
 *********************************************/
 /* 承認ボタンのスタイル */
 .confirm-button {
-  background-color: #005CC8;
+  background-color: #3484b9;
   color: white;
   padding: 10px;              /* ボタンの内側余白 */
   font-size: 14px;            /* 文字サイズ */
@@ -1375,12 +1379,12 @@ table th {
 }
 
 .confirm-button:hover {
-  background-color: #3484b9;   /* ホバー時の色 */
+  background-color: #005CC8;   /* ホバー時の色 */
 }
 
-/* 否決ボタンのスタイル */
+/* 否決ボタンのスタイル 🌟*/
 .reject-button {
-  background-color: #E6371E;   /* 赤色 */
+  background-color: #EB6161;
   color: white;                /* 文字色を白 */
   padding: 10px;               /* ボタンの内側余白 */
   font-size: 14px;             /* 文字サイズ */
@@ -1392,7 +1396,7 @@ table th {
 }
 
 .reject-button:hover {
-  background-color: #FACDB9;   /* ホバー時の色 */
+  background-color: #E6371E;   /* ホバー時の色 */
 }
 
 
@@ -1419,7 +1423,6 @@ table th {
   border: 1px solid #888;
   width: 50%; /* モーダルの幅を広げる */
   max-width: 600px; /* 最大幅を設定 */
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   text-align: center; /* 中央揃え */
 }
 /* 閉じるボタンのスタイル */
@@ -1458,7 +1461,6 @@ table th {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease; /* ホバー時のアニメーション */
 }
 .modal-button .cancel-button {
   background-color: #C8C8C8;
@@ -1466,18 +1468,17 @@ table th {
 }
 .modal-button.approve-button,
 .modal-button.delete-button {
-  background-color: #4CAF50;
+  background-color:#3484b9;
   color: white;
 }
 /* ホバー時の効果: 送信ボタン */
 .modal-button.approve-button:hover {
-  background-color: #D7E6C3; /* 少し明るくする */
-  transform: scale(1.05); /* ホバー時にボタンを少し大きくする */
+  background-color: #005CC8;
+
 }
 /* ホバー時の効果: キャンセルボタン */
 .modal-button.cancel-button:hover {
-  background-color: #FACDB9; /* 少し明るくする */
-  transform: scale(1.05); /* ホバー時にボタンを少し大きくする */
+  background-color: #a6a6a6; /* 少し明るくする */
 }
 
 
@@ -1736,17 +1737,14 @@ table th {
   padding: 5px 10px;
   border-radius: 5px; /* 角を丸める (任意) */
   font-size: 14px;
-  box-shadow: 0 0 5px rgba(0,0,0,0.1); /* 影を付ける (任意) */
 }
 .myedit-button {
-  background-color: #005CC8;
+  background-color: #3484b9;
   color: white;
   padding: 0 20px;
   border-radius: 25px;
   text-decoration: none;
-  font-weight: bold;
   font-size: 16px;
-  transition: background-color 0.3s ease;
   cursor: pointer;
   border: none;
   height: 40px;
@@ -1756,25 +1754,21 @@ table th {
 }
 /* ホバー時の背景色変更 */
 .myedit-button:hover {
-  background-color: #3484b9; /* ホバー時の背景色 */
+  background-color: #005CC8; /* ホバー時の背景色 */
 }
 /* マイページへ戻るボタン */
 .mypage-button {
   display: block; /* ボタンをブロック要素にする */
-  /* margin-top: 10px; 上に余白を追加 */
   background-color: #48A63F;
   color: white;
   padding: 8px 15px;
   border-radius: 25px;
   text-decoration: none;
-  /* font-weight: bold; 太字*/
   font-size: 16px;
   text-align: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 .mypage-button:hover {
   background-color: #3B8E31;
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
 
 /* 申請一覧の詳細はこちら */
@@ -1784,9 +1778,7 @@ table th {
   padding: 8px 15px;
   border-radius: 25px;
   text-decoration: none;
-  font-weight: bold;
   font-size: 16px;
-  transition: background-color 0.3s ease;
   cursor: pointer;
   border: none;
   display: inline-block;
@@ -1863,10 +1855,9 @@ table th {
 }
 
 .back-to-login a {
-  color: #0095da;
+  color: #3484b9;
   text-decoration: none;
 }
-
 .back-to-login a:hover {
   text-decoration: underline;
 }
