@@ -322,9 +322,18 @@ function submitForm(event) {
     })
     .then(response => response.text())
     .then(data => {
-        const modalBody = document.getElementById('modal-body');
-        modalBody.innerHTML = data; // エラーがあれば再度モーダル内に表示
-        attachFormSubmitHandler(); // 新しく描画されたフォームにも送信イベントを再設定
+        // 成功した場合の処理
+        if (data.includes('成功メッセージ')) { // サーバー側のレスポンスに応じて適宜変更
+            // モーダルを閉じる
+            closeModal();
+            // 書籍一覧ページにリダイレクト
+            window.location.href = "{% url 'equipment:list' %}";
+        } else {
+            // エラーがあれば再度モーダル内に表示
+            const modalBody = document.getElementById('modal-body');
+            modalBody.innerHTML = data;
+            attachFormSubmitHandler(); // 新しく描画されたフォームにも送信イベントを再設定
+        }
     })
     .catch(error => console.error('Error submitting form:', error));
 }
@@ -335,13 +344,6 @@ function attachFormSubmitHandler() {
         form.addEventListener('submit', submitForm);
     }
 }
-    // モーダル外をクリックしたら閉じる
-    {% comment %} window.onclick = function(event) {
-        const modal = document.getElementById('modal');
-        if (event.target == modal) {
-            closeModal();
-        }
-    } {% endcomment %}
     </script>
     <script>
         // 貸出操作の確認メッセージ

@@ -20,7 +20,7 @@
       import_contacts</big>
     </span>
     {{ equip.equip_name }}</h3><!--備品タイトル-->
-      <p>
+      <p class="loan-status-alert">
       {% if equip.loan_status == '貸出可' %}
       <span class="material-symbols-outlined">
         <font color="#69c44b"><b>circle</span>
@@ -42,7 +42,6 @@
     その他（詳細は説明欄を参照）
     </font></b>
       {% endif %}
-    </big>
       </p>
   </div>
 

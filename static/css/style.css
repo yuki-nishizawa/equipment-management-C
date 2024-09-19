@@ -274,7 +274,6 @@ footer {
 書籍詳細画面
 *********************************************/
 
-
 .detail-content {
   width: 70%;
   display: flex;
@@ -287,6 +286,15 @@ footer {
 }
 .detail-content a:hover {
   text-decoration: underline;
+}
+
+.loan-status-alert {
+  font-size:18px;
+  font-weight: 600;
+}
+
+.loan-status-alert material-symbols-outlined {
+  font-size:18px;
 }
 
 /*備品タイトルバー*/

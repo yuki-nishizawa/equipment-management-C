@@ -10,6 +10,7 @@
     </div>
     <div class="title">
         <h2>書籍登録</h2>
+        <p><span class="field-error">※</span>は入力必須項目です</p>
     </div>
     <div class="content">
         <form method="post" action="{% url 'equipment:add' %}" enctype="multipart/form-data">
@@ -22,15 +23,15 @@
             {% endif %}
             
             <div class="field">
-                <label for="{{ form.equip_name.id_for_label }}">書籍名</label>
+                <label for="{{ form.equip_name.id_for_label }}">名前<span class="field-error">※</span></label>
                 {{ form.equip_name }}
             </div>
             <div class="field">
-                <label for="{{ form.category.id_for_label }}">カテゴリ</label>
+                <label for="{{ form.category.id_for_label }}">カテゴリ<span class="field-error">※</span></label>
                 {{ form.category }}
             </div>
             <div class="field">
-                <label for="{{ form.condition.id_for_label }}">状態</label>
+                <label for="{{ form.condition.id_for_label }}">状態<span class="field-error">※</span></label>
                 {{ form.condition }}
             </div>
             <div class="field">
@@ -38,26 +39,25 @@
                 {{ form.loan_status }}
             </div>
             <div class="field">
-                <label for="{{ form.place.id_for_label }}">設置場所</label>
+                <label for="{{ form.place.id_for_label }}">設置場所<span class="field-error">※</span></label>
                 {{ form.place }}
             </div>
             <div class="field">
-                <label for="{{ form.text.id_for_label }}">説明</label>
+                <label for="{{ form.text.id_for_label }}">説明<span class="field-error">※</span></label>
                 {{ form.text }}
             </div>
             <div class="field">
-                <label for="{{ form.web_site.id_for_label }}">参考URL</label>
-                <span class="field-error"><small>（Amazon等書籍の説明が記載されているURLを入力）</small></span>
+                <label for="{{ form.web_site.id_for_label }}">参考URL</label><span class="field-error"><small>（Amazon等書籍の説明が記載されているURLを入力）</small></span>
                 {{ form.web_site }}
             </div>
             <div class="field">
-                <label for="{{ form.image.id_for_label }}">画像</label>
+                <label for="{{ form.image.id_for_label }}">画像<span class="field-error">※</span></label>
                 {{ form.image }}
             </div>
             <div class="field">
                 <label for="{{ form.stock.id_for_label }}">在庫数<span class="field-error">※</span></label>
                 {{ form.stock }}
-                <span class="field-error"><small>※原則在庫数は1としてください。<br>　 それ以外の場合は詳細を「説明」欄に記載してください。</small></span>
+                <span class="field-error"><small>・原則在庫数は1としてください。<br>・それ以外の場合は詳細を「説明」欄に記載してください。</small></span>
             </div>
             <div class="button-container">
                 <input type="submit" value="登録" class="button">
