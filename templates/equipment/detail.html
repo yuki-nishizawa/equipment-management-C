@@ -17,11 +17,11 @@
 
 <div class="detail-title-bar booktitle">
   <div class="title-status-bar">
-  <h2><big>
+  <h3><big>
     <span class="material-symbols-outlined">
-      import_contacts
+      import_contacts</big>
     </span>
-    {{ equip.equip_name }}</h2><!--備品タイトル-->
+    {{ equip.equip_name }}</h3><!--備品タイトル-->
       <p>貸出状況：
       {% if equip.loan_status == '貸出可' %}
       <span class="material-symbols-outlined">
@@ -137,7 +137,7 @@
   <div class="modal-content">
     <span class="close-button" id="closeModalButton">&times;</span>
 
-    <h2>貸出希望依頼</h2>
+    <h3>貸出希望依頼</h3>
     <form method="post">
       {% csrf_token %}
       
@@ -170,8 +170,8 @@
 </form> {% endcomment %}
 
 <div class="detail-title-bar">
-  <h2><span class="material-symbols-outlined"><big>calendar_month</big></span>
-    今後の貸出予定</h2>
+  <h3><span class="material-symbols-outlined"><big>calendar_month</big></span>
+    今後の貸出予定</h3>
     <button id="openModalButton" class="order-button custom-size">
       <span class="material-symbols-outlined"><font color="#FFFFFF">local_library</span> 貸出依頼</font></button>
 </div>
@@ -216,10 +216,10 @@
 
 {% if user.is_staff or user.is_admin %}
 <div class="detail-title-bar">
-  <h2 id="approval-history-title" style="cursor:pointer; display: inline-block;">
+  <h3 id="approval-history-title" style="cursor:pointer; display: inline-block;">
     <span class="material-symbols-outlined"><big>event_available</big></span> 
     貸出の承認履歴 <small>※最新5件を表示</small>
-  </h2>
+  </h3>
   <span class="material-symbols-outlined arrow-icon" id="approval-toggle" style="float: right; cursor: pointer;">
     <font color="gray">keyboard_arrow_down</font>
   </span>
@@ -262,7 +262,7 @@
 {% endif %}
 
 <div class="detail-title-bar">
-  <h2><span class="material-symbols-outlined"><big>forum</span></big> コメント</h2>
+  <h3><span class="material-symbols-outlined"><big>forum</span></big> コメント</h3>
   <!-- 「コメントをする」ボタン -->
   <button type="button" class="order-button custom-size" id="open-comment-modal-btn">
     <span class="material-symbols-outlined"><font color="#FFFFFF">mode_comment</font></span> コメントする</button>
@@ -313,7 +313,7 @@
 <div id="comment-modal" class="comment-modal" style="display:none;">
   <div class="modal-content">
     <span id="close-comment-modal-btn" class="close-button">&times;</span>
-    <h2>コメントを追加</h2>
+    <h3>コメントを追加</h3>
     <br>
     <form id="comment-form" method="post" action="{% url 'equipment:detail' equip.id %}">
         {% csrf_token %}
@@ -335,9 +335,9 @@
 {% if user.is_admin %}<!-- 管理者の場合にだけ表示される！ -->
 <!-- 在庫数変更セクションのタイトルと折りたたみ -->
 <div class="detail-title-bar">
-  <h2 id="stock-update-title" style="cursor:pointer; display: inline-block;">
+  <h3 id="stock-update-title" style="cursor:pointer; display: inline-block;">
     <span class="material-symbols-outlined"><big>change_circle</big></span>
-    在庫数の変更<small>(管理者権限)</small></h2>
+    在庫数の変更<small>(管理者権限)</small></h3>
   <span class="material-symbols-outlined arrow-icon" id="stock-toggle" style="float: right; cursor: pointer;">
     <font color="gray">keyboard_arrow_down</font>
   </span>
@@ -357,9 +357,9 @@
 
 <!-- 在庫数変更履歴セクション -->
 <div class="detail-title-bar">
-  <h2 id="stock-history-title" style="cursor:pointer; display: inline-block;">
+  <h3 id="stock-history-title" style="cursor:pointer; display: inline-block;">
     <span class="material-symbols-outlined"><big>deployed_code_history</big></span>
-     在庫数変更履歴 <small> ※最新5件を表示(管理者権限)</small></h2>
+     在庫数変更履歴 <small> ※最新5件を表示(管理者権限)</small></h3>
   <span class="material-symbols-outlined arrow-icon" id="history-toggle" style="float: right; cursor: pointer;">
     <font color="gray">keyboard_arrow_down</font>
   </span>
