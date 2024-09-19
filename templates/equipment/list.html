@@ -54,7 +54,7 @@
         </div>
     </div>
 </div>
-
+<div class="table-container">
 <table id="itemTable" class="equipment-table">
     <thead>
         <tr align="center">
@@ -74,24 +74,28 @@
     <tbody>
         {% for equipment in equipments %}
         <tr align="center">
-            <td>           <!--POP -->
+            <td> <!--POP -->
                 <div class="tooltip">
-                    <a href="{% url 'equipment:detail' equipment.pk %}">{{ equipment.equip_name }}</a>
-                    <span class="tooltiptext">
-                        <center>
+                    <a href="{% url 'equipment:detail' equipment.pk %}" class="tooltip-trigger">{{ equipment.equip_name }}</a>
+                    <div class="tooltiptext">
+                        <div class="tooltip-content">
                             <img src="{{ equipment.image.url }}" alt="{{ equipment.equip_name }}" class="tooltip-image">
-                        </center>
-           <!-- 関連する注文情報を表示 -->
-           {% with equipment.order_set.all.last as latest_order %}
-           {% if latest_order %}
-               貸出希望日: {{ latest_order.loan_date|date:"Y/m/d" }}<br>
-               返却予定日: {{ latest_order.return_date|date:"Y/m/d" }}<br>
-           {% else %}
-               貸出希望日: なし<br>
-               返却予定日: なし<br>
-           {% endif %}
-       {% endwith %}
-                    </span>
+                            <div class="tooltip-details">
+                                <p class="tooltip-header">最新の貸出希望申請状況</p>
+                                {% with equipment.order_set.all.last as latest_order %}
+                                    {% if latest_order %}
+                                        <p>貸出希望日: {{ latest_order.loan_date|date:"Y/m/d" }}</p>
+                                        <p>返却予定日: {{ latest_order.return_date|date:"Y/m/d" }}</p>
+                                    {% else %}
+                                        <p>貸出希望日: なし</p>
+                                        <p>返却予定日: なし</p>
+                                    {% endif %}
+                                {% endwith %}
+                                <!-- アクションボタン -->
+                                <a href="{% url 'equipment:detail' equipment.pk %}#target-section" class="tooltip-button">貸出可能日の詳細を見る</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </td><!--POP -->
             <td>
@@ -331,7 +335,7 @@ function submitForm(event) {
         } else {
             // エラーがあれば再度モーダル内に表示
             const modalBody = document.getElementById('modal-body');
-            modalBody.innerHTML = data;
+            modalBody.innerHTML = data; // エラーがあれば再度モーダル内に表示
             attachFormSubmitHandler(); // 新しく描画されたフォームにも送信イベントを再設定
         }
     })
@@ -409,5 +413,41 @@ function filterReturnedItems() {
           });
         });
       </script>
+      <!--POPに関するscript-->
+      <script>
+        document.querySelectorAll('.tooltip').forEach(tooltip => {
+            const trigger = tooltip.querySelector('.tooltip-trigger');
+            const tooltipText = tooltip.querySelector('.tooltiptext');
+            let hideTimeout;
+        
+            // ツールチップを表示する関数
+            function showTooltip() {
+                clearTimeout(hideTimeout);
+                tooltipText.style.visibility = 'visible';
+                tooltipText.style.opacity = '1';
+            }
+        
+            // ツールチップを非表示にする関数
+            function hideTooltip() {
+                hideTimeout = setTimeout(() => {
+                    if (!trigger.matches(':hover') && !tooltipText.matches(':hover')) {
+                        tooltipText.style.visibility = 'hidden';
+                        tooltipText.style.opacity = '0';
+                    }
+                }, 500); // 500msの遅延を設定
+            }
+        
+            // トリガー要素にホバーしたとき
+            trigger.addEventListener('mouseover', showTooltip);
+            trigger.addEventListener('mouseleave', hideTooltip);
+        
+            // ツールチップ内にマウスが入ったとき
+            tooltipText.addEventListener('mouseover', showTooltip);
+        
+            // ツールチップからマウスが離れたとき
+            tooltipText.addEventListener('mouseleave', hideTooltip);
+        });
+        
+    </script>
     
 {% endblock content %}

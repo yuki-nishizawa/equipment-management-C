@@ -28,7 +28,8 @@
   <div class="left-align-container">
     <button id="filterAvailableButton" class="filter-available-button" onclick="filterAvailableItems()">貸出可を表示</button>
   </div>
-  <div class="favorite-table-container">
+  <div class="table-container">
+      <!-- <div class="favorite-table-container"> --><!--テーブルのclassを"table-container"に統一、問題なければ"favorite-table-container"は削除する-->
 
   <table class="favorite-table">
     <thead>
@@ -49,7 +50,32 @@
     <tbody>
         {% for favorite in favorites %}
         <tr align="center">
-            <td><a href="{% url 'equipment:detail' favorite.equip.id %}">{{ favorite.equip.equip_name }}</a></td>
+          <td> <!--POP -->
+            <div class="tooltip">
+                <a href="{% url 'equipment:detail' favorite.equip.id %}" class="tooltip-trigger">{{ favorite.equip.equip_name }}</a>
+                <div class="tooltiptext">
+                    <div class="tooltip-content">
+                        <img src="{{ favorite.equip.image.url }}" alt="{{ favorite.equip.equip_name }}" class="tooltip-image">
+                        <div class="tooltip-details">
+                            <p class="tooltip-header">最新の貸出希望申請状況</p>
+                            {% with favorite.equip.order_set.all.last as latest_order %}
+                                {% if latest_order %}
+                                    <p>貸出希望日: {{ latest_order.loan_date|date:"Y/m/d" }}</p>
+                                    <p>返却予定日: {{ latest_order.return_date|date:"Y/m/d" }}</p>
+                                {% else %}
+                                    <p>貸出希望日: なし</p>
+                                    <p>返却予定日: なし</p>
+                                {% endif %}
+                            {% endwith %}
+                            <!-- アクションボタン -->
+                            <a href="{% url 'equipment:detail' favorite.equip.id %}#target-section" class="tooltip-button">貸出可能日の詳細を見る</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td><!--POP -->
+        
+            {% comment %} <td><a href="{% url 'equipment:detail' favorite.equip.id %}">{{ favorite.equip.equip_name }}</a></td> {% endcomment %}
             <td>
                 <a href="{% url 'equipment:detail' favorite.equip.id %}"> 
                     {% if favorite.equip.image %}
@@ -234,6 +260,53 @@
       // フィルタ状態を反転させる
       isFiltered = !isFiltered;
   }
+</script>
+<!--POPに関するscript-->
+<script>
+  document.querySelectorAll('.tooltip').forEach(tooltip => {
+      const trigger = tooltip.querySelector('.tooltip-trigger');
+      const tooltipText = tooltip.querySelector('.tooltiptext');
+      let hideTimeout;
+  
+    // ツールチップを表示する関数
+    function showTooltip() {
+      clearTimeout(hideTimeout);
+    // ツールチップの位置をリセットしてから高さを取得
+        tooltipText.style.bottom = '100%';
+        tooltipText.style.top = 'auto';
+        tooltipText.style.visibility = 'visible';
+        tooltipText.style.opacity = '1';
+        // ツールチップの位置と高さを取得
+        const rect = tooltipText.getBoundingClientRect();
+        // 画面の上部からはみ出している場合は、ツールチップを下に表示
+        if (rect.top < 0) {
+            tooltipText.style.bottom = 'auto';
+            tooltipText.style.top = '100%';
+        }
+    }
+      }
+  
+      // ツールチップを非表示にする関数
+      function hideTooltip() {
+          hideTimeout = setTimeout(() => {
+              if (!trigger.matches(':hover') && !tooltipText.matches(':hover')) {
+                  tooltipText.style.visibility = 'hidden';
+                  tooltipText.style.opacity = '0';
+              }
+          }, 500); // 500msの遅延を設定
+      }
+  
+      // トリガー要素にホバーしたとき
+      trigger.addEventListener('mouseover', showTooltip);
+      trigger.addEventListener('mouseleave', hideTooltip);
+  
+      // ツールチップ内にマウスが入ったとき
+      tooltipText.addEventListener('mouseover', showTooltip);
+  
+      // ツールチップからマウスが離れたとき
+      tooltipText.addEventListener('mouseleave', hideTooltip);
+  });
+  
 </script>
 
 {% endblock content %}

@@ -389,6 +389,7 @@ footer {
   max-width: 500px; /* モーダルの最大幅 */
   max-height: 80%; /* モーダルの最大高さ */
   overflow-y: auto; /* 高さが超えた場合にスクロール */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* 影を付ける */
   text-align: center; /* ここでテキストを中央揃え */
 }
 .close-button {
@@ -503,7 +504,8 @@ footer {
 
 .table-container {
   width: 100%;
-  overflow-x: auto;
+  position: relative; /* ツールチップの表示位置を調整 */
+  overflow: visible; /* ツールチップが隠れないようにする */
   margin-top: 20px;
 }
 
@@ -1121,14 +1123,15 @@ tbody td a:hover {
     overflow-x: auto; /* 横方向のスクロールを有効にする */
     width: 100%; /* 親要素の幅に合わせる */
   }
-  .item-list {
+  /* 削除予定（書籍一覧のテーブル設定を"table-container"に統一） */
+   /*.item-list {
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-width: 100%; /* 親要素の幅に応じてテーブルの幅を制限 */
-    overflow-x: auto; /* 横スクロールを許可 */
-    margin: 0 auto; /* テーブルを中央寄せに */
-  }
+    max-width: 100%; 親要素の幅に応じてテーブルの幅を制限
+    overflow-x: auto; /* 横スクロールを許可 
+    margin: 0 auto; /* テーブルを中央寄せに 
+  }*/
   .item-list img {
     max-width: 100%; /* 画像の最大幅を100%に設定して画面に合わせる */
     height: auto; /* 画像の高さを自動で設定 */
@@ -1145,38 +1148,27 @@ tbody td a:hover {
     border-collapse: collapse; /* セルの余白をなくす */
   }
     
-.equipment-table-container {
-  max-height: auto; /* 縦スクロールが発生する最大の高さを設定 */
-  overflow-y: auto; /* 縦スクロールを許可 */
-  overflow-x: hidden; /* 横スクロールは親要素で制御 */
-  position: relative;
-}
-/* テーブルヘッダーを固定 */
-.equipment-table thead {
-  position: sticky; /* 固定 */
-  top: 0; /* 一番上に固定 */
-  z-index: 2; /* ヘッダーを最前面に */
-}
-/* テーブルのヘッダーとセルで折り返し表示を許可 */
-.equipment-table th,
-.equipment-table td {
+/* 各一覧のテーブルの基本設定（スクロール） */
+.table-container th,
+.table-container td {
   word-wrap: break-word; /* はみ出た単語を折り返す */
   word-break: break-all; /* 長い単語も折り返す */
   white-space: normal; /* 折り返しを有効に */
 }
  
+ 
 /* テーブルをスクロール可能にするためのコンテナ */
-.table-container {
+.table-container {/* テーブルをスクロール可能にするためのコンテナ */
   max-height: 800px; /* 必要に応じて調整 */
   overflow-y: auto;
 }
 /* ヘッダーを固定 */
 table th {
-  position: sticky;
+  position: sticky;/* ヘッダーを固定 */
   top: 0;
   z-index: 1;
 }
-  /* 書籍一覧テーブルの横幅設定 */
+  /* 備品一覧テーブルの横幅設定 */
   .item-list {
     width: 100%;
 }
@@ -1652,34 +1644,61 @@ table th {
 {
    width: 200px ;
 }
-/*書籍名にカーソルを当てると出るポップアップ*/
+/*備品名にカーソルを当てると出るポップアップ*/
 .tooltip {
   position: relative;
   display: inline-block;
+  z-index: 999; /* 高い値を設定 */
 }
 
+.tooltip-header {
+  font-size: 50px; /* 必要に応じてフォントサイズを調整 */
+  font-weight: bold; /* 太字にして強調 */
+  color: #ffcc00; /* 目立たせるために色を変更 */
+  margin-bottom: 10px;
+}
+.tooltiptext {
+  visibility: hidden;
+  width: 250px;
+  background-color: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  text-align: center;
+  border-radius: 12px;
+  padding: 20px;
+  position: absolute;
+  z-index:  9999; /* 高い値を設定 */
+  bottom: 100%;
+  left: 50%;
+  margin-left: -100px;
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.3s;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  transform: scale(0.95);
+}
 .tooltip .tooltiptext {
   visibility: hidden;
-  width: 350px;
-  background-color: #555;
+  width: 250px; /* 必要に応じて幅を調整 */
+  background-color: rgba(0, 0, 0, 0.85); /* 少し透過性を高めた背景色 */
   color: #fff;
-  text-align: left;
-  border-radius: 6px;
-  padding: 10px;
+  text-align: center;
+  border-radius: 12px; /* 角を丸く */
+  padding: 20px; /* コンテンツの周りに余白を追加 */
   position: absolute;
-  z-index: 1200;
-  bottom: 100%; /* ツールチップを上に表示 */
-  left: 100%;  /* ツールチップを右に表示 */
-  margin-left: -20px; /* 調整して斜めに */
-  margin-bottom: 20px; /* 調整して斜めに */
+  z-index: 1;
+  bottom: 100%; /* トリガーの上に表示 */
+  left: 50%;
+  margin-left: 100px;
   opacity: 0;
-  transition: opacity 0.3s;
+  transition: opacity 0.3s, transform 0.3s; /* フェードイン・ズームインのアニメーション */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); /* 影を深くして立体感を出す */
+  transform: scale(0.95); /* 初期表示を少し縮小 */
 }
-
 .tooltip:hover .tooltiptext {
   visibility: visible;
-  opacity: 0.9;
+  opacity: 1;
+  transform: scale(1); /* ホバー時にズームイン */
 }
+
 
 .tooltip .tooltip-image {
   width: 80px; /* 画像の幅を調整 */
@@ -1694,6 +1713,28 @@ table th {
   margin-bottom: 5px; /* 画像とテキストの間に余白を追加 */
   border-radius: 4px; /* 画像の角を丸める（任意） */
 }
+.tooltip-details p {
+  margin: 8px 0; /* テキスト間のスペースを追加 */
+  font-size: 14px; /* テキストのサイズを調整 */
+  line-height: 1.5;
+  color: #dcdcdc; /* 少し淡い色にしてバランスを取る */
+}
+.tooltip-button {
+  display: inline-block;
+  background-color: #48A63F; /* ボタンの背景色 */
+  color: #fff; /* テキスト色 */
+  border-radius: 5px; /* 角を丸く */
+  padding: 8px 12px; /* ボタンの内側に余白を追加 */
+  text-decoration: none; /* 下線を削除 */
+  font-size: 14px; /* ボタンのフォントサイズを調整 */
+  margin-top: 10px; /* ボタン上部にスペースを追加 */
+  transition: background-color 0.3s, transform 0.3s; /* ホバーアニメーション */
+}
+.tooltip-button:hover {
+  background-color: #3B8E31; /* ホバー時の色 */
+  transform: translateY(-2px); /* ホバー時に少し持ち上げる */
+}
+
 
 
 /******************************************** 
