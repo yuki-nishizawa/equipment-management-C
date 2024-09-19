@@ -175,6 +175,15 @@ footer {
   max-width: 1200px; /* 必要に応じて最大幅を設定 */
   text-align: center;
 }
+
+.content a {
+  color: #007BFF;
+  text-decoration: none;
+}
+.content a:hover {
+  text-decoration: underline;
+}
+
 .field {
   margin-bottom: 15px;
   text-align: left; /* 左詰めに設定 */
