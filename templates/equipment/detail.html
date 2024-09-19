@@ -168,47 +168,57 @@
 </form> {% endcomment %}
 
 <div class="detail-title-bar">
-  <h3><span class="material-symbols-outlined"><big>calendar_month</big></span>
-    今後の貸出予定</h3>
+  <h3 id="future-loans-title" style="cursor:pointer; display: inline-block;">
+    <span class="material-symbols-outlined"><big>calendar_month</big></span>
+    今後の貸出予定
+  </h3>
+  <div class="detail-button-group">
+    <!--貸出ボタン-->
     <button id="openModalButton" class="order-button custom-size">
-      <span class="material-symbols-outlined"><font color="#FFFFFF">local_library</span> 貸出依頼</font></button>
+    <span class="material-symbols-outlined"><font color="#FFFFFF">local_library</span> 貸出依頼</font></button>
+    <!--貸出ボタンここまで-->
+    <span class="material-symbols-outlined arrow-icon" id="future-loans-toggle" style="float: right; cursor: pointer;">
+      <font color="gray">keyboard_arrow_up</font></span>
+  </div>
 </div>
 
+<!-- 初期状態で表示される -->
+<div id="future-loans-section" style="display:block;">
 
-
-<!-- カレンダーの表示 -->
-<div class="approved-order">
-<div id="calendar-container">
-  {% include 'equipment/calendar_partial.html' %}
-</div>
-
-<div class="approved-table">
-  <big><b>※直近の貸出予定(現在以降の5件を表示)</b></big>
-<table class="detail-table">
-  <thead>
-    <tr align="center">
-      <th>貸出依頼者</th>
-      <th>数量</th>
-      <th>貸出希望日</th>
-      <th>返却予定日</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for order in future_orders %}
-    <tr align="center">
-        <td>{{ order.user.username }}</td>
-        <td>{{ order.quantity }}</td>
-        <td>{{ order.loan_date|date:"Y/m/d" }}</td>
-        <td>{{ order.return_date|date:"Y/m/d" }}</td>
-      </tr>
-    {% empty %}
-    <tr align="center">
-        <td colspan="4">今後の貸出予定はありません</td>
-      </tr>
-    {% endfor %}
-  </tbody>
-</table>
-</div>
+  <!--カレンダー部分-->
+  <div class="approved-order">
+    <div id="calendar-container">
+      {% include 'equipment/calendar_partial.html' %}
+    </div>
+  <!--直近リスト-->
+    <div class="approved-table">
+      <big><b>※直近の貸出予定(現在以降の5件を表示)</b></big>
+      <table class="detail-table">
+        <thead>
+          <tr align="center">
+            <th>貸出依頼者</th>
+            <th>数量</th>
+            <th>貸出希望日</th>
+            <th>返却予定日</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in future_orders %}
+          <tr align="center">
+              <td>{{ order.user.username }}</td>
+              <td>{{ order.quantity }}</td>
+              <td>{{ order.loan_date|date:"Y/m/d" }}</td>
+              <td>{{ order.return_date|date:"Y/m/d" }}</td>
+            </tr>
+          {% empty %}
+          <tr align="center">
+              <td colspan="4">今後の貸出予定はありません</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
 
@@ -275,53 +285,61 @@
 </div>
 {% endif %}
 
+
+<!--コメント部分-->
 <div class="detail-title-bar">
-  <h3><span class="material-symbols-outlined"><big>forum</span></big> コメント</h3>
-  <!-- 「コメントをする」ボタン -->
-  <button type="button" class="order-button custom-size" id="open-comment-modal-btn">
-    <span class="material-symbols-outlined"><font color="#FFFFFF">mode_comment</font></span> コメントする</button>
+  <h3 id="comment-section-title" style="cursor:pointer; display: inline-block;">
+    <span class="material-symbols-outlined"><big>forum</span></big> コメント
+  </h3>
+  <div class="detail-button-group">
+    <!-- 「コメントをする」ボタン -->
+    <button type="button" class="order-button custom-size" id="open-comment-modal-btn">
+      <span class="material-symbols-outlined"><font color="#FFFFFF">mode_comment</font></span> コメントする
+    </button>
+    <span class="material-symbols-outlined arrow-icon" id="comment-toggle" style="float: right; cursor: pointer;">
+    <font color="gray">keyboard_arrow_up</font>
+    </span>
+  </div>
 </div>
 
-<!-- コメントリスト -->
-<div class="comment-field">
-  {% if comments %}
-    {% for comment in comments %}
-    <div class="comment-contents">
-      <div class="comment-name-time">
-        <div class="comment-name">
-          <b>{{ comment.user.username }}</b>
+<!-- 初期状態で表示される -->
+<div id="comment-section" style="display:block;">
+  <!-- コメントリスト -->
+  <div class="comment-field">
+    {% if comments %}
+      {% for comment in comments %}
+      <div class="comment-contents">
+        <div class="comment-name-time">
+          <div class="comment-name">
+            <b>{{ comment.user.username }}</b> さん
+          </div>
+          <div class="comment-delete">
+            <!-- コメント投稿者または管理者の場合のみ削除ボタンを表示 -->
+            {% if comment.user == request.user or request.user.is_admin %}
+            <form action="{% url 'equipment:comment-delete' comment.id %}" method="post" onsubmit="return confirmDeleteComment();">
+              {% csrf_token %}
+              <button type="submit" class="comment-button delete-button">
+                <span class="material-symbols-outlined"><font color="#FFFFFF">delete</font></span></button>
+            </form>
+            {% endif %}
+          </div>
+          <div class="comment-time">
+            {{ comment.created_at|date:"Y/m/d H:i" }}
+          </div>
         </div>
-        <div class="comment-delete">
-          <!-- コメント投稿者または管理者の場合のみ削除ボタンを表示 -->
-          {% if comment.user == request.user or request.user.is_admin %}
-          <form action="{% url 'equipment:comment-delete' comment.id %}" method="post" onsubmit="return confirmDeleteComment();">
-            {% csrf_token %}
-            <button type="submit" class="comment-button delete-button">
-              <span class="material-symbols-outlined"><font color="#FFFFFF">delete</font></span></button>
-          </form>
-          {% endif %}
-        </div>
-        <div class="comment-time">
-          {{ comment.created_at|date:"Y/m/d H:i" }}
+        <div class="comment-text">
+          <p>{{ comment.text }}</p>
         </div>
       </div>
-      <div class="comment-text">
-        <p>{{ comment.text }}</p>
-      </div>
-
-
-    </div>
-    {% endfor %}
-  {% else %}
-      <p>コメントはありません
-        <span class="material-symbols-outlined">
-          <font color="gray"><big>sentiment_very_dissatisfied</big></font>
-        </span></p>
-  {% endif %}
-
-
-</div>
-
+      {% endfor %}
+    {% else %}
+    <p>コメントはありません
+      <span class="material-symbols-outlined">
+        <font color="gray"><big>sentiment_very_dissatisfied</big></font>
+      </span></p>
+    {% endif %}
+  </div><!--comment-field-->
+</div><!--comment-section-->
 
 <!-- コメント用モーダルのHTML -->
 <div id="comment-modal" class="comment-modal" style="display:none;">
@@ -586,7 +604,36 @@ function toggleHistorySection() {
     historyToggle.innerHTML = '<font color="gray">keyboard_arrow_down</font>';
   }
 }
+// 今後の貸出予定セクションの表示・非表示を切り替える
+document.getElementById('future-loans-title').addEventListener('click', toggleFutureLoansSection);
+document.getElementById('future-loans-toggle').addEventListener('click', toggleFutureLoansSection);
 
+function toggleFutureLoansSection() {
+  const futureLoansSection = document.getElementById('future-loans-section');
+  const futureLoansToggle = document.getElementById('future-loans-toggle');
+  if (futureLoansSection.style.display === 'none') {
+    futureLoansSection.style.display = 'block';
+    futureLoansToggle.innerHTML = '<font color="gray">keyboard_arrow_up</font>';
+  } else {
+    futureLoansSection.style.display = 'none';
+    futureLoansToggle.innerHTML = '<font color="gray">keyboard_arrow_down</font>';
+  }
+}
+// コメントセクションの表示・非表示を切り替える
+document.getElementById('comment-section-title').addEventListener('click', toggleCommentSection);
+document.getElementById('comment-toggle').addEventListener('click', toggleCommentSection);
+
+function toggleCommentSection() {
+  const commentSection = document.getElementById('comment-section');
+  const commentToggle = document.getElementById('comment-toggle');
+  if (commentSection.style.display === 'none') {
+    commentSection.style.display = 'block';
+    commentToggle.innerHTML = '<font color="gray">keyboard_arrow_up</font>';
+  } else {
+    commentSection.style.display = 'none';
+    commentToggle.innerHTML = '<font color="gray">keyboard_arrow_down</font>';
+  }
+}
 </script>
 <!--カレンダー機能実装-->
 <script>

@@ -315,6 +315,13 @@ footer {
   gap:10px;
 }
 
+#future-loans-section {
+  display: flex;
+  justify-content: center;  /* 横方向の中央揃え */
+  align-items: center;      /* 縦方向の中央揃え */
+  height: 100%;  /* 必要に応じて高さを設定 */
+}
+
 /*お気に入りボタン*/
 .favorite {
   display: inline-flex;
@@ -559,10 +566,18 @@ footer {
   background-color: rgba(0,0,0,0.5); /* 半透明の黒背景 */
 }
 
+#comment-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding:0 20px;
+}
+
 .comment-field {
   width: 100%;
   background-color: #F9F9F9;
-  margin: 20px;
+  margin-top :20px;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -584,11 +599,13 @@ footer {
   border-bottom: none;
 }
 
+
 .comment-name-time {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
 
 .comment-delete {
   margin-left: auto; /* 削除ボタンを右側に寄せる */
@@ -638,21 +655,22 @@ footer {
 
 .approved-order {
   display: flex;
-  justify-content: center; /* 水平方向に中央揃え */
-  align-items:flex-start; /* 垂直方向に中央揃え（必要に応じて） */
-  width:50%;
-  height:100%;
-  gap:40px;
-  margin: 20px;
+  justify-content: center; /* 水平方向の中央揃え */
+  align-items: flex-start; /* 垂直方向で開始位置 */
+  width: 100%; /* 親要素の幅に合わせる */
+  max-width: 900px; /* 必要に応じて最大幅を設定 */
+  margin: 20px auto; /* 自動で中央揃え */
+  gap: 40px; /* カレンダーとリストの間のスペース */
 }
 
 .approved-table {
   display: flex;
   flex-direction: column; 
   align-items: center; /* 中央揃え */
-  width:100%;
+  width: 100%;
+  max-width: 500px; /* テーブルの最大幅を設定 */
+  margin: 0 auto; /* 自動で中央揃え */
 }
-
 .dayofweek {
   background-color: #f2f2f2;
 }
