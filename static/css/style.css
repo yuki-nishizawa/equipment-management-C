@@ -267,6 +267,13 @@ footer {
   flex-direction: column;
   align-items: center;
 }
+.detail-content a {
+  color: #007BFF;
+  text-decoration: none;
+}
+.detail-content a:hover {
+  text-decoration: underline;
+}
 
 /*備品タイトルバー*/
 .detail-title-bar {
@@ -607,7 +614,7 @@ footer {
 .calendar-navigation {
   display: flex;
   justify-content: space-around;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .calendar-container {

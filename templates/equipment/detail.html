@@ -245,9 +245,25 @@
         <td>{{ order.quantity }}</td>
         <td>{{ order.loan_date|date:"Y/m/d" }}</td>
         <td>{{ order.return_date|date:"Y/m/d" }}</td>
-        <td>{{ order.approval_status }}</td>
+        <td>
+          {% if order.approval_status == "承認待ち" %}
+          <span class="status-pending"><b>{{ order.approval_status }}</b></span>
+          {% elif order.approval_status == "承認済み" %}
+          <span class="status-approved"><b>{{ order.approval_status }}</b></span>
+          {% elif order.approval_status == "否決" %}
+          <span class="status-rejected"><b>{{ order.approval_status }}</b></span>
+          {% else %}
+          {{ order.approval_status }}
+          {% endif %}
+        </td>
         <td>{{ order.approval_date|date:"Y/m/d H:i" }}</td>
-        <td>{{ order.approval_comment }}</td>
+        <td>
+          {% if order.approval_comment %}
+            {{ order.approval_comment }}
+          {% else %}
+          －
+          {% endif %}
+        </td>
       </tr>
       {% empty %}
       <tr align="center">

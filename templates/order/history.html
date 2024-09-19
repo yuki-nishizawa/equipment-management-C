@@ -33,7 +33,7 @@
   <button id="toggleFilterButton" class="filter-button">承認待ちのみ表示</button>
 </div>
 {% endif %}
-
+<div class="table-container">
 
 <table class="order-history-table" cellspacing="10" cellpadding="10">
   <thead>
@@ -144,11 +144,12 @@
     </tr>
     {% empty %}
     <tr class="order-history-empty" align="center">
-      <td colspan="10">　申請はありません</td>
+      <td colspan="10">申請はありません</td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
+</div>
 
 <!-- 承認・否決用のモーダルウィンドウ -->
 <div id="commentModal" class="modal">
