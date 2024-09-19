@@ -506,7 +506,7 @@ footer {
   width: 100%;
   position: relative; /* ツールチップの表示位置を調整 */
   overflow: visible; /* ツールチップが隠れないようにする */
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .detail-table {
