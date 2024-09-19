@@ -22,7 +22,7 @@
             {% endif %}
             
             <div class="field">
-                <label for="{{ form.equip_name.id_for_label }}">名前</label>
+                <label for="{{ form.equip_name.id_for_label }}">書籍名</label>
                 {{ form.equip_name }}
             </div>
             <div class="field">
@@ -46,7 +46,8 @@
                 {{ form.text }}
             </div>
             <div class="field">
-                <label for="{{ form.web_site.id_for_label }}">参考URL</label><span class="field-error"><small>（Amazon等書籍の説明が記載されているURLを入力）</small></span>
+                <label for="{{ form.web_site.id_for_label }}">参考URL</label>
+                <span class="field-error"><small>（Amazon等書籍の説明が記載されているURLを入力）</small></span>
                 {{ form.web_site }}
             </div>
             <div class="field">

@@ -14,7 +14,7 @@ import calendar
 from django.utils import timezone
 from django.template.loader import render_to_string
 
-#備品管理一覧
+#書籍管理一覧
 @login_required#ログインしていないと見れないようにするデコレータを追加
 def equipment_list(request):
     equipments = Equipment.objects.all().order_by('-updated_at')
@@ -35,7 +35,7 @@ def return_equipment(request, pk):
     return redirect('equipment:list')
 
 
-#備品追加ページ
+#書籍追加ページ
 class EquipCreateView(LoginRequiredMixin, CreateView):#CREATE用のビューを使う＆ログインしてないと見れないようにする
     template_name = 'equipment/add.html'# テンプレートはadd.htmlを使用
     model = Equipment # モデル(データベース)は、models.pyで定義しているEquipmentモデルを使用する
@@ -46,7 +46,7 @@ class EquipCreateView(LoginRequiredMixin, CreateView):#CREATE用のビューを�
         form.instance.user = self.request.user#チェックできたら登録したユーザーが誰かという情報を取得する、
         return super().form_valid(form)#登録を完了させる
 
-#備品詳細表示ページ
+#書籍詳細表示ページ
 class EquipDetailView(LoginRequiredMixin, DetailView):
     model = Equipment
     template_name = 'equipment/detail.html'
@@ -60,7 +60,7 @@ class EquipDetailView(LoginRequiredMixin, DetailView):
 
         context['stock_update_form'] = StockUpdateForm(instance=equip) #在庫数更新のフォームが使えるようになる、instance=equipは、今ビューで処理しているequipのデータを初期設定として入れておく、の意味
         context['stock_changes'] = StockChange.objects.filter(equip=equip).order_by('-changed_date')[:5]#StockChangeモデルのデータが使えるようになる
-        context['order_form'] = OrderForm() #発注数更新フォームが使えるようになる
+        context['order_form'] = OrderForm() #貸出数更新フォームが使えるようになる
         context['orders'] = Order.objects.filter(equip=equip).order_by('-order_date')[:5]#Orderモデルのデータが使えるようになる
         context['is_favorite'] = FavoriteEquip.objects.filter(user=user, equip=equip).exists()# お気に入り情報を追加
         context['favorite_count'] = FavoriteEquip.objects.filter(equip=equip).count()#お気に入り登録人数をカウント
@@ -126,7 +126,7 @@ class EquipDetailView(LoginRequiredMixin, DetailView):
             new_stock=updated_equip.stock,
         )
 
-    #### 発注フォームの処理
+    #### 貸出フォームの処理
         order_form = OrderForm(request.POST)
         if order_form.is_valid():
             order = order_form.save(commit=False)
@@ -183,7 +183,7 @@ class EquipDetailView(LoginRequiredMixin, DetailView):
         return reverse_lazy('equipment:detail', kwargs={'pk': self.object.pk})
 
 
-#備品編集ページ
+#書籍編集ページ
 class EquipUpdateView(LoginRequiredMixin, UpdateView):
     model = Equipment
     form_class = EquipForm
@@ -191,15 +191,15 @@ class EquipUpdateView(LoginRequiredMixin, UpdateView):
     
     def get_success_url(self):
         return reverse_lazy('equipment:detail', kwargs={'pk': self.object.pk})
-    #管理者以外に備品編集ページへのアクセスを許可しない
-    def dispatch(self, request, *args, **kwargs):#管理者以外に備品編集ページへのアクセスを許可しない
+    #管理者以外に書籍編集ページへのアクセスを許可しない
+    def dispatch(self, request, *args, **kwargs):#管理者以外に書籍編集ページへのアクセスを許可しない
     # ログインユーザーのis_adminがTrueかどうかをチェック
         if not request.user.is_admin:
             return HttpResponseForbidden("編集権限がありません。")
         return super().dispatch(request, *args, **kwargs)
 
 
-#備品削除
+#書籍削除
 class EquipDeleteView(LoginRequiredMixin, DeleteView): #アクセスがきたら削除するだけなのでテンプレートの設定はなし
     model = Equipment
     success_url = reverse_lazy('equipment:list')

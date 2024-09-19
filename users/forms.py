@@ -12,8 +12,18 @@ class CustomUserCreationForm(UserCreationForm):#ユーザーを新規登録す�
          'is_staff': 'スタッフとして登録する',
          'is_admin': '管理者として登録する',
       }
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if get_user_model().objects.filter(username=username).exists():
+            raise forms.ValidationError('この ユーザー名 は既に存在します。')  # エラーメッセージをカスタマイズ
+        return username
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if get_user_model().objects.filter(email=email).exists():
+            raise forms.ValidationError('この メールアドレス は既に存在します。')  # エラーメッセージをカスタマイズ
+        return email
         
-class CustomUserChangeForm(UserChangeForm): #ユーザーの情報を変更するときに使うフォーム
+class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model = get_user_model() # カスタムユーザーモデルを取得
         fields = ('email', 'username', 'is_staff', 'is_admin')

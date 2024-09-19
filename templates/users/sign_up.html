@@ -27,9 +27,6 @@
         {{ form.username.label_tag }}
         {{ form.username }}
     </div>
-    <div class="field-info">
-        <p>※この項目は必須です。半角アルファベット、半角数字、@/./+/-/_ で150文字以下にしてください。</p>
-    </div>
     <div class="field">
         {% if form.email.errors %}
         <ul class="errorlist">
@@ -65,6 +62,7 @@
     </div>
     <div class="field-info">
         <p>
+            ユーザー名は、半角アルファベット、半角数字、@/./+/-/_ で150文字以下にしてください。<br><br>
             あなたの他の個人情報と似ているパスワードにはできません。<br>
             パスワードは最低 8 文字以上必要です。<br>
             よく使われるパスワードにはできません。<br>

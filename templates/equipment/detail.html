@@ -5,11 +5,9 @@
 {% block content %}
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
-
         <div class="button-container">
           <a href="{% url 'equipment:list' %}" class="return-button">書籍一覧へ戻る</a>
         </div>
-
 
 <!--備品タイトル-->
 
@@ -22,7 +20,7 @@
       import_contacts</big>
     </span>
     {{ equip.equip_name }}</h3><!--備品タイトル-->
-      <p>貸出状況：
+      <p>
       {% if equip.loan_status == '貸出可' %}
       <span class="material-symbols-outlined">
         <font color="#69c44b"><b>circle</span>
@@ -329,7 +327,6 @@
     </form>
   </div>
 </div>
-
 
 
 {% if user.is_admin %}<!-- 管理者の場合にだけ表示される！ -->

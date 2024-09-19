@@ -69,7 +69,7 @@ https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FIL
  <table class="order-history-table" cellspacing="10" cellpadding="10">
      <thead>
          <tr class="order-history-header" align="center">
-             <th>備品名</th>
+            <th>書籍名</th>
              <th>貸出希望日</th>
              <th>返却予定日</th>
              <th>承認依頼日</th>
@@ -92,7 +92,7 @@ https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FIL
                 カテゴリ: {{ order.equip.category }}<br>
                 状態　　: {{ order.equip.condition }}<br>
                 保管場所: {{ order.equip.place }}<br>
-                <!--発注者　: {{ order.user.username}}<br>-->
+                <!--貸出者　: {{ order.user.username}}<br>-->
               </span>
             </div>
           </td>
@@ -127,7 +127,7 @@ https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FIL
  <table class="favorite-equip-table" cellspacing="10" cellpadding="10">
      <thead>
          <tr class="favorite-equip-header" align="center">
-             <th>備品名</th>
+            <th>書籍名</th>
              <th>カテゴリー</th>
              <th>貸出状況</th>
          </tr>
@@ -147,7 +147,7 @@ https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FIL
                 カテゴリ: {{ favorite.equip.category }}<br>
                 状態　　: {{ favorite.equip.condition }}<br>
                 保管場所: {{ favorite.equip.place }}<br>
-                <!--発注者　: {{ order.user.username}}<br>-->
+                <!--貸出者　: {{ order.user.username}}<br>-->
               </span>
             </div>
           </td>

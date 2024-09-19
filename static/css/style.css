@@ -26,6 +26,7 @@ h2 {
   margin: 5px;
   padding: 5px;
 }
+
 /* 全体レイアウト */
 body {
   font-family: Arial, sans-serif;
@@ -44,8 +45,7 @@ body {
   justify-content: center; 
   align-items: center; 
   border-radius: 10px;
-
-
+  overflow: auto; /* コンテンツがはみ出た場合、縦横にスクロールバーを表示 */
 }
 
 .title {/*各ページのタイトル部分*/
@@ -82,7 +82,6 @@ header {
   left: 0; /* 左端に固定 */
   z-index: 1000; /* 画像よりも前に表示させる設定 */
 }
-
 
 .header-top {
   display: flex; /* 横に並べる */
@@ -131,8 +130,6 @@ header {
   margin: 0 15px; /* メニュー項目間の余白を調整 */
 }
 
-
-
 /* baseスタイル、ユーザ名リンクのデザイン※重要なスタイルがある場合は!importantを使用 */
 .user-username {
   text-decoration: underline !important;
@@ -163,10 +160,10 @@ footer {
   font-size: 16px; /* フッターのフォントサイズ */
   z-index: 1000; /* 画像よりも前に表示させる設定 */
 }
+
 /******************************************** 
  登録する画面系・フォーム系の設定
 *********************************************/
-
 .content {
   margin-bottom: 25px;
   width: 100%; /* 必要に応じて調整 */
@@ -211,7 +208,7 @@ footer {
 .field input {
   flex-grow: 1;
 }
-/* 備品一覧へ戻るボタンのスタイル */
+/* 書籍一覧へ戻るボタンのスタイル */
 .return-button {
   display: inline-block;
   padding: 10px 20px;
@@ -260,7 +257,7 @@ footer {
 }
 
 /******************************************** 
- 備品詳細画面
+書籍詳細画面
 *********************************************/
 
 
@@ -486,18 +483,6 @@ footer {
   table-layout: auto; /* 列幅を自動調整 */
 }
 
-/* ［※この項目は必須です。］ */
-.field-info {
-  text-align: center;
-  margin-left: 10px;
-  font-size: 14px;
-  font-weight:1000;
-  color: rgb(139, 138, 138);
-  margin-bottom: 20px;
-}
-.field-info:first-of-type {
-  margin-bottom: 5px; /* 最初のフィールド説明の下に少し余白を追加 */
-}
 /* アイテム詳細のテーブル */
 
 .infomation {
@@ -971,18 +956,17 @@ tbody td a:hover {
  ユーザー管理画面
 *********************************************/
   /* 以下はユーザー管理画面の設定 */
-  .field-info {
-    text-align: center;
-    margin-left: 10px;
-    font-size: 14px;
-    font-weight: 1000;
-    color: rgb(139, 138, 138);
-    margin-bottom: 20px;
-  }
-  .field-info:first-of-type {
-    margin-bottom: 5px; /* 最初のフィールド説明の下に少し余白を追加 */
-  }
-    /* パスワード変更機能のモーダルのスタイル */
+/* ［※この項目は必須です。］ */
+.field-info {
+  margin-left: 10px;
+  color: #414141;
+  margin-bottom: 20px;
+}
+.field-info:first-of-type {
+  margin-bottom: 5px; /* 最初のフィールド説明の下に少し余白を追加 */
+}
+
+  /* パスワード変更機能のモーダルのスタイル */
   /* モーダルのスタイル */
 .password-modal {
   display: none;
@@ -1068,10 +1052,10 @@ tbody td a:hover {
 }
 
 /******************************************** 
- 備品一覧画面
+ 書籍一覧画面
 *********************************************/
 
-  /* 備品一覧 */
+  /* 書籍一覧 */
   .item-active {
     color: #000; 
     background-color: transparent;
@@ -1144,7 +1128,7 @@ table th {
   top: 0;
   z-index: 1;
 }
-  /* 備品一覧テーブルの横幅設定 */
+  /* 書籍一覧テーブルの横幅設定 */
   .item-list {
     width: 100%;
 }
@@ -1162,7 +1146,7 @@ table th {
   }
   .item-list th:nth-child(1),
   .item-list td:nth-child(1) {
-    width: 150px; /* 備品名の幅 */
+    width: 150px; /* 書籍名の幅 */
     text-align: left;
   }
   .item-list th:nth-child(2),
@@ -1292,7 +1276,7 @@ table th {
   margin-left: 10px; /* クリアボタンと検索ボタンの間に余白を追加 */
   margin-bottom: 3px; /* クリアボタンの下に余白を追加 */
 }
-  /* 備品一覧の検索ボックスのスタイルを調整 */
+  /* 書籍一覧の検索ボックスのスタイルを調整 */
 .list-search-box{
   margin-right: 10px; /* 検索ボックスと検索ボタンの間に余白を追加 */
   padding: 5px;
@@ -1619,7 +1603,7 @@ table th {
 {
    width: 200px ;
 }
-/*備品名にカーソルを当てると出るポップアップ*/
+/*書籍名にカーソルを当てると出るポップアップ*/
 .tooltip {
   position: relative;
   display: inline-block;
@@ -1894,7 +1878,7 @@ table th {
 /* 各列の幅をピクセル単位で指定 */
 .favorite-table th:nth-child(1),
 .favorite-table td:nth-child(1) {
-    width: 150px; /* 備品名 */
+    width: 150px; /* 書籍名 */
 }
 .favorite-table th:nth-child(2),
 .favorite-table td:nth-child(2) {
