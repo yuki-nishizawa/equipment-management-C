@@ -66,7 +66,7 @@ https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FIL
  <a href="{% url 'order:history' %}" class="detail-button" style="float: right; margin-right: 10px;">
   詳細はこちら
 </a>
- <table class="order-history-table" cellspacing="10" cellpadding="10">
+ <table class="mypage-order-history-table" cellspacing="10" cellpadding="10">
      <thead>
          <tr class="order-history-header" align="center">
             <th>書籍名</th>
@@ -87,12 +87,14 @@ https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FIL
                 <center>
                   <img src="{{ order.equip.image.url }}" alt="{{ order.equip.equip_name }}" class="tooltip-image">
                 </center>
+                <div style="text-align: left; margin-top: 10px;">
                 貸出状況: {{ order.equip.loan_status }}<br>
                 説明　　: {{ order.equip.text }}<br>
                 カテゴリ: {{ order.equip.category }}<br>
                 状態　　: {{ order.equip.condition }}<br>
                 保管場所: {{ order.equip.place }}<br>
                 <!--貸出者　: {{ order.user.username}}<br>-->
+              </div>
               </span>
             </div>
           </td>
@@ -142,12 +144,14 @@ https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FIL
                 <center>
                   <img src="{{ favorite.equip.image.url }}" alt="{{ favorite.equip.equip_name }}" class="tooltip-image">
                 </center>
+                <div style="text-align: left; margin-top: 10px;">
                 貸出状況: {{ favorite.equip.loan_status }}<br>
                 説明　　: {{ favorite.equip.text }}<br>
                 カテゴリ: {{ favorite.equip.category }}<br>
                 状態　　: {{ favorite.equip.condition }}<br>
                 保管場所: {{ favorite.equip.place }}<br>
                 <!--貸出者　: {{ order.user.username}}<br>-->
+                </div>
               </span>
             </div>
           </td>

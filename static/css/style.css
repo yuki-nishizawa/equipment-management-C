@@ -506,7 +506,7 @@ footer {
   width: 100%;
   position: relative; /* ツールチップの表示位置を調整 */
   overflow: visible; /* ツールチップが隠れないようにする */
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 .detail-table {
@@ -777,6 +777,7 @@ th {
   max-height: 600px; /* 必要に応じて調整 */
   overflow-x: auto; /* 横スクロール */
   overflow-y: auto; /* 縦スクロール */
+  overflow: visible;
 }
 /* テーブル本体のスタイル */
 .equipment-table {
@@ -1122,6 +1123,7 @@ tbody td a:hover {
   .table-container {
     overflow-x: auto; /* 横方向のスクロールを有効にする */
     width: 100%; /* 親要素の幅に合わせる */
+    overflow: visible;
   }
   /* 削除予定（書籍一覧のテーブル設定を"table-container"に統一） */
    /*.item-list {
@@ -1161,6 +1163,7 @@ tbody td a:hover {
 .table-container {/* テーブルをスクロール可能にするためのコンテナ */
   max-height: 800px; /* 必要に応じて調整 */
   overflow-y: auto;
+  overflow: visible;
 }
 /* ヘッダーを固定 */
 table th {
@@ -1540,6 +1543,7 @@ table th {
 .table-container {
   overflow-x: auto;
   width: 100%;
+  overflow: visible;
 }
 /* 申請一覧テーブル */
 .order-history-table {
@@ -1548,12 +1552,9 @@ table th {
   margin: 20px auto;
   border-collapse: collapse;
   border: 1px solid #ddd;
-  table-layout: auto; /* ここを auto から fixed に変更 */
+  table-layout: fixed; /* ここを auto から fixed に変更 */
 }
-/* 申請一覧 */
-.order-history-table {
-  width: 100%;
-}
+
 /* ヘッダーのスタイル */
 .order-history-header {
   background-color: #f5f5f5;
@@ -1611,17 +1612,12 @@ table th {
 {
    width: 150px;
 }
-.order-history-th:nth-child(4) /* 貸出希望日 */
+.order-history-th:nth-child(4),
+.order-history-th:nth-child(5),
+.order-history-th:nth-child(6),
+.order-history-th:nth-child(9)    /* 日付関係 */
 {
-   width: 90px;
-}
-.order-history-th:nth-child(5) /* 返却予定日 */
-{
-   width: 90px;
-}
-.order-history-th:nth-child(6) /* 承認依頼日 */
-{
-   width: 90px;
+   width: 100px;
 }
 .order-history-th:nth-child(7) /* ステータス */
 {
@@ -1631,11 +1627,7 @@ table th {
 {
    width: 150px;
 }
-.order-history-th:nth-child(9) /* 承認日 */
-{
-   width: 90px;
-   text-align: left;
-}
+
 .order-history-th:nth-child(10) /* 承認 */
 {
    width: 150px ;
@@ -1654,7 +1646,6 @@ table th {
 .tooltip-header {
   font-size: 50px; /* 必要に応じてフォントサイズを調整 */
   font-weight: bold; /* 太字にして強調 */
-  color: #ffcc00; /* 目立たせるために色を変更 */
   margin-bottom: 10px;
 }
 .tooltiptext {
@@ -1662,7 +1653,7 @@ table th {
   width: 250px;
   background-color: rgba(0, 0, 0, 0.85);
   color: #fff;
-  text-align: center;
+  text-align: left;
   border-radius: 12px;
   padding: 20px;
   position: absolute;
@@ -1828,6 +1819,10 @@ table th {
   background-color: #3B8E31;
 }
 
+.mypage-order-history-table{
+  table-layout: auto;
+}
+
 /******************************************** 
  パスワード再設定ページ
 *********************************************/
@@ -1929,6 +1924,7 @@ table th {
   overflow-y: auto; /* 縦スクロールを許可 */
   overflow-x: hidden; /* 横スクロールは親要素で制御 */
   position: relative;
+  overflow: visible;
 }
 
 .favorite-list img {

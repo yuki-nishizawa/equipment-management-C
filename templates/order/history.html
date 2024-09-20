@@ -57,17 +57,20 @@
     {% for order in orders %}
     <tr class="order-history-row" align="center">
       <td>
-        <div class="tooltip">
+        <div class="tooltip custom-tooltip">
           <a href="{% url 'equipment:detail' order.equip.pk %}">{{ order.equip.equip_name }}</a>
           <span class="tooltiptext">
             <center>
               <img src="{{ order.equip.image.url }}" alt="{{ order.equip.equip_name }}" class="tooltip-image">
             </center>
+            <!-- ここでテキスト部分のみ左揃えにする -->
+            <div style="text-align: left; margin-top: 10px;">
             貸出状況: {{ order.equip.loan_status }}<br>
             説明　　: {{ order.equip.text }}<br>
             カテゴリ: {{ order.equip.category }}<br>
             状態　　: {{ order.equip.condition }}<br>
             保管場所: {{ order.equip.place }}<br>
+          </div>
           </span>
         </div>
       </td>
