@@ -23,14 +23,12 @@
     <button type="button" id="clearButton" class="clear-button" onclick="clearSearch()">クリア</button>
   </div>
 </form>
-
 <main class="favorite-list">
   <div class="left-align-container">
     <button id="filterAvailableButton" class="filter-available-button" onclick="filterAvailableItems()">貸出可を表示</button>
   </div>
   <div class="table-container">
       <!-- <div class="favorite-table-container"> --><!--テーブルのclassを"table-container"に統一、問題なければ"favorite-table-container"は削除する-->
-
   <table class="favorite-table">
     <thead>
         <tr align="center">
@@ -133,7 +131,6 @@
 </table>
 </div>
 </main>
-
 
 
 <script>
@@ -267,46 +264,36 @@
       const trigger = tooltip.querySelector('.tooltip-trigger');
       const tooltipText = tooltip.querySelector('.tooltiptext');
       let hideTimeout;
-  
-    // ツールチップを表示する関数
-    function showTooltip() {
-      clearTimeout(hideTimeout);
-    // ツールチップの位置をリセットしてから高さを取得
-        tooltipText.style.bottom = '100%';
-        tooltipText.style.top = 'auto';
-        tooltipText.style.visibility = 'visible';
-        tooltipText.style.opacity = '1';
-        // ツールチップの位置と高さを取得
-        const rect = tooltipText.getBoundingClientRect();
-        // 画面の上部からはみ出している場合は、ツールチップを下に表示
-        if (rect.top < 0) {
-            tooltipText.style.bottom = 'auto';
-            tooltipText.style.top = '100%';
-        }
-    }
+      // ツールチップを表示する関数
+      function showTooltip() {
+          clearTimeout(hideTimeout); // 非表示タイマーをクリア
+          tooltipText.style.bottom = '100%';
+          tooltipText.style.top = 'auto';
+          tooltipText.style.visibility = 'visible';
+          tooltipText.style.opacity = '1';
+          const rect = tooltipText.getBoundingClientRect();
+          if (rect.top < 0) {
+              tooltipText.style.bottom = 'auto';
+              tooltipText.style.top = '100%';
+          }
       }
-  
       // ツールチップを非表示にする関数
       function hideTooltip() {
           hideTimeout = setTimeout(() => {
+              // トリガーとツールチップどちらにもマウスが乗っていない場合のみ非表示に
               if (!trigger.matches(':hover') && !tooltipText.matches(':hover')) {
                   tooltipText.style.visibility = 'hidden';
                   tooltipText.style.opacity = '0';
               }
           }, 500); // 500msの遅延を設定
       }
-  
       // トリガー要素にホバーしたとき
       trigger.addEventListener('mouseover', showTooltip);
       trigger.addEventListener('mouseleave', hideTooltip);
-  
       // ツールチップ内にマウスが入ったとき
       tooltipText.addEventListener('mouseover', showTooltip);
-  
       // ツールチップからマウスが離れたとき
       tooltipText.addEventListener('mouseleave', hideTooltip);
   });
-  
 </script>
-
 {% endblock content %}
