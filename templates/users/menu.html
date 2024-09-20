@@ -20,12 +20,18 @@
       </tr>
       <tr>
         <td><a href="{% url 'order:history' %}">申請一覧</a></td>
-          <td>申請の確認・承認を行います。</td>
+          <td>申請の確認・承認(管理者のみ)を行います。</td>
       </tr>
+      <tr>
+        <td><a href="{% url 'users:favorite' %}">お気に入り一覧</a></td>
+          <td>お気に入り一覧の確認をします。</td>
+      </tr>
+      {% if user.is_admin %}
       <tr>
           <td><a href="{% url 'users:users' %}">ユーザー一覧</a></td>
           <td>(管理者限定)ユーザー情報の確認・編集を行います。</td>
       </tr>
+      {% endif %}
   </table>
 
   </div>

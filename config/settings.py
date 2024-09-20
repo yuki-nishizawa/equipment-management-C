@@ -158,7 +158,7 @@ LOGOUT_REDIRECT_URL = '/'
 SECRET_KEY = env('SECRET_KEY')
 
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/equipment/'  
+LOGIN_REDIRECT_URL = '/menu/'  
 
 # 自動ログアウト機能(最終アクセス後1h後にログアウト)
 SESSION_COOKIE_AGE = 60 * 60 #60秒×60分＝1h後に自動ログアウト
