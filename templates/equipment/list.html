@@ -154,7 +154,7 @@
                             貸出
                         </a>
                     {% elif equipment.loan_status == '貸出中' %}
-                        <a href="{% url 'equipment:return_equipment' equipment.pk %}" class="status-return-button" onclick="return confirmLoan();">
+                        <a href="{% url 'equipment:return_equipment' equipment.pk %}" class="status-return-button" onclick="return confirmReturn();">
                             <span class="material-symbols-outlined"><font color="white">arrow_forward</font></span>
                             返却
                         </a>
