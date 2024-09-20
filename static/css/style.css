@@ -177,7 +177,7 @@ footer {
 }
 
 .content a {
-  color: #007BFF;
+  color: #3484b9;
   text-decoration: none;
 }
 .content a:hover {
@@ -1090,7 +1090,7 @@ tbody td a:hover {
   text-align: center;
 }
 .password-modal .pwchange-button {
-  background-color: #007bff;
+  background-color: #3484b9;
   color: white;
   padding: 10px 20px;
   border: none;
