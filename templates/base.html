@@ -34,6 +34,9 @@
           <div class="left">
               <ul>
                 {% if user.is_authenticated %} <!--ログインしているときの表示-->
+                <li><a href="{% url 'users:menu' %}">
+                  <span class="material-symbols-outlined">other_houses</span>
+                HOME</a></li>
                 <li><a href="{% url 'equipment:list' %}">
                   <span class="material-symbols-outlined">
                     import_contacts
