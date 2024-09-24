@@ -226,7 +226,7 @@ footer {
 .return-button {
   display: inline-block;
   padding: 10px 20px;
-  background-color: #A9CB03;
+  background-color: #69c44b;
   color: white; /* ボタンの文字色を白に */
   border-radius: 25px; /* ボタンの角を丸くする */
   text-decoration: none; /* 下線を消す */
@@ -236,7 +236,7 @@ footer {
   margin-top: 20px; /* 上に余白を追加 */
 }
 .return-button:hover {
-  background-color: #48A63F;
+  background-color: #3B8E31;
 }
 
 /******************************************** 
@@ -904,7 +904,7 @@ tbody td a:hover {
 
   /* 貸出可能ボタンのスタイル */
 .filter-available-button {
-  background-color: #48A63F; /* ボタンの背景色 */
+  background-color: #69c44b; /* ボタンの背景色 */
   color: white; /* ボタンの文字色 */
   padding: 0 20px; /* ボタンの左右の内側余白 */
   border-radius: 5px; /* ボタンの角丸 */
@@ -928,7 +928,7 @@ tbody td a:hover {
 }
 /* ホバー時の背景色変更 */
 .filter-available-button:hover {
-  background-color: #D7E6C3; /* ホバー時の色を変更 */
+  background-color: #3B8E31; /* ホバー時の色を変更 */
 }
   /* 備品追加ボタンのスタイル */
   .add-item-button {
@@ -1517,7 +1517,7 @@ table th {
   width: 100%; /* コンテナを親要素の幅に合わせる */
 }
 .filter-button {
-  background-color: #48A63F  ;
+  background-color: #69c44b;
   color: white;
   padding: 10px 25px;
   border: none;
@@ -1525,7 +1525,7 @@ table th {
   border-radius: 5px;
 }
 .filter-button:hover {
-  background-color: #D7E6C3  ;
+  background-color: #3B8E31;
 }
 .action-buttons {
   display: flex;
