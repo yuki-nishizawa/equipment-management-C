@@ -232,66 +232,62 @@ class CommentDeleteView(LoginRequiredMixin, DeleteView):
 
 #カレンダー機能：ヘルパーメソッド
 def get_calendar_context(request, year=None, month=None, equip=None):
-    # URLから年と月のパラメータを取得し、明示的にint型に変換
-    year = int(request.GET.get('year', datetime.now().year)) if year is None else int(year)
-    month = int(request.GET.get('month', datetime.now().month)) if month is None else int(month)
-
-    # 月の最初の日が何曜日か（0=月曜日, 6=日曜日）とその月の日数を取得
-    first_weekday, days_in_month = calendar.monthrange(year, month)
-
-    # 月曜日始まりから日曜日始まりに変換
-    if first_weekday == 6:  # 日曜日の場合
-        first_weekday = 0
-    else:
-        first_weekday += 1
-
-    days_in_month_range = range(1, days_in_month + 1)
-
-    # 空のセルの数（first_weekday の値分）
-    empty_days = range(first_weekday)
-
-    # 貸出予定を取得（フィルタ条件はアプリに応じて変更）
-    loaned_days = set()
-    future_orders = Order.objects.filter(
-        equip=equip,
-        loan_date__year=year,
-        loan_date__month=month,
-        approval_status='承認済み'
-    )
-
-    # 貸出日をセットに格納
-    for order in future_orders:
-        loan_date = order.loan_date
-        return_date = order.return_date
-        current_day = loan_date
-        while current_day <= return_date and current_day.month == month:
-            loaned_days.add(current_day.day)
-            current_day += timedelta(days=1)
-
-    # 前月と次月の計算
-    if month == 1:
-        prev_month_year = year - 1
-        prev_month = 12
-    else:
-        prev_month_year = year
-        prev_month = month - 1
-
-    if month == 12:
-        next_month_year = year + 1
-        next_month = 1
-    else:
-        next_month_year = year
-        next_month = month + 1
-
-    # コンテキストを返す
-    return {
-        'days_in_month': days_in_month_range,
-        'loaned_days': loaned_days,
-        'current_year': year,
-        'current_month': month,
-        'empty_days': empty_days,  # 空のセル数を渡す
-        'prev_month_year': prev_month_year,
-        'prev_month': prev_month,
-        'next_month_year': next_month_year,
-        'next_month': next_month,
-    }
+   # URLから年と月のパラメータを取得し、明示的にint型に変換
+   year = int(request.GET.get('year', datetime.now().year)) if year is None else int(year)
+   month = int(request.GET.get('month', datetime.now().month)) if month is None else int(month)
+   # 月の最初の日が何曜日か（0=月曜日, 6=日曜日）とその月の日数を取得
+   first_weekday, days_in_month = calendar.monthrange(year, month)
+   # 月曜日始まりから日曜日始まりに変換
+   if first_weekday == 6:  # 日曜日の場合
+       first_weekday = 0
+   else:
+       first_weekday += 1
+   days_in_month_range = range(1, days_in_month + 1)
+   # 空のセルの数（first_weekday の値分）
+   empty_days = range(first_weekday)
+   # 貸出予定を取得（フィルタ条件はアプリに応じて変更）
+   loaned_days = set()
+   future_orders = Order.objects.filter(
+       equip=equip,
+       loan_date__year__lte=year,
+       return_date__year__gte=year,
+       loan_date__month__lte=month,
+       return_date__month__gte=month,
+       approval_status='承認済み'
+   )
+   # 貸出日をセットに格納
+   for order in future_orders:
+       loan_date = order.loan_date
+       return_date = order.return_date
+       current_day = loan_date
+       # 貸出開始日から返却日までのすべての日を処理
+       while current_day <= return_date:
+           # 現在表示している月の場合、日付をセットに追加
+           if current_day.year == year and current_day.month == month:
+               loaned_days.add(current_day.day)
+           current_day += timedelta(days=1)
+   # 前月と次月の計算
+   if month == 1:
+       prev_month_year = year - 1
+       prev_month = 12
+   else:
+       prev_month_year = year
+       prev_month = month - 1
+   if month == 12:
+       next_month_year = year + 1
+       next_month = 1
+   else:
+       next_month_year = year
+       next_month = month + 1
+   # コンテキストを返す
+   return {
+       'days_in_month': days_in_month_range,
+       'loaned_days': loaned_days,
+       'current_year': year,
+       'current_month': month,
+       'empty_days': empty_days,  # 空のセル数を渡す
+       'prev_month_year': prev_month_year,
+       'prev_month': prev_month,
+       'next_month_year': next_month_year,
+       'next_month': next_month,
+   }
